@@ -5,4 +5,14 @@
     <string name="vegetarian_only">Vegetarian Only</string>
     <string name="vegan_only">Vegan Only</string>
     <string name="vegitarian_and_vegan">Vegitarian and Vegan</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="dining_hall">Dining Halls</string>
+    <string name="quick_service">Quick Service</string>
+    <string name="hours">Hours</string>
+    <string name="swipes">Swipes</string>
+    <string name="other">Other</string>
+    <string name="settings">Settings</string>
+    <string name="share">Share</string>
+    <string name="about">About</string>
 </resources>
