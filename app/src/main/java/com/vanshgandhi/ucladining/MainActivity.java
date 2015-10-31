@@ -1,33 +1,22 @@
 package com.vanshgandhi.ucladining;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener
+        implements NavigationView.OnNavigationItemSelectedListener,
+        QuickServiceMenuFragment.OnFragmentInteractionListener
 {
     
     /**
@@ -45,7 +34,7 @@ public class MainActivity extends AppCompatActivity
      */
     private ViewPager mViewPager;
 
-    private Spinner spinner;
+//    private Spinner spinner;
     
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -58,36 +47,49 @@ public class MainActivity extends AppCompatActivity
 
         // Create the adapter that will return a fragment for each section of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        
+
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        spinner = (Spinner) findViewById(R.id.date_spinner);
+//        spinner = (Spinner) findViewById(R.id.date_spinner);
+//
+//        spinner.setAdapter(new MyAdapter(
+//                toolbar.getContext(),
+//                new String[]{
+//                        "November 1, 2015",
+//                        "November 2, 2015",
+//                        "November 3, 2015",
+//                        "November 4, 2015",
+//                        "November 5, 2015",
+//                        "November 6, 2015",
+//                        "November 7, 2015",
+//                        "November 8, 2015"
+//                }));
+//
+//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+//        {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+//            {
+//                // When the given dropdown item is selected, show its contents in the
+//                // container view.
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.container, DiningHallMenuFragment.newInstance(position + 1))
+//                        .commit();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent)
+//            {
+//            }
+//        });
 
-        ArrayList<String> spinnerArray = new ArrayList<>();
-        spinnerArray.add("Date 1");
-        spinnerArray.add("Date 2");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, spinnerArray);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        getSupportActionBar().setTitle(null);
+        getSupportActionBar().setTitle("Dining Halls");
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -118,7 +120,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_select_date) {
             return true;
         }
         
@@ -135,7 +137,8 @@ public class MainActivity extends AppCompatActivity
 
         }
         else if (id == R.id.quick_service) {
-
+//            getFragmentManager().beginTransaction().replace(R.id.container,
+//                    QuickServiceMenuFragment.newInstance()).addToBackStack(null).commit();
         }
         else if (id == R.id.hours) {
 
@@ -157,96 +160,53 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    
-    
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter
+    @Override
+    public void onFragmentInteraction(String id)
     {
-        
-        public SectionsPagerAdapter(FragmentManager fm)
-        {
-            super(fm);
-        }
-        
-        @Override
-        public Fragment getItem(int position)
-        {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a DiningHallMenuFragment (defined as a static inner class below).
-            return DiningHallMenuFragment.newInstance(position + 1);
-        }
-        
-        @Override
-        public int getCount()
-        {
-            // Show 4 total pages.
-            return 4;
-        }
-        
-        @Override
-        public CharSequence getPageTitle(int position)
-        {
-            switch (position) {
-                case 0:
-                    return "COVEL";
-                case 1:
-                    return "DE NEVE";
-                case 2:
-                    return "FEAST";
-                case 3:
-                    return "BPLATE";
-            }
-            return null;
-        }
+
     }
-    
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class DiningHallMenuFragment extends Fragment
-    {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-        
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static DiningHallMenuFragment newInstance(int sectionNumber)
-        {
-            DiningHallMenuFragment fragment = new DiningHallMenuFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-        
-        public DiningHallMenuFragment()
-        {
-        }
-        
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState)
-        {
-            ArrayList<FoodItem> items = new ArrayList<>();
-            items.add(new FoodItem("Test 1"));
-            items.add(new FoodItem("Test 2"));
-            View rootView = inflater.inflate(R.layout.fragment_dining_hall_menu, container, false);
-            RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.menuList);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-            recyclerView.setLayoutManager(layoutManager);
-            MenuAdapter menuAdapter = new MenuAdapter(items);
-            recyclerView.setAdapter(menuAdapter);
-//            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-//            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
+
+
+//    private static class MyAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter
+//    {
+//        private final ThemedSpinnerAdapter.Helper mDropDownHelper;
+//
+//        public MyAdapter(Context context, String[] objects)
+//        {
+//            super(context, android.R.layout.simple_list_item_1, objects);
+//            mDropDownHelper = new ThemedSpinnerAdapter.Helper(context);
+//        }
+//
+//        @Override
+//        public View getDropDownView(int position, View convertView, ViewGroup parent)
+//        {
+//            View view;
+//
+//            if (convertView == null) {
+//                // Inflate the drop down using the helper's LayoutInflater
+//                LayoutInflater inflater = mDropDownHelper.getDropDownViewInflater();
+//                view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+//            }
+//            else {
+//                view = convertView;
+//            }
+//
+//            TextView textView = (TextView) view.findViewById(android.R.id.text1);
+//            textView.setText(getItem(position));
+//
+//            return view;
+//        }
+//
+//        @Override
+//        public void setDropDownViewTheme(Resources.Theme theme)
+//        {
+//            mDropDownHelper.setDropDownViewTheme(theme);
+//        }
+//
+//        @Override
+//        public Resources.Theme getDropDownViewTheme()
+//        {
+//            return mDropDownHelper.getDropDownViewTheme();
+//        }
+//    }
 }
