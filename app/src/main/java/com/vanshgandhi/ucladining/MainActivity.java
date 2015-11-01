@@ -1,5 +1,7 @@
 package com.vanshgandhi.ucladining;
 
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -10,13 +12,23 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        QuickServiceMenuFragment.OnFragmentInteractionListener
+        QuickServiceMenuFragment.OnFragmentInteractionListener,
+        DiningHallMenuFragment.OnFragmentInteractionListener
 {
     
     /**
@@ -39,14 +51,25 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+            //TODO: Proper Transitions
+            //getWindow().setEnterTransition(new Slide());
+            //getWindow().setExitTransition(new Slide());
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nav_main);
-        
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getResources().getString(R.string.dining_hall));
+        }
+
 
         // Create the adapter that will return a fragment for each section of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        String[] titles = {"COVEL", "DE NEVE", "FEAST", "BPLATE"};
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), 0, titles);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -83,13 +106,10 @@ public class MainActivity extends AppCompatActivity
 //            public void onNothingSelected(AdapterView<?> parent)
 //            {
 //            }
-//        });
-
-        getSupportActionBar().setTitle("Dining Halls");
+//
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -99,7 +119,23 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        
+
+//        URL url = null;
+//        HttpURLConnection urlConnection = null;
+//        String http = "";
+//        try {
+//            url = new URL("http://www.android.com/");
+//            urlConnection = (HttpURLConnection) url.openConnection();
+//            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+//        }
+//        catch (Exception e)
+//        {
+//
+//        }
+//        finally {
+//            urlConnection.disconnect();
+//        }
+        new Test().execute();
     }
     
     
@@ -127,6 +163,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item)
     {
@@ -209,4 +246,28 @@ public class MainActivity extends AppCompatActivity
 //            return mDropDownHelper.getDropDownViewTheme();
 //        }
 //    }
+
+
+    public class Test extends AsyncTask<Void, Void, Void>
+    {
+
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            try {
+                Document doc = Jsoup.connect("http://menu.ha.ucla.edu/foodpro/default.asp?date=10%2F31%2F2015").get();
+                Elements elements = doc.getElementsByClass("level5");
+
+                for(Element element : elements)
+                    for(Element food : element.children())
+                        Log.v("TAG", food.text());
+
+
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 }

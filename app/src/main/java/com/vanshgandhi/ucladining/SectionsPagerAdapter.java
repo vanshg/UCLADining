@@ -10,40 +10,35 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter
 {
+    int type;
+    String[] titles;
 
-    public SectionsPagerAdapter(FragmentManager fm)
+    public SectionsPagerAdapter(FragmentManager fm, int type, String[] titles)
     {
         super(fm);
+        this.type = type;
+        this.titles = titles;
     }
 
     @Override
     public Fragment getItem(int position)
     {
         // getItem is called to instantiate the fragment for the given page.
-        // Return a DiningHallMenuFragment (defined as a static inner class below).
-        return DiningHallMenuFragment.newInstance(position + 1);
+        // Return a DiningHallMenuFragment
+        return DiningHallMenuFragment.newInstance();
     }
 
     @Override
     public int getCount()
     {
-        // Show 4 total pages.
-        return 4;
+        return titles.length;
     }
 
     @Override
     public CharSequence getPageTitle(int position)
     {
-        switch (position) {
-            case 0:
-                return "COVEL";
-            case 1:
-                return "DE NEVE";
-            case 2:
-                return "FEAST";
-            case 3:
-                return "BPLATE";
-        }
+        if(position < titles.length)
+            return titles[position];
         return null;
     }
 }

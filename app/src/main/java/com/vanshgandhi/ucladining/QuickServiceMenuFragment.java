@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.vanshgandhi.ucladining.dummy.DummyContent;
@@ -44,9 +45,9 @@ public class QuickServiceMenuFragment extends ListFragment
         if (getArguments() != null) {
 
         }
-        
-//        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-//                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS));
+     //
+        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS));
     }
     
     
