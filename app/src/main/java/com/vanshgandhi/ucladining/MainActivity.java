@@ -12,25 +12,22 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
-import java.io.IOException;
-
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         QuickServiceMenuFragment.OnFragmentInteractionListener,
         DiningHallMenuFragment.OnFragmentInteractionListener
 {
-    
+    JSONObject jsonObject = null;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -111,7 +108,7 @@ public class MainActivity extends AppCompatActivity
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -136,6 +133,7 @@ public class MainActivity extends AppCompatActivity
 //            urlConnection.disconnect();
 //        }
         new Test().execute();
+
     }
     
     
@@ -254,19 +252,25 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected Void doInBackground(Void... params)
         {
-            try {
-                Document doc = Jsoup.connect("http://menu.ha.ucla.edu/foodpro/default.asp?date=10%2F31%2F2015").get();
-                Elements elements = doc.getElementsByClass("level5");
-
-                for(Element element : elements)
-                    for(Element food : element.children())
-                        Log.v("TAG", food.text());
 
 
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+
+//            try {
+//                Document doc = Jsoup.connect("http://menu.ha.ucla.edu/foodpro/default.asp?date=11%2F01%2F2015").get();
+//                Elements elements = doc.getElementsByClass("level5");
+//                Elements elements2 = doc.getElementsByClass("menuloclink");
+//
+//                for(Element element : elements)
+//                    for(Element food : element.children())
+//                        Log.v("TAG", food.text()); //THIS GETS THE NAME OF ALL FOOD ITEMS
+//
+//
+//
+//
+//            }
+//            catch (IOException e) {
+//                e.printStackTrace();
+//            }
             return null;
         }
     }
