@@ -1,78 +1,52 @@
 package com.vanshgandhi.ucladining;
 
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-
-import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
+import android.view.View;
 
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        QuickServiceMenuFragment.OnFragmentInteractionListener,
-        DiningHallMenuFragment.OnFragmentInteractionListener
+        implements NavigationView.OnNavigationItemSelectedListener
 {
     JSONObject jsonObject = null;
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
+    DrawerLayout drawer;
+    ActionBarDrawerToggle toggle;
+    private final String[][] titles = {
+            {"COVEL", "DE NEVE", "FEAST", "BPLATE"},
+            {"RENDEZVOUS", "CAFé 1919", "BCAFé"}};
 
 //    private Spinner spinner;
     
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-            //TODO: Proper Transitions
-            //getWindow().setEnterTransition(new Slide());
-            //getWindow().setExitTransition(new Slide());
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+//            //TODO: Proper Transitions
+//            //getWindow().setEnterTransition(new Slide());
+//            //getWindow().setExitTransition(new Slide());
+//        }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.nav_main);
+        setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(getResources().getString(R.string.dining_hall));
-        }
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
-        // Create the adapter that will return a fragment for each section of the activity.
-        String[] titles = {"COVEL", "DE NEVE", "FEAST", "BPLATE"};
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), 0, titles);
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+                DiningHallMenuFragment.newInstance()).commit();
+        navigationView.getMenu().getItem(0).setChecked(true);
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-//        spinner = (Spinner) findViewById(R.id.date_spinner);
+        //        spinner = (Spinner) findViewById(R.id.date_spinner);
 //
 //        spinner.setAdapter(new MyAdapter(
 //                toolbar.getContext(),
@@ -104,36 +78,6 @@ public class MainActivity extends AppCompatActivity
 //            {
 //            }
 //
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-//        URL url = null;
-//        HttpURLConnection urlConnection = null;
-//        String http = "";
-//        try {
-//            url = new URL("http://www.android.com/");
-//            urlConnection = (HttpURLConnection) url.openConnection();
-//            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-//        }
-//        catch (Exception e)
-//        {
-//
-//        }
-//        finally {
-//            urlConnection.disconnect();
-//        }
-        new Test().execute();
-
     }
     
     
@@ -161,7 +105,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item)
     {
@@ -169,17 +112,28 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.dining_hall) {
-
+            if (!item.isChecked()) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+                        DiningHallMenuFragment.newInstance()).commit();
+            }
         }
         else if (id == R.id.quick_service) {
-//            getFragmentManager().beginTransaction().replace(R.id.container,
-//                    QuickServiceMenuFragment.newInstance()).addToBackStack(null).commit();
+            if (!item.isChecked()) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+                        QuickServiceMenuFragment.newInstance()).commit();
+            }
         }
         else if (id == R.id.hours) {
-
+            if (!item.isChecked()) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+                        HoursFragment.newInstance()).commit();
+            }
         }
         else if (id == R.id.swipe_manager) {
-
+            if (!item.isChecked()) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+                        SwipesFragment.newInstance()).commit();
+            }
         }
         else if (id == R.id.settings) {
 
@@ -191,16 +145,30 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    @Override
-    public void onFragmentInteraction(String id)
+
+    public void setupNavigationDrawer(Toolbar toolbar)
     {
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        {
+            @Override
+            public void onDrawerOpened(View drawerView)
+            {
+                super.onDrawerOpened(drawerView);
+            }
 
+            @Override
+            public void onDrawerClosed(View drawerView)
+            {
+                super.onDrawerClosed(drawerView);
+            }
+        };
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
     }
-
 
 //    private static class MyAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter
 //    {
@@ -245,33 +213,8 @@ public class MainActivity extends AppCompatActivity
 //        }
 //    }
 
-
-    public class Test extends AsyncTask<Void, Void, Void>
+    public String[][] getTitles()
     {
-
-        @Override
-        protected Void doInBackground(Void... params)
-        {
-
-
-
-//            try {
-//                Document doc = Jsoup.connect("http://menu.ha.ucla.edu/foodpro/default.asp?date=11%2F01%2F2015").get();
-//                Elements elements = doc.getElementsByClass("level5");
-//                Elements elements2 = doc.getElementsByClass("menuloclink");
-//
-//                for(Element element : elements)
-//                    for(Element food : element.children())
-//                        Log.v("TAG", food.text()); //THIS GETS THE NAME OF ALL FOOD ITEMS
-//
-//
-//
-//
-//            }
-//            catch (IOException e) {
-//                e.printStackTrace();
-//            }
-            return null;
-        }
+        return titles;
     }
 }

@@ -10,10 +10,10 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter
 {
-    int type;
-    String[] titles;
+    int      type;
+    String[][] titles; // [type of eatery][# of eatery]
 
-    public SectionsPagerAdapter(FragmentManager fm, int type, String[] titles)
+    public SectionsPagerAdapter(FragmentManager fm, int type, String[][] titles)
     {
         super(fm);
         this.type = type;
@@ -25,20 +25,27 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
     {
         // getItem is called to instantiate the fragment for the given page.
         // Return a DiningHallMenuFragment
-        return DiningHallMenuFragment.newInstance();
+        if (type == 0)
+            return SingleHallFragment.newInstance();
+        else if (type == 1)
+            return SingleQuickServiceFragment.newInstance();
+        else
+            return null;
+
     }
 
     @Override
     public int getCount()
     {
-        return titles.length;
+        return titles[type].length;
     }
 
     @Override
     public CharSequence getPageTitle(int position)
     {
-        if(position < titles.length)
-            return titles[position];
+        if (position < titles[type].length) {
+            return titles[type][position];
+        }
         return null;
     }
 }

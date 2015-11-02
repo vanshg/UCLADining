@@ -17,17 +17,17 @@ import com.koushikdutta.ion.Ion;
 import java.util.ArrayList;
 
 
-public class SingleHallFragment extends ListFragment
+public class SingleQuickServiceFragment extends ListFragment
 {
     private ArrayList<String> breakfastFoodItems = new ArrayList<>();
 
-    public static SingleHallFragment newInstance()
+    public static SingleQuickServiceFragment newInstance()
     {
-        SingleHallFragment fragment = new SingleHallFragment();
+        SingleQuickServiceFragment fragment = new SingleQuickServiceFragment();
         return fragment;
     }
 
-    public SingleHallFragment()
+    public SingleQuickServiceFragment()
     {
         //Mandatory empty constructor
     }
