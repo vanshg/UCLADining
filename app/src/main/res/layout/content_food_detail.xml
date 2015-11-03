@@ -9,6 +9,10 @@
     tools:context="com.vanshgandhi.ucladining.FoodDetailActivity"
     tools:showIn="@layout/activity_food_detail">
 
+    <!--TODO: Make a NutritionView type library for everyone to use -->
+    <!--TODO: Make the border lines tab over for tabbed items -->
+    <!--TODO: Add border around entire table -->
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -16,13 +20,16 @@
         <TableLayout
             android:id="@+id/nutrition_facts"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/nutrition_margin"
+            android:layout_marginRight="@dimen/nutrition_margin">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:text="Nutrition Facts"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:gravity="center_horizontal"
+                android:text="@string/nutrition_facts"
                 android:textSize="24sp"
                 android:textStyle="bold"/>
 
@@ -31,268 +38,331 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"
-                    android:text="Serving Size "/>
+                    android:text="@string/serving_size"/>
 
                 <TextView
                     android:id="@+id/serving_size"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
             </TableRow>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="12dp"
+                android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:background="@android:color/black"/>
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:text="Amount per serving"
+                android:text="@string/amount_per_serving"
                 android:textStyle="bold"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:background="@android:color/black"/>
 
             <TableRow>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"
-                    android:text="Calories"/>
+                    android:text="@string/calories"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/calories"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"
-                    android:text="Fat Cal"/>
+                    android:text="@string/fat_calories"/>
 
                 <TextView
                     android:id="@+id/fat_calories"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
             </TableRow>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="5dp"
+                android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:background="@android:color/black"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:text="% Daily Value*"
+                android:gravity="right"
+                android:text="@string/percent_daily_value"
                 android:textStyle="bold"/>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:background="@android:color/black"/>
+
             <TableRow>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"
-                    android:text="Total Fat"
+                    android:text="@string/total_fat"
                     android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/total_fat"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/total_fat_percentage"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
             </TableRow>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:background="@android:color/black"/>
+
             <TableRow>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"
-                    android:text="Saturated Fat"
-                    android:textStyle="bold"/>
+                    android:text="@string/saturated_fat"/>
 
                 <TextView
                     android:id="@+id/saturated_fat"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/saturated_fat_percentage"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
             </TableRow>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:background="@android:color/black"/>
+
             <TableRow>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"
-                    android:text="Trans Fat"
-                    android:textStyle="bold"/>
+                    android:text="@string/trans_fat"/>
 
                 <TextView
                     android:id="@+id/trans_fat"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/trans_fat_percentage"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
             </TableRow>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:background="@android:color/black"/>
+
             <TableRow>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"
-                    android:text="Cholesterol"
+                    android:text="@string/cholesterol"
                     android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/cholesterol"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/cholesterol_percentage"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
             </TableRow>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:background="@android:color/black"/>
+
             <TableRow>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"
-                    android:text="Sodium"
+                    android:text="@string/sodium"
                     android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/sodium"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/sodium_percentage"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
             </TableRow>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:background="@android:color/black"/>
+
             <TableRow>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"
-                    android:text="Total Carbohydrate"
+                    android:text="@string/total_carbohydrates"
                     android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/total_carbohydrate"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/total_carbohydrate_percentage"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
             </TableRow>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:background="@android:color/black"/>
+
             <TableRow>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"
-                    android:text="Dietary Fiber"
-                    android:textStyle="bold"/>
+                    android:text="@string/dietary_fiber"/>
 
                 <TextView
                     android:id="@+id/dietary_fiber"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/dietary_fiber_percentage"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
             </TableRow>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:background="@android:color/black"/>
 
             <TableRow>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"
-                    android:text="Sugars"
-                    android:textStyle="bold"/>
+                    android:text="@string/sugars"/>
 
                 <TextView
                     android:id="@+id/sugars"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/sugars_percentage"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
             </TableRow>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:background="@android:color/black"/>
+
             <TableRow>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"
-                    android:text="Protein"
+                    android:text="@string/protein"
                     android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/protein"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/protein_percentage"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:layout_height="wrap_content"/>
             </TableRow>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="12dp"
+                android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:background="@android:color/black"/>
 
-<!--DYNAMICALLY ADD ALL VITAMINS -->
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:text="*Percent Daily Values (DV) are based on a 2,000 calorie diet."
-                android:textStyle="bold"/>
+            <!--DYNAMICALLY ADD ALL VITAMINS -->
 
 
         </TableLayout>
 
         <TextView
+            android:id="@+id/ingredients_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/nutrition_facts"
             android:layout_margin="@dimen/text_margin"
             android:text="@string/ingredients"
             android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ingredients_label"
+            android:layout_margin="@dimen/text_margin"/>
+
+
     </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>

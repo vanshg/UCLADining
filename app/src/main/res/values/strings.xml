@@ -22,4 +22,19 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nutrition_facts">Nutrition Facts</string>
+    <string name="serving_size">Serving Size</string>
+    <string name="amount_per_serving">Amount per serving</string>
+    <string name="calories">Calories</string>
+    <string name="fat_calories">Fat Cal</string>
+    <string name="percent_daily_value">% Daily Value*</string>
+    <string name="total_fat">Total Fat</string>
+    <string name="saturated_fat">\t\tSaturated Fat</string>
+    <string name="trans_fat">\t\tTrans Fat</string>
+    <string name="cholesterol">Cholesterol</string>
+    <string name="sodium">Sodium</string>
+    <string name="total_carbohydrates">Total Carbohydrate</string>
+    <string name="dietary_fiber">\t\tDietary Fiber</string>
+    <string name="sugars">\t\tSugars</string>
+    <string name="protein">Protein</string>
 </resources>
