@@ -1,16 +1,9 @@
-<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--xmlns:tools="http://schemas.android.com/tools"-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="match_parent"-->
-<!--tools:context="com.vanshgandhi.ucladining.SwipesFragment">-->
-
-<android.support.design.widget.CoordinatorLayout
-    android:id="@+id/main_content"
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.vanshgandhi.ucladining.SwipesFragment">
 
@@ -21,16 +14,6 @@
         android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-
-        <!--android:elevation="@android:dimen/toolbar_elevation"-->
-
-
-        <!--<android.support.design.widget.CollapsingToolbarLayout-->
-        <!--android:id="@+id/collapsing_toolbar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--app:layout_scrollFlags="scroll|exitUntilCollapsed">-->
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -38,13 +21,78 @@
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
-
-        <!--TODO: ^Add that back to toolbar element to hide toolbar when scrolling down and show it again when scrolling up-->
-
-
-        <!--</android.support.design.widget.CollapsingToolbarLayout>-->
-
     </android.support.design.widget.AppBarLayout>
-</android.support.design.widget.CoordinatorLayout>
 
-    <!--</FrameLayout>-->
+
+    <RadioGroup
+        android:id="@+id/meal_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:orientation="horizontal">
+
+        <ToggleButton
+            android:id="@+id/toggle_19p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="19P"
+            android:textOn="19P"/>
+
+        <ToggleButton
+            android:id="@+id/toggle_14p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="14P"
+            android:textOn="14P"/>
+
+        <ToggleButton
+            android:id="@+id/toggle_19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="19"
+            android:textOn="19"/>
+
+        <ToggleButton
+            android:id="@+id/toggle_14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="14"
+            android:textOn="14"/>
+    </RadioGroup>
+
+
+    <TextView
+        android:id="@+id/should_have_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/meal_selector"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="72dp"
+        android:text="@string/you_should_have"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:id="@+id/swipes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/should_have_text"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/colorPrimary"
+        android:textSize="112sp"/>
+
+    <TextView
+        android:id="@+id/swipes_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/swipes"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="1dp"
+        android:text="swipes left"
+        android:textSize="24sp"/>
+
+
+</RelativeLayout>

@@ -37,4 +37,5 @@
     <string name="dietary_fiber">\t\tDietary Fiber</string>
     <string name="sugars">\t\tSugars</string>
     <string name="protein">Protein</string>
+    <string name="you_should_have">You should have</string>
 </resources>
