@@ -1,5 +1,8 @@
 package com.vanshgandhi.ucladining;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -23,8 +27,7 @@ public class MainActivity extends AppCompatActivity
             {"COVEL", "DE NEVE", "FEAST", "BPLATE"},
             {"RENDEZVOUS", "CAFé 1919", "BCAFé"}};
 
-//    private Spinner spinner;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -45,39 +48,6 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
                 DiningHallMenuFragment.newInstance()).commit();
         navigationView.getMenu().getItem(0).setChecked(true);
-
-        //        spinner = (Spinner) findViewById(R.id.date_spinner);
-//
-//        spinner.setAdapter(new MyAdapter(
-//                toolbar.getContext(),
-//                new String[]{
-//                        "November 1, 2015",
-//                        "November 2, 2015",
-//                        "November 3, 2015",
-//                        "November 4, 2015",
-//                        "November 5, 2015",
-//                        "November 6, 2015",
-//                        "November 7, 2015",
-//                        "November 8, 2015"
-//                }));
-//
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-//        {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-//            {
-//                // When the given dropdown item is selected, show its contents in the
-//                // container view.
-//                getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.container, DiningHallMenuFragment.newInstance(position + 1))
-//                        .commit();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent)
-//            {
-//            }
-//
     }
     
     
@@ -136,13 +106,27 @@ public class MainActivity extends AppCompatActivity
             }
         }
         else if (id == R.id.settings) {
-
+            startActivity(new Intent(this, SettingsActivity.class));
         }
         else if (id == R.id.share) {
-
+            String text = "Download this app from " +
+                    "https://play.google.com/store/apps/details?id=com.vanshgandhi.ucladining";
+            try {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+            }
+            catch (Exception e) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText(getString(R.string.app_name), text);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(this, "Link copied to clipboard", Toast.LENGTH_SHORT).show();
+            }
         }
         else if (id == R.id.about) {
-
+            startActivity(new Intent(this, AboutActivity.class));
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -169,49 +153,6 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
     }
-
-//    private static class MyAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter
-//    {
-//        private final ThemedSpinnerAdapter.Helper mDropDownHelper;
-//
-//        public MyAdapter(Context context, String[] objects)
-//        {
-//            super(context, android.R.layout.simple_list_item_1, objects);
-//            mDropDownHelper = new ThemedSpinnerAdapter.Helper(context);
-//        }
-//
-//        @Override
-//        public View getDropDownView(int position, View convertView, ViewGroup parent)
-//        {
-//            View view;
-//
-//            if (convertView == null) {
-//                // Inflate the drop down using the helper's LayoutInflater
-//                LayoutInflater inflater = mDropDownHelper.getDropDownViewInflater();
-//                view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-//            }
-//            else {
-//                view = convertView;
-//            }
-//
-//            TextView textView = (TextView) view.findViewById(android.R.id.text1);
-//            textView.setText(getItem(position));
-//
-//            return view;
-//        }
-//
-//        @Override
-//        public void setDropDownViewTheme(Resources.Theme theme)
-//        {
-//            mDropDownHelper.setDropDownViewTheme(theme);
-//        }
-//
-//        @Override
-//        public Resources.Theme getDropDownViewTheme()
-//        {
-//            return mDropDownHelper.getDropDownViewTheme();
-//        }
-//    }
 
     public String[][] getTitles()
     {

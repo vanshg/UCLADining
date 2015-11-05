@@ -18,6 +18,7 @@ public class SwipesFragment extends Fragment implements View.OnClickListener//im
 {
     static final String STATE_MEAL_PLAN = "mealPlan";
 
+    static final String MEAL_PLAN_11    = "11";
     static final String MEAL_PLAN_14    = "14";
     static final String MEAL_PLAN_19    = "19";
     static final String MEAL_PLAN_14P   = "14P";
