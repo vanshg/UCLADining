@@ -13,4 +13,24 @@
     tools:showIn="@layout/activity_about"
     tools:context="com.vanshgandhi.ucladining.AboutActivity">
 
+    <TextView
+        android:id="@+id/created_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Created by Vansh Gandhi"/>
+
+    <TextView
+        android:id="@+id/freepik_credit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/icon_credit_flat_icon"
+        android:layout_below="@+id/created_by"/>
+
+    <TextView
+        android:id="@+id/ucla_credit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/icon_credit_ucla"
+        android:layout_below="@+id/freepik_credit"/>
+
 </RelativeLayout>
