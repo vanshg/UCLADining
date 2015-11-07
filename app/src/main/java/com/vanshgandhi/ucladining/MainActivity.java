@@ -1,5 +1,8 @@
 package com.vanshgandhi.ucladining;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
@@ -13,19 +16,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import org.json.JSONObject;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
     JSONObject jsonObject = null;
-    DrawerLayout drawer;
+    DrawerLayout          drawer;
     ActionBarDrawerToggle toggle;
     private final String[][] titles = {
             {"COVEL", "DE NEVE", "FEAST", "BPLATE"},
             {"RENDEZVOUS", "CAFé 1919", "BCAFé"}};
+
+    public int selectedDay;
+    public int selectedYear;
+    public int selectedMonth;
 
 
     @Override
@@ -69,6 +79,7 @@ public class MainActivity extends AppCompatActivity
         
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_select_date) {
+            new DatePickerFragment().show(getFragmentManager(), "datePicker");
             return true;
         }
         
@@ -157,5 +168,29 @@ public class MainActivity extends AppCompatActivity
     public String[][] getTitles()
     {
         return titles;
+    }
+
+    public class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener
+    {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState)
+        {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day)
+        {
+            selectedYear = year;
+            selectedDay = day;
+            selectedMonth = month;
+        }
     }
 }
