@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity
             {"COVEL", "DE NEVE", "FEAST", "BPLATE"},
             {"RENDEZVOUS", "CAFé 1919", "BCAFé"}};
 
-    public int selectedDay;
-    public int selectedYear;
-    public int selectedMonth;
+    public static int selectedDay;
+    public static int selectedYear;
+    public static int selectedMonth;
 
 
     @Override
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity
         return titles;
     }
 
-    public class DatePickerFragment extends DialogFragment
+    public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener
     {
 
