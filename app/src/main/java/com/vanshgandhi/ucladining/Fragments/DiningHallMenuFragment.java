@@ -1,4 +1,4 @@
-package com.vanshgandhi.ucladining;
+package com.vanshgandhi.ucladining.Fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,20 +14,22 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
+import com.vanshgandhi.ucladining.Activities.FoodDetailActivity;
+
 import java.util.ArrayList;
 
 
-public class SingleQuickServiceFragment extends ListFragment
+public class DiningHallMenuFragment extends ListFragment
 {
     private ArrayList<String> breakfastFoodItems = new ArrayList<>();
 
-    public static SingleQuickServiceFragment newInstance()
+    public static DiningHallMenuFragment newInstance()
     {
-        SingleQuickServiceFragment fragment = new SingleQuickServiceFragment();
+        DiningHallMenuFragment fragment = new DiningHallMenuFragment();
         return fragment;
     }
 
-    public SingleQuickServiceFragment()
+    public DiningHallMenuFragment()
     {
         //Mandatory empty constructor
     }
@@ -111,6 +113,6 @@ public class SingleQuickServiceFragment extends ListFragment
             }
         }
         setListAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_2, android.R.id.text1, breakfastFoodItems));
+                android.R.layout.simple_list_item_1, android.R.id.text1, breakfastFoodItems));
     }
 }

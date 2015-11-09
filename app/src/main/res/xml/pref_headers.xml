@@ -3,7 +3,7 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="com.vanshgandhi.ucladining.SettingsActivity$NotificationPreferenceFragment"
+        android:fragment="com.vanshgandhi.ucladining.Activities.SettingsActivity$NotificationPreferenceFragment"
         android:title="@string/pref_header_notifications"
         android:icon="@drawable/ic_notifications_black_24dp"/>
 

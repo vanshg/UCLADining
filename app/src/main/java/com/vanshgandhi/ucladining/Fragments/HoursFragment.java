@@ -1,4 +1,4 @@
-package com.vanshgandhi.ucladining;
+package com.vanshgandhi.ucladining.Fragments;
 
 
 import android.app.Activity;
@@ -8,6 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.vanshgandhi.ucladining.Activities.MainActivity;
+import com.vanshgandhi.ucladining.R;
 
 public class HoursFragment extends Fragment
 {

@@ -1,8 +1,11 @@
-package com.vanshgandhi.ucladining;
+package com.vanshgandhi.ucladining.Adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.vanshgandhi.ucladining.Fragments.DiningHallMenuFragment;
+import com.vanshgandhi.ucladining.Fragments.QuickServiceMenuFragment;
 
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -24,11 +27,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
     public Fragment getItem(int position)
     {
         // getItem is called to instantiate the fragment for the given page.
-        // Return a DiningHallMenuFragment
+        // Return a DiningHallMenusHolderFragment
         if (type == 0)
-            return SingleHallFragment.newInstance();
+            return DiningHallMenuFragment.newInstance();
         else if (type == 1)
-            return SingleQuickServiceFragment.newInstance();
+            return QuickServiceMenuFragment.newInstance();
         else
             return null;
 

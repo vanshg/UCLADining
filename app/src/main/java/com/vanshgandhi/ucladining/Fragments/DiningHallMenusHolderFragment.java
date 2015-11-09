@@ -1,4 +1,4 @@
-package com.vanshgandhi.ucladining;
+package com.vanshgandhi.ucladining.Fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,9 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.vanshgandhi.ucladining.Activities.MainActivity;
+import com.vanshgandhi.ucladining.Adapters.SectionsPagerAdapter;
+import com.vanshgandhi.ucladining.R;
 
-public class QuickServiceMenuFragment extends Fragment
+public class DiningHallMenusHolderFragment extends Fragment
 {
+
     private MainActivity         mainActivity;
     private Toolbar              toolbar;
     private TabLayout            tabLayout;
@@ -20,20 +24,16 @@ public class QuickServiceMenuFragment extends Fragment
     private SectionsPagerAdapter mSectionsPagerAdapter; //provides fragments for each section
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-
-    public static QuickServiceMenuFragment newInstance()
+    public static DiningHallMenusHolderFragment newInstance()
     {
-        QuickServiceMenuFragment fragment = new QuickServiceMenuFragment();
+        DiningHallMenusHolderFragment fragment = new DiningHallMenusHolderFragment();
         return fragment;
     }
 
-
-    public QuickServiceMenuFragment()
+    public DiningHallMenusHolderFragment()
     {
-        //Mandatory empty constructor
     }
 
-    
     @Override
     public void onAttach(Activity activity)
     {
@@ -41,21 +41,24 @@ public class QuickServiceMenuFragment extends Fragment
         mainActivity = (MainActivity) activity;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View rootView = inflater.inflate(R.layout.fragment_quick_service, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_dining_hall_menus_holder, container, false);
 
         toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        toolbar.setTitle(getString(R.string.quick_service));
+        toolbar.setTitle(getString(R.string.dining_hall));
         mainActivity.setSupportActionBar(toolbar);
 
         viewPager = (ViewPager) rootView.findViewById(R.id.container);
         mSectionsPagerAdapter =
-                new SectionsPagerAdapter(getChildFragmentManager(), 1, mainActivity.getTitles());
+                new SectionsPagerAdapter(getChildFragmentManager(), 0, mainActivity.getTitles());
         viewPager.setAdapter(mSectionsPagerAdapter);
+
+//        AppBarLayout appBarLayout = (AppBarLayout) rootView.findViewById(R.id.appbar);
+//        TabLayout test = new TabLayout(getContext());
+
 
         tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -69,5 +72,4 @@ public class QuickServiceMenuFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
         mainActivity.setupNavigationDrawer(toolbar);
     }
-    
 }

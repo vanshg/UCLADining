@@ -1,4 +1,4 @@
-package com.vanshgandhi.ucladining;
+package com.vanshgandhi.ucladining.Fragments;
 
 
 import android.app.Activity;
@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import com.vanshgandhi.ucladining.Activities.MainActivity;
+import com.vanshgandhi.ucladining.R;
 
 import java.util.Calendar;
 

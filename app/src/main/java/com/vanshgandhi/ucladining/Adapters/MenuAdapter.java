@@ -1,4 +1,4 @@
-package com.vanshgandhi.ucladining;
+package com.vanshgandhi.ucladining.Adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.vanshgandhi.ucladining.Models.Menu;
+import com.vanshgandhi.ucladining.R;
 
 /**
  * Created by vanshgandhi on 10/29/15.
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
 {
 
-    private ArrayList<FoodItem> items;
+    private Menu menu;
 
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -28,9 +29,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
         }
     }
 
-    public MenuAdapter(ArrayList<FoodItem> items)
+    public MenuAdapter(Menu menu)
     {
-        this.items = items;
+        this.menu = menu;
     }
 
     @Override
@@ -48,12 +49,12 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
     {
         // - get element from dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(items.get(position).getTitle());
+        holder.mTextView.setText(menu.getAllFood().get(position).getTitle());
     }
 
     @Override
     public int getItemCount()
     {
-        return items.size();
+        return menu.getAllFood().size();
     }
 }

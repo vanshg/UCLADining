@@ -1,4 +1,4 @@
-package com.vanshgandhi.ucladining;
+package com.vanshgandhi.ucladining.Activities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -18,6 +18,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
+
+import com.vanshgandhi.ucladining.Fragments.DiningHallMenusHolderFragment;
+import com.vanshgandhi.ucladining.Fragments.HoursFragment;
+import com.vanshgandhi.ucladining.Fragments.QuickServiceMenusHolderFragment;
+import com.vanshgandhi.ucladining.R;
+import com.vanshgandhi.ucladining.Fragments.SwipesFragment;
 
 import org.json.JSONObject;
 
@@ -56,7 +62,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                DiningHallMenuFragment.newInstance()).commit();
+                DiningHallMenusHolderFragment.newInstance()).commit();
         navigationView.getMenu().getItem(0).setChecked(true);
     }
     
@@ -95,13 +101,13 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.dining_hall) {
             if (!item.isChecked()) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                        DiningHallMenuFragment.newInstance()).commit();
+                        DiningHallMenusHolderFragment.newInstance()).commit();
             }
         }
         else if (id == R.id.quick_service) {
             if (!item.isChecked()) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                        QuickServiceMenuFragment.newInstance()).commit();
+                        QuickServiceMenusHolderFragment.newInstance()).commit();
             }
         }
         else if (id == R.id.hours) {

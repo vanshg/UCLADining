@@ -1,4 +1,4 @@
-package com.vanshgandhi.ucladining;
+package com.vanshgandhi.ucladining.Models;
 
 /**
  * Created by vanshgandhi on 10/29/15.

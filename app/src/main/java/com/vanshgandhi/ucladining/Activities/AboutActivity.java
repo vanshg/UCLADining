@@ -1,8 +1,10 @@
-package com.vanshgandhi.ucladining;
+package com.vanshgandhi.ucladining.Activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import com.vanshgandhi.ucladining.R;
 
 public class AboutActivity extends AppCompatActivity
 {

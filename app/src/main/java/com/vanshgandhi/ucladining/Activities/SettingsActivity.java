@@ -1,4 +1,4 @@
-package com.vanshgandhi.ucladining;
+package com.vanshgandhi.ucladining.Activities;
 
 
 import android.annotation.TargetApi;
@@ -19,6 +19,8 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.MenuItem;
+
+import com.vanshgandhi.ucladining.R;
 
 import java.util.List;
 

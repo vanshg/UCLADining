@@ -1,4 +1,4 @@
-package com.vanshgandhi.ucladining;
+package com.vanshgandhi.ucladining.Activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
