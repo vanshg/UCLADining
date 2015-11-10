@@ -22,8 +22,8 @@ import android.widget.Toast;
 import com.vanshgandhi.ucladining.Fragments.DiningHallMenusHolderFragment;
 import com.vanshgandhi.ucladining.Fragments.HoursFragment;
 import com.vanshgandhi.ucladining.Fragments.QuickServiceMenusHolderFragment;
-import com.vanshgandhi.ucladining.R;
 import com.vanshgandhi.ucladining.Fragments.SwipesFragment;
+import com.vanshgandhi.ucladining.R;
 
 import org.json.JSONObject;
 
@@ -188,8 +188,15 @@ public class MainActivity extends AppCompatActivity
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
-
-            return new DatePickerDialog(getActivity(), this, year, month, day);
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
+            DatePicker datePicker = dialog.getDatePicker();
+            //UCLA only has menus 15 days in advance, so set that as max selectable date
+            c.add(Calendar.DAY_OF_MONTH, 15);
+            datePicker.setMaxDate(c.getTimeInMillis());
+            //UCLA only keeps menus for 13 days, so set that as min selectable date
+            c.add(Calendar.DAY_OF_MONTH, -28);
+            datePicker.setMinDate(c.getTimeInMillis());
+            return dialog;
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day)
