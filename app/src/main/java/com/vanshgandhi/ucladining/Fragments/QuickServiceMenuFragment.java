@@ -22,6 +22,11 @@ import java.util.ArrayList;
 public class QuickServiceMenuFragment extends ListFragment
 {
     private static final String ARG_QS_NUMBER = "qs_number";
+
+    private static final int RENDEZVOUS = 0;
+    private static final int CAFE1919 = 1;
+    private static final int BCAFE = 2;
+
     private ArrayList<String> breakfastFoodItems = new ArrayList<>();
 
     public static QuickServiceMenuFragment newInstance(int hallNumber)
