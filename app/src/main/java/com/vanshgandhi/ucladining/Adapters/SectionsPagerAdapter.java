@@ -29,9 +29,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
         // getItem is called to instantiate the fragment for the given page.
         // Return a DiningHallMenusHolderFragment
         if (type == 0)
-            return DiningHallMenuFragment.newInstance();
+            return DiningHallMenuFragment.newInstance(position);
         else if (type == 1)
-            return QuickServiceMenuFragment.newInstance();
+            return QuickServiceMenuFragment.newInstance(position);
         else
             return null;
 

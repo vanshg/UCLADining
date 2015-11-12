@@ -6,7 +6,9 @@ import android.app.DialogFragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -39,9 +41,14 @@ public class MainActivity extends AppCompatActivity
             {"COVEL", "DE NEVE", "FEAST", "BPLATE"},
             {"RENDEZVOUS", "CAFé 1919", "BCAFé"}};
 
-    public static int selectedDay;
-    public static int selectedYear;
-    public static int selectedMonth;
+    static Calendar c;
+
+    private static final String YEAR_KEY = "YEAR";
+    private static final String MONTH_KEY = "MONTH";
+    private static final String DAY_KEY = "DAY";
+
+    public SharedPreferences preferences;
+    public SharedPreferences.Editor editor;
 
 
     @Override
@@ -64,6 +71,15 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
                 DiningHallMenusHolderFragment.newInstance()).commit();
         navigationView.getMenu().getItem(0).setChecked(true);
+
+        c = Calendar.getInstance();
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
+        editor.putInt(YEAR_KEY, c.get(Calendar.YEAR));
+        editor.putInt(MONTH_KEY, c.get(Calendar.MONTH));
+        editor.putInt(DAY_KEY, c.get(Calendar.DAY_OF_MONTH));
+        editor.apply();
     }
     
     
@@ -180,30 +196,31 @@ public class MainActivity extends AppCompatActivity
             implements DatePickerDialog.OnDateSetListener
     {
 
+        public SharedPreferences preferences;
+        public SharedPreferences.Editor editor;
+
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState)
         {
+            preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             // Use the current date as the default date in the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, preferences.getInt(YEAR_KEY, 0), preferences.getInt(MONTH_KEY, 0), preferences.getInt(DAY_KEY, 0));
             DatePicker datePicker = dialog.getDatePicker();
-            //UCLA only has menus 15 days in advance, so set that as max selectable date
-            c.add(Calendar.DAY_OF_MONTH, 15);
+            c.add(Calendar.DAY_OF_MONTH, 15); //UCLA only has menus 15 days in advance, so set that as max selectable date
             datePicker.setMaxDate(c.getTimeInMillis());
-            //UCLA only keeps menus for 13 days, so set that as min selectable date
-            c.add(Calendar.DAY_OF_MONTH, -28);
+            c.add(Calendar.DAY_OF_MONTH, -28); //UCLA only keeps menus for 13 days, so set that as min selectable date
             datePicker.setMinDate(c.getTimeInMillis());
+            c = Calendar.getInstance(); //Revert back to today's date
             return dialog;
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day)
         {
-            selectedYear = year;
-            selectedDay = day;
-            selectedMonth = month;
+            editor = preferences.edit();
+            editor.putInt(YEAR_KEY, year);
+            editor.putInt(MONTH_KEY, month);
+            editor.putInt(DAY_KEY, day);
+            editor.apply();
         }
     }
 }

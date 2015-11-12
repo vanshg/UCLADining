@@ -21,11 +21,16 @@ import java.util.ArrayList;
 
 public class DiningHallMenuFragment extends ListFragment
 {
+    private static final String ARG_HALL_NUMBER = "hall_number";
     private ArrayList<String> breakfastFoodItems = new ArrayList<>();
+    private int hallNumber;
 
-    public static DiningHallMenuFragment newInstance()
+    public static DiningHallMenuFragment newInstance(int hallNumber)
     {
         DiningHallMenuFragment fragment = new DiningHallMenuFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_HALL_NUMBER, hallNumber);
+        fragment.setArguments(args);
         return fragment;
     }
 

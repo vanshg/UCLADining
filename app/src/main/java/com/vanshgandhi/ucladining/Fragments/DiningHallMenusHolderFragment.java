@@ -22,7 +22,7 @@ public class DiningHallMenusHolderFragment extends Fragment
     private TabLayout            tabLayout;
     private ViewPager            viewPager;             //Hosts the section contents
     private SectionsPagerAdapter mSectionsPagerAdapter; //provides fragments for each section
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_HALL_NUMBER = "hall_number";
 
     public static DiningHallMenusHolderFragment newInstance()
     {
