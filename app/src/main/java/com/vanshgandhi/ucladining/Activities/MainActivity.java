@@ -206,9 +206,9 @@ public class MainActivity extends AppCompatActivity
             // Use the current date as the default date in the picker
             DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, preferences.getInt(YEAR_KEY, 0), preferences.getInt(MONTH_KEY, 0), preferences.getInt(DAY_KEY, 0));
             DatePicker datePicker = dialog.getDatePicker();
-            c.add(Calendar.DAY_OF_MONTH, 15); //UCLA only has menus 15 days in advance, so set that as max selectable date
+            c.add(Calendar.DAY_OF_MONTH, 7); //View menus 1 week in advance
             datePicker.setMaxDate(c.getTimeInMillis());
-            c.add(Calendar.DAY_OF_MONTH, -28); //UCLA only keeps menus for 13 days, so set that as min selectable date
+            c.add(Calendar.DAY_OF_MONTH, -10); //View menus from 3 days ago
             datePicker.setMinDate(c.getTimeInMillis());
             c = Calendar.getInstance(); //Revert back to today's date
             return dialog;

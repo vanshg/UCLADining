@@ -13,8 +13,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-
 import com.vanshgandhi.ucladining.Activities.FoodDetailActivity;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
@@ -23,12 +27,12 @@ public class DiningHallMenuFragment extends ListFragment
 {
     private static final String ARG_HALL_NUMBER = "hall_number";
 
-    private static final int COVEL = 0;
+    private static final int COVEL  = 0;
     private static final int DENEVE = 1;
-    private static final int FEAST = 2;
+    private static final int FEAST  = 2;
     private static final int BPLATE = 3;
 
-    private ArrayList<String> breakfastFoodItems = new ArrayList<>();
+    private ArrayList<String> foodItems = new ArrayList<>();
 
     public static DiningHallMenuFragment newInstance(int hallNumber)
     {
@@ -48,27 +52,45 @@ public class DiningHallMenuFragment extends ListFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        /* 2 Meal Link
-        https://api.import.io/store/data/f20fc91a-caf1-409c-9322-efa0ef770223/_query?input/webpage/url=http%3A%2F%2Fmenu.ha.ucla.edu%2Ffoodpro%2Fdefault.asp%3Flocation%3D07%26date%3D11%252F12%252F2015&_user=22403bda-b7eb-4c87-904a-78de1838426c&_apikey=22403bdab7eb4c87904a78de1838426c6e7d3048637d4bbae71657eb53b31c47d987e5e1cb53206a5fac41e1b938b1abcbb0ed68909ebb9d9e75447cc09546577d6725bd3f2bee95e827ee604fa7d84c
-         */
-
-        /* 3 Meal Link
-        https://api.import.io/store/data/d90c4352-d57c-4773-9064-4af17341beef/_query?input/webpage/url=http%3A%2F%2Fmenu.ha.ucla.edu%2Ffoodpro%2Fdefault.asp%3Flocation%3D01%26date%3D11%252F12%252F2015&_user=22403bda-b7eb-4c87-904a-78de1838426c&_apikey=22403bdab7eb4c87904a78de1838426c6e7d3048637d4bbae71657eb53b31c47d987e5e1cb53206a5fac41e1b938b1abcbb0ed68909ebb9d9e75447cc09546577d6725bd3f2bee95e827ee604fa7d84c
-         */
-        Ion.with(this)
-                .load("https://api.import.io/store/data/b69025cd-7b2e-4f66-9bad-e82675963a67/_query?input/webpage/url=http%3A%2F%2Fmenu.ha.ucla.edu%2Ffoodpro%2Fdefault.asp%3Fdate%3D11%252F2%252F2015&_user=22403bda-b7eb-4c87-904a-78de1838426c&_apikey=22403bdab7eb4c87904a78de1838426c6e7d3048637d4bbae71657eb53b31c47d987e5e1cb53206a5fac41e1b938b1abcbb0ed68909ebb9d9e75447cc09546577d6725bd3f2bee95e827ee604fa7d84c")
-                .asJsonObject()
-                .setCallback(new FutureCallback<JsonObject>()
-                {
-                    @Override
-                    public void onCompleted(Exception e, JsonObject result)
+        int hall = getArguments().getInt(ARG_HALL_NUMBER);
+        String url = "";
+        if (hall == COVEL || hall == FEAST) //2 Meal
+        {
+            url = "https://api.import.io/store/data/f20fc91a-caf1-409c-9322-efa0ef770223/_query?input/webpage/url=http%3A%2F%2Fmenu.ha.ucla.edu%2Ffoodpro%2Fdefault.asp%3Flocation%3D07%26date%3D11%252F12%252F2015&_user=22403bda-b7eb-4c87-904a-78de1838426c&_apikey=22403bdab7eb4c87904a78de1838426c6e7d3048637d4bbae71657eb53b31c47d987e5e1cb53206a5fac41e1b938b1abcbb0ed68909ebb9d9e75447cc09546577d6725bd3f2bee95e827ee604fa7d84c";
+            Ion.with(this)
+                    .load(url)
+                    .asJsonObject()
+                    .setCallback(new FutureCallback<JsonObject>()
                     {
-                        if (e != null) {
-                            return;
+                        @Override
+                        public void onCompleted(Exception e, JsonObject result)
+                        {
+                            if (e != null) {
+                                return;
+                            }
+                            processList(result);
                         }
-                        processList(result);
-                    }
-                });
+                    });
+        }
+        else if(hall == DENEVE || hall == BPLATE) //3 Meal
+        {
+            url = "https://api.import.io/store/data/d90c4352-d57c-4773-9064-4af17341beef/_query?input/webpage/url=http%3A%2F%2Fmenu.ha.ucla.edu%2Ffoodpro%2Fdefault.asp%3Flocation%3D01%26date%3D11%252F12%252F2015&_user=22403bda-b7eb-4c87-904a-78de1838426c&_apikey=22403bdab7eb4c87904a78de1838426c6e7d3048637d4bbae71657eb53b31c47d987e5e1cb53206a5fac41e1b938b1abcbb0ed68909ebb9d9e75447cc09546577d6725bd3f2bee95e827ee604fa7d84c";
+        }
+
+//        Ion.with(this)
+//                .load(url)
+//                .asJsonObject()
+//                .setCallback(new FutureCallback<JsonObject>()
+//                {
+//                    @Override
+//                    public void onCompleted(Exception e, JsonObject result)
+//                    {
+//                        if (e != null) {
+//                            return;
+//                        }
+//                        processList(result);
+//                    }
+//                });
     }
     
     
@@ -107,28 +129,23 @@ public class DiningHallMenuFragment extends ListFragment
     public void processList(JsonObject result)
     {
         JsonArray jsonArray = result.getAsJsonArray("results");
-        for (JsonElement jsonElement : jsonArray) {
+        System.out.println(jsonArray.toString());
+        for(JsonElement jsonElement : jsonArray)
+        {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
-            if (jsonObject.has("food_items/_text")) {
-                if (jsonObject.get("food_items/_text").isJsonArray()) {
-                    JsonArray food = jsonObject.get("food_items/_text").getAsJsonArray();
-                    for (JsonElement item : food) {
-                        String title = item.getAsString();
-                        breakfastFoodItems.add(title);
-                    }
-                }
-                else {
-                    try {
-                        String title = jsonObject.get("food_items/_text").getAsString();
-                        breakfastFoodItems.add(title);
-                    }
-                    catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+            String lunch = jsonObject.get("my_column").getAsString();
+            String dinner = jsonObject.get("my_column_2").getAsString();
+            Document doc = Jsoup.parse(lunch);
+
+            Elements ul = doc.select("ul");
+            Elements li = ul.select("li"); // select all li from ul
+            for(Element element : li)
+            {
+                foodItems.add(element.select("a").text());
             }
+
         }
         setListAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, breakfastFoodItems));
+                android.R.layout.simple_list_item_1, android.R.id.text1, foodItems));
     }
 }
