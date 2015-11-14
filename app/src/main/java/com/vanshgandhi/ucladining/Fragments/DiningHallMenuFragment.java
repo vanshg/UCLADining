@@ -130,13 +130,12 @@ public class DiningHallMenuFragment extends ListFragment
     {
         JsonArray jsonArray = result.getAsJsonArray("results");
         System.out.println(jsonArray.toString());
+        foodItems.add("LUNCH");
         for(JsonElement jsonElement : jsonArray)
         {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             String lunch = jsonObject.get("my_column").getAsString();
-            String dinner = jsonObject.get("my_column_2").getAsString();
             Document doc = Jsoup.parse(lunch);
-
             Elements ul = doc.select("ul");
             Elements li = ul.select("li"); // select all li from ul
             for(Element element : li)
@@ -144,6 +143,19 @@ public class DiningHallMenuFragment extends ListFragment
                 foodItems.add(element.select("a").text());
             }
 
+        }
+        foodItems.add("DINNER");
+        for(JsonElement jsonElement : jsonArray)
+        {
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            String dinner = jsonObject.get("my_column_2").getAsString();
+            Document doc = Jsoup.parse(dinner);
+            Elements ul = doc.select("ul");
+            Elements li = ul.select("li"); // select all li from ul
+            for(Element element : li)
+            {
+                foodItems.add(element.select("a").text());
+            }
         }
         setListAdapter(new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, foodItems));
