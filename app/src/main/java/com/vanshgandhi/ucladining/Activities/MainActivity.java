@@ -192,6 +192,28 @@ public class MainActivity extends AppCompatActivity
         return titles;
     }
 
+    public int getYear()
+    {
+        return preferences.getInt(YEAR_KEY, -1);
+    }
+
+    public int getDay()
+    {
+        return preferences.getInt(DAY_KEY, -1);
+    }
+
+    public int getMonth()
+    {
+        return preferences.getInt(MONTH_KEY, -1);
+    }
+
+    public int getDayOfWeek()
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(getYear(), getMonth(), getDay());
+        return calendar.get(Calendar.DAY_OF_WEEK);
+    }
+
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener
     {
@@ -221,6 +243,7 @@ public class MainActivity extends AppCompatActivity
             editor.putInt(MONTH_KEY, month);
             editor.putInt(DAY_KEY, day);
             editor.apply();
+
         }
     }
 }
