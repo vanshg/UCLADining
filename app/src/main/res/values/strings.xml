@@ -94,4 +94,5 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="pref_title_favorited_food_notifications">Favorite food notifications</string>
+    <string name="swipes_left_as_of">swipes left as of</string>
 </resources>

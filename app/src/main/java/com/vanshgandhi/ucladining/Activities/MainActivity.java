@@ -27,14 +27,11 @@ import com.vanshgandhi.ucladining.Fragments.QuickServiceMenusHolderFragment;
 import com.vanshgandhi.ucladining.Fragments.SwipesFragment;
 import com.vanshgandhi.ucladining.R;
 
-import org.json.JSONObject;
-
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
-    JSONObject jsonObject = null;
     DrawerLayout          drawer;
     ActionBarDrawerToggle toggle;
     private final String[][] titles = {
@@ -43,11 +40,11 @@ public class MainActivity extends AppCompatActivity
 
     static Calendar c;
 
-    private static final String YEAR_KEY = "YEAR";
+    private static final String YEAR_KEY  = "YEAR";
     private static final String MONTH_KEY = "MONTH";
-    private static final String DAY_KEY = "DAY";
+    private static final String DAY_KEY   = "DAY";
 
-    public SharedPreferences preferences;
+    public SharedPreferences        preferences;
     public SharedPreferences.Editor editor;
 
 
@@ -218,7 +215,7 @@ public class MainActivity extends AppCompatActivity
             implements DatePickerDialog.OnDateSetListener
     {
 
-        public SharedPreferences preferences;
+        public SharedPreferences        preferences;
         public SharedPreferences.Editor editor;
 
         @Override

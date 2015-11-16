@@ -61,7 +61,7 @@ public class DiningHallMenuFragment extends ListFragment
         String baseUrl = "https://api.import.io/store/data/";
         String twoMeal = "f20fc91a-caf1-409c-9322-efa0ef770223/_query?input/webpage/url=";
         String threeMeal = "d90c4352-d57c-4773-9064-4af17341beef/_query?input/webpage/url=";
-        String uclaUrl = "http%3A%2F%2Fmenu.ha.ucla.edu%2Ffoodpro%2Fdefault.asp%3Flocation%3D" + getHallCode(hall) + "%26date%3D" + (mainActivity.getMonth() + 1) + "%252F" + mainActivity.getDay() + "%252F"+mainActivity.getYear();
+        String uclaUrl = "http%3A%2F%2Fmenu.ha.ucla.edu%2Ffoodpro%2Fdefault.asp%3Flocation%3D" + getHallCode(hall) + "%26date%3D" + (mainActivity.getMonth() + 1) + "%252F" + mainActivity.getDay() + "%252F" + mainActivity.getYear();
         String apiKey = "&_user=22403bda-b7eb-4c87-904a-78de1838426c&_apikey=22403bdab7eb4c87904a78de1838426c6e7d3048637d4bbae71657eb53b31c47d987e5e1cb53206a5fac41e1b938b1abcbb0ed68909ebb9d9e75447cc09546577d6725bd3f2bee95e827ee604fa7d84c";
         int dayOfWeek = mainActivity.getDayOfWeek();
         if (hall == COVEL || hall == FEAST || dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) //2 Meal
@@ -140,7 +140,7 @@ public class DiningHallMenuFragment extends ListFragment
     public void processTwoMealList(JsonObject result)
     {
         JsonArray jsonArray;
-        if(result.has("results")) {
+        if (result.has("results")) {
             jsonArray = result.getAsJsonArray("results");
         }
         else {
@@ -153,60 +153,54 @@ public class DiningHallMenuFragment extends ListFragment
         Elements ul;
         Elements li;
         foodItems.add("LUNCH");
-        for(JsonElement jsonElement : jsonArray)
-        {
+        for (JsonElement jsonElement : jsonArray) {
             JsonObject jsonObject;
-            if(jsonElement.isJsonObject()) {
+            if (jsonElement.isJsonObject()) {
                 jsonObject = jsonElement.getAsJsonObject();
             }
             else {
                 continue;
             }
-            if(jsonObject.has("my_column"))
-            {
+            if (jsonObject.has("my_column")) {
                 lunch = jsonObject.get("my_column").getAsString();
             }
-            else if(jsonObject.has("lunch")) {
+            else if (jsonObject.has("lunch")) {
                 lunch = jsonObject.get("lunch").getAsString();
             }
-            else{
+            else {
                 continue;
             }
             doc = Jsoup.parse(lunch);
             ul = doc.select("ul");
             li = ul.select("li"); // select all li from ul
-            for(Element element : li)
-            {
+            for (Element element : li) {
                 //foodItems.add(element.text());
                 foodItems.add(element.select("a").text());
             }
 
         }
         foodItems.add("DINNER");
-        for(JsonElement jsonElement : jsonArray)
-        {
+        for (JsonElement jsonElement : jsonArray) {
             JsonObject jsonObject;
-            if(jsonElement.isJsonObject()) {
+            if (jsonElement.isJsonObject()) {
                 jsonObject = jsonElement.getAsJsonObject();
             }
             else {
                 continue;
             }
-            if(jsonObject.has("my_column_2"))
-            {
+            if (jsonObject.has("my_column_2")) {
                 dinner = jsonObject.get("my_column_2").getAsString();
             }
-            else if(jsonObject.has("dinner")) {
+            else if (jsonObject.has("dinner")) {
                 dinner = jsonObject.get("dinner").getAsString();
             }
-            else{
+            else {
                 continue;
             }
             doc = Jsoup.parse(dinner);
             ul = doc.select("ul");
             li = ul.select("li"); // select all li from ul
-            for(Element element : li)
-            {
+            for (Element element : li) {
                 foodItems.add(element.select("a").text());
             }
         }
@@ -217,7 +211,7 @@ public class DiningHallMenuFragment extends ListFragment
     public void processThreeMealList(JsonObject result)
     {
         JsonArray jsonArray;
-        if(result.has("results")) {
+        if (result.has("results")) {
             jsonArray = result.getAsJsonArray("results");
         }
         else {
@@ -230,77 +224,70 @@ public class DiningHallMenuFragment extends ListFragment
         Elements ul;
         Elements li;
         foodItems.add("BREAKFAST");
-        for(JsonElement jsonElement : jsonArray)
-        {
+        for (JsonElement jsonElement : jsonArray) {
             JsonObject jsonObject;
-            if(jsonElement.isJsonObject()) {
+            if (jsonElement.isJsonObject()) {
                 jsonObject = jsonElement.getAsJsonObject();
             }
             else {
                 continue;
             }
-            if(jsonObject.has("breakfast"))
-            {
+            if (jsonObject.has("breakfast")) {
                 lunch = jsonObject.get("breakfast").getAsString();
             }
-            else{
+            else {
                 continue;
             }
             doc = Jsoup.parse(lunch);
             ul = doc.select("ul");
             li = ul.select("li"); // select all li from ul
-            for(Element element : li)
-            {
+            for (Element element : li) {
                 foodItems.add(element.select("a").text());
             }
 
         }
         foodItems.add("LUNCH");
-        for(JsonElement jsonElement : jsonArray)
-        {
+        for (JsonElement jsonElement : jsonArray) {
             JsonObject jsonObject;
-            if(jsonElement.isJsonObject()) {
+            if (jsonElement.isJsonObject()) {
                 jsonObject = jsonElement.getAsJsonObject();
             }
             else {
                 continue;
             }
-            if(jsonObject.has("lunch")) {
+            if (jsonObject.has("lunch")) {
                 lunch = jsonObject.get("lunch").getAsString();
             }
-            else{
+            else {
                 continue;
             }
             doc = Jsoup.parse(lunch);
             ul = doc.select("ul");
             li = ul.select("li"); // select all li from ul
-            for(Element element : li)
-            {
+            for (Element element : li) {
                 foodItems.add(element.select("a").text());
             }
 
         }
         foodItems.add("DINNER");
-        for(JsonElement jsonElement : jsonArray)
-        {
+        for (JsonElement jsonElement : jsonArray) {
             JsonObject jsonObject;
-            if(jsonElement.isJsonObject()) {
+            if (jsonElement.isJsonObject()) {
                 jsonObject = jsonElement.getAsJsonObject();
             }
             else {
                 continue;
             }
-            if(jsonObject.has("dinner")) {
+            if (jsonObject.has("dinner")) {
                 dinner = jsonObject.get("dinner").getAsString();
             }
-            else{
+            else {
                 continue;
             }
             doc = Jsoup.parse(dinner);
             ul = doc.select("ul");
             li = ul.select("li"); // select all li from ul
-            for(Element element : li)
-            {
+            for (Element element : li) {
                 foodItems.add(element.select("a").text());
             }
         }
@@ -310,8 +297,7 @@ public class DiningHallMenuFragment extends ListFragment
 
     public String getHallCode(int hall)
     {
-        switch (hall)
-        {
+        switch (hall) {
             case COVEL:
                 return "07";
             case DENEVE:

@@ -15,7 +15,9 @@ import android.widget.ToggleButton;
 import com.vanshgandhi.ucladining.Activities.MainActivity;
 import com.vanshgandhi.ucladining.R;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class SwipesFragment extends Fragment implements View.OnClickListener//implements CompoundButton.OnCheckedChangeListener
 {
@@ -38,12 +40,7 @@ public class SwipesFragment extends Fragment implements View.OnClickListener//im
     private MainActivity mainActivity;
     private Toolbar      toolbar;
     private TextView     swipes;
-
-    private ToggleButton meal19P;
-    private ToggleButton meal14P;
-    private ToggleButton meal19;
-    private ToggleButton meal14;
-    private ToggleButton meal11;
+    private TextView     dateText;
 
     Calendar rightNow;
     Calendar quarterStart;
@@ -53,8 +50,7 @@ public class SwipesFragment extends Fragment implements View.OnClickListener//im
 
     public static SwipesFragment newInstance()
     {
-        SwipesFragment fragment = new SwipesFragment();
-        return fragment;
+        return new SwipesFragment();
     }
     
     public SwipesFragment()
@@ -81,6 +77,12 @@ public class SwipesFragment extends Fragment implements View.OnClickListener//im
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
+        ToggleButton meal19P;
+        ToggleButton meal14P;
+        ToggleButton meal19;
+        ToggleButton meal14;
+        ToggleButton meal11;
+
         View rootView = inflater.inflate(R.layout.fragment_swipes, container, false);
 
         toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
@@ -88,7 +90,7 @@ public class SwipesFragment extends Fragment implements View.OnClickListener//im
         mainActivity.setSupportActionBar(toolbar);
 
         swipes = (TextView) rootView.findViewById(R.id.swipes);
-        swipes.setText("0");
+        dateText = (TextView) rootView.findViewById(R.id.date);
 
         meal19P = (ToggleButton) rootView.findViewById(R.id.toggle_19p);
         meal14P = (ToggleButton) rootView.findViewById(R.id.toggle_14p);
@@ -117,6 +119,7 @@ public class SwipesFragment extends Fragment implements View.OnClickListener//im
                 });
 
         rightNow = Calendar.getInstance();
+        rightNow.set(mainActivity.getYear(), mainActivity.getMonth(), mainActivity.getDay());
         quarterStart = Calendar.getInstance();
         quarterStart.set(2015, Calendar.SEPTEMBER, 20);
         int nowWeek = rightNow.get(Calendar.WEEK_OF_YEAR);
@@ -147,9 +150,8 @@ public class SwipesFragment extends Fragment implements View.OnClickListener//im
     public void onClick(View view)
     {
         int id = view.getId();
-        ((RadioGroup)view.getParent()).check(id);
-        switch(id)
-        {
+        ((RadioGroup) view.getParent()).check(id);
+        switch (id) {
             case R.id.toggle_11:
                 currentPlan = MEAL_PLAN_11;
                 break;
@@ -172,9 +174,7 @@ public class SwipesFragment extends Fragment implements View.OnClickListener//im
     private void updateSwipeCount()
     {
         int swipesLeft = 0;
-        int perWeek;
-        switch(currentPlan)
-        {
+        switch (currentPlan) {
             case MEAL_PLAN_11:
                 swipesLeft = TOTAL_11;
                 break;
@@ -193,109 +193,91 @@ public class SwipesFragment extends Fragment implements View.OnClickListener//im
         }
         swipesLeft = removeWeekSwipes(swipesLeft);
         swipesLeft = removeDaySwipes(swipesLeft);
-        swipes.setText(Integer.toString(swipesLeft));
+
+        swipes.setText(String.format(Locale.US, "%d", swipesLeft));
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM d, yyyy", Locale.US);
+        dateText.setText(simpleDateFormat.format(rightNow.getTime()));
     }
 
     private int removeDaySwipes(int swipes)
     {
         int day = rightNow.get(Calendar.DAY_OF_WEEK);
-        switch(day)
-        {
+        switch (day) {
             case Calendar.SUNDAY:
-                if(currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19))
-                {
+                if (currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19)) {
                     swipes -= 2;
                 }
-                else if(currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14))
-                {
+                else if (currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14)) {
                     swipes -= 2;
                 }
-                if(currentPlan.equals(MEAL_PLAN_11))
-                {
+                if (currentPlan.equals(MEAL_PLAN_11)) {
                     swipes -= 0; //Assumes person doesn't eat on weekends
                 }
                 break;
             case Calendar.MONDAY:
-                if(currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19))
-                {
+                if (currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19)) {
                     swipes -= 3;
                 }
-                else if(currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14))
-                {
+                else if (currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14)) {
                     swipes -= 2;
                 }
-                if(currentPlan.equals(MEAL_PLAN_11))
-                {
+                if (currentPlan.equals(MEAL_PLAN_11)) {
                     swipes -= 2;
                 }
                 break;
             case Calendar.TUESDAY:
-                if(currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19))
-                {
+                if (currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19)) {
                     swipes -= 3;
                 }
-                else if(currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14))
-                {
+                else if (currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14)) {
                     swipes -= 2;
                 }
-                if(currentPlan.equals(MEAL_PLAN_11))
-                {
+                if (currentPlan.equals(MEAL_PLAN_11)) {
                     swipes -= 2;
                 }
                 break;
             case Calendar.WEDNESDAY:
-                if(currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19))
-                {
+                if (currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19)) {
                     swipes -= 3;
                 }
-                else if(currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14))
-                {
+                else if (currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14)) {
                     swipes -= 2;
                 }
-                if(currentPlan.equals(MEAL_PLAN_11))
-                {
+                if (currentPlan.equals(MEAL_PLAN_11)) {
                     swipes -= 2;
                 }
                 break;
             case Calendar.THURSDAY:
-                if(currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19))
-                {
+                if (currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19)) {
                     swipes -= 3;
                 }
-                else if(currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14))
-                {
+                else if (currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14)) {
                     swipes -= 2;
                 }
-                if(currentPlan.equals(MEAL_PLAN_11))
-                {
+                if (currentPlan.equals(MEAL_PLAN_11)) {
                     swipes -= 2;
                 }
                 break;
             case Calendar.FRIDAY:
-                if(currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19))
-                {
+                if (currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19)) {
                     swipes -= 3;
                 }
-                else if(currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14))
-                {
+                else if (currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14)) {
                     swipes -= 2;
                 }
-                if(currentPlan.equals(MEAL_PLAN_11))
-                {
+                if (currentPlan.equals(MEAL_PLAN_11)) {
                     swipes -= 2;
                 }
                 break;
             case Calendar.SATURDAY:
-                if(currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19))
-                {
+                if (currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19)) {
                     swipes -= 2;
                 }
-                else if(currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14))
-                {
+                else if (currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14)) {
                     swipes -= 2;
                 }
-                if(currentPlan.equals(MEAL_PLAN_11))
-                {
+                if (currentPlan.equals(MEAL_PLAN_11)) {
                     swipes -= 1;
                 }
                 break;
@@ -305,17 +287,13 @@ public class SwipesFragment extends Fragment implements View.OnClickListener//im
 
     private int removeWeekSwipes(int swipes)
     {
-        if(currentPlan.equals(MEAL_PLAN_19P))
-        {
-            for(int i = 0; i < weeksElapsed; i++)
-            {
+        if (currentPlan.equals(MEAL_PLAN_19P)) {
+            for (int i = 0; i < weeksElapsed; i++) {
                 swipes -= 19;
             }
         }
-        else if (currentPlan.equals(MEAL_PLAN_14P))
-        {
-            for(int i = 0; i < weeksElapsed; i++)
-            {
+        else if (currentPlan.equals(MEAL_PLAN_14P)) {
+            for (int i = 0; i < weeksElapsed; i++) {
                 swipes -= 14;
             }
         }

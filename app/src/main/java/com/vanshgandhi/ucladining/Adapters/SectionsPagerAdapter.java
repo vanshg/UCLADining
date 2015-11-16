@@ -13,7 +13,7 @@ import com.vanshgandhi.ucladining.Fragments.QuickServiceMenuFragment;
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter
 {
-    int      type;
+    int        type;
     String[][] titles; // [type of eatery][# of eatery]
 
     public SectionsPagerAdapter(FragmentManager fm, int type, String[][] titles)

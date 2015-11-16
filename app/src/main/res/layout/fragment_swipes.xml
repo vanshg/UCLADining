@@ -1,6 +1,5 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,7 +7,7 @@
     tools:context="com.vanshgandhi.ucladining.Fragments.SwipesFragment">
 
     <include
-        layout="@layout/app_bar" />
+        layout="@layout/app_bar"/>
 
 
     <RadioGroup
@@ -85,7 +84,17 @@
         android:layout_below="@+id/swipes"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="1dp"
-        android:text="swipes left"
+        android:text="@string/swipes_left_as_of"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/swipes_left"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="1dp"
+        android:textColor="@color/colorPrimary"
         android:textSize="24sp"/>
 
 

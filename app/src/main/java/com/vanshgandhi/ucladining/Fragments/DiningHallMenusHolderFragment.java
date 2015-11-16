@@ -17,17 +17,12 @@ import com.vanshgandhi.ucladining.R;
 public class DiningHallMenusHolderFragment extends Fragment
 {
 
-    private MainActivity         mainActivity;
-    private Toolbar              toolbar;
-    private TabLayout            tabLayout;
-    private ViewPager            viewPager;             //Hosts the section contents
-    private SectionsPagerAdapter mSectionsPagerAdapter; //provides fragments for each section
-    private static final String ARG_HALL_NUMBER = "hall_number";
+    private MainActivity mainActivity;
+    private Toolbar      toolbar;
 
     public static DiningHallMenusHolderFragment newInstance()
     {
-        DiningHallMenusHolderFragment fragment = new DiningHallMenusHolderFragment();
-        return fragment;
+        return new DiningHallMenusHolderFragment();
     }
 
     public DiningHallMenusHolderFragment()
@@ -45,6 +40,10 @@ public class DiningHallMenusHolderFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
+        TabLayout tabLayout;
+        ViewPager viewPager;             //Hosts the section contents
+        SectionsPagerAdapter mSectionsPagerAdapter; //provides fragments for each section
+
         View rootView = inflater.inflate(R.layout.fragment_dining_hall_menus_holder, container, false);
 
         toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
