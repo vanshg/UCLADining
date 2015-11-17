@@ -65,10 +65,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                DiningHallMenusHolderFragment.newInstance()).commit();
-        navigationView.getMenu().getItem(0).setChecked(true);
-
         c = Calendar.getInstance();
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -77,6 +73,10 @@ public class MainActivity extends AppCompatActivity
         editor.putInt(MONTH_KEY, c.get(Calendar.MONTH));
         editor.putInt(DAY_KEY, c.get(Calendar.DAY_OF_MONTH));
         editor.apply();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+                DiningHallMenusHolderFragment.newInstance()).commit();
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
     
     
@@ -191,17 +191,38 @@ public class MainActivity extends AppCompatActivity
 
     public int getYear()
     {
-        return preferences.getInt(YEAR_KEY, -1);
+        if(preferences.contains(YEAR_KEY)) {
+            return preferences.getInt(YEAR_KEY, -1);
+        }
+        else
+        {
+            Calendar calendar = Calendar.getInstance();
+            return calendar.get(Calendar.YEAR);
+        }
     }
 
     public int getDay()
     {
-        return preferences.getInt(DAY_KEY, -1);
+        if(preferences.contains(DAY_KEY)) {
+            return preferences.getInt(DAY_KEY, -1);
+        }
+        else
+        {
+            Calendar calendar = Calendar.getInstance();
+            return calendar.get(Calendar.DAY_OF_MONTH);
+        }
     }
 
     public int getMonth()
     {
-        return preferences.getInt(MONTH_KEY, -1);
+        if(preferences.contains(MONTH_KEY)) {
+            return preferences.getInt(MONTH_KEY, -1);
+        }
+        else
+        {
+            Calendar calendar = Calendar.getInstance();
+            return calendar.get(Calendar.MONTH);
+        }
     }
 
     public int getDayOfWeek()
