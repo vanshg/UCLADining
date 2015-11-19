@@ -47,7 +47,7 @@
             </TableRow>
 
             <View
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="12dp"
                 android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
                 android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
@@ -61,7 +61,7 @@
                 android:textStyle="bold"/>
 
             <View
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
                 android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
@@ -92,7 +92,7 @@
             </TableRow>
 
             <View
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
                 android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
@@ -106,7 +106,7 @@
                 android:textStyle="bold"/>
 
             <View
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
                 android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
@@ -132,7 +132,7 @@
             </TableRow>
 
             <View
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
                 android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
@@ -157,7 +157,7 @@
             </TableRow>
 
             <View
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
                 android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
@@ -182,7 +182,7 @@
             </TableRow>
 
             <View
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
                 android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
@@ -208,7 +208,7 @@
             </TableRow>
 
             <View
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
                 android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
@@ -234,7 +234,7 @@
             </TableRow>
 
             <View
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
                 android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
@@ -260,7 +260,7 @@
             </TableRow>
 
             <View
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
                 android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
@@ -285,7 +285,7 @@
             </TableRow>
 
             <View
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
                 android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
@@ -310,7 +310,7 @@
             </TableRow>
 
             <View
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
                 android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
@@ -336,15 +336,95 @@
             </TableRow>
 
             <View
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="12dp"
                 android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
                 android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
                 android:background="@android:color/black"/>
 
 
-            <!--DYNAMICALLY ADD ALL VITAMINS -->
+            <TableRow
+                android:weightSum="2">
 
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/vitamin_a"/>
+
+                    <TextView
+                        android:id="@+id/vitamin_a_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/vitamin_c"/>
+
+                    <TextView
+                        android:id="@+id/vitamin_c_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+            </TableRow>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:background="@android:color/black"/>
+
+            <TableRow
+                android:weightSum="2">
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/calcium"/>
+
+                    <TextView
+                        android:id="@+id/calcium_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/iron"/>
+
+                    <TextView
+                        android:id="@+id/iron_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+            </TableRow>
 
         </TableLayout>
 
