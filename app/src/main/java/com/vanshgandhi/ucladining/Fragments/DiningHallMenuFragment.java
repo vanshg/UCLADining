@@ -15,6 +15,8 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.vanshgandhi.ucladining.Activities.FoodDetailActivity;
 import com.vanshgandhi.ucladining.Activities.MainActivity;
+import com.vanshgandhi.ucladining.Models.FoodItem;
+import com.vanshgandhi.ucladining.Models.Menu;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -36,7 +38,9 @@ public class DiningHallMenuFragment extends ListFragment
     private static final int FEAST  = 2;
     private static final int BPLATE = 3;
 
-    private ArrayList<String> foodItems = new ArrayList<>();
+    private ArrayList<String>   foodNames = new ArrayList<>();
+    private ArrayList<FoodItem> foodItems = new ArrayList<>();
+    private Menu menu;
 
     public static DiningHallMenuFragment newInstance(int hallNumber)
     {
@@ -57,6 +61,7 @@ public class DiningHallMenuFragment extends ListFragment
     {
         super.onCreate(savedInstanceState);
         int hall = getArguments().getInt(ARG_HALL_NUMBER);
+        menu = new Menu(hall);
         String url;
         String baseUrl = "https://api.import.io/store/data/";
         String twoMeal = "f20fc91a-caf1-409c-9322-efa0ef770223/_query?input/webpage/url=";
@@ -102,15 +107,15 @@ public class DiningHallMenuFragment extends ListFragment
         }
 
     }
-    
-    
+
+
     @Override
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
         mainActivity = (MainActivity) activity;
     }
-    
+
     @Override
     public void onDetach()
     {
@@ -152,7 +157,7 @@ public class DiningHallMenuFragment extends ListFragment
         Document doc;
         Elements ul;
         Elements li;
-        foodItems.add("LUNCH");
+        foodNames.add("LUNCH");
         for (JsonElement jsonElement : jsonArray) {
             JsonObject jsonObject;
             if (jsonElement.isJsonObject()) {
@@ -174,12 +179,12 @@ public class DiningHallMenuFragment extends ListFragment
             ul = doc.select("ul");
             li = ul.select("li"); // select all li from ul
             for (Element element : li) {
-                //foodItems.add(element.text());
-                foodItems.add(element.select("a").text());
+                //foodNames.add(element.text());
+                foodNames.add(element.select("a").text());
             }
 
         }
-        foodItems.add("DINNER");
+        foodNames.add("DINNER");
         for (JsonElement jsonElement : jsonArray) {
             JsonObject jsonObject;
             if (jsonElement.isJsonObject()) {
@@ -201,11 +206,11 @@ public class DiningHallMenuFragment extends ListFragment
             ul = doc.select("ul");
             li = ul.select("li"); // select all li from ul
             for (Element element : li) {
-                foodItems.add(element.select("a").text());
+                foodNames.add(element.select("a").text());
             }
         }
         setListAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, foodItems));
+                android.R.layout.simple_list_item_1, android.R.id.text1, foodNames));
     }
 
     public void processThreeMealList(JsonObject result)
@@ -223,7 +228,7 @@ public class DiningHallMenuFragment extends ListFragment
         Document doc;
         Elements ul;
         Elements li;
-        foodItems.add("BREAKFAST");
+        foodNames.add("BREAKFAST");
         for (JsonElement jsonElement : jsonArray) {
             JsonObject jsonObject;
             if (jsonElement.isJsonObject()) {
@@ -242,11 +247,11 @@ public class DiningHallMenuFragment extends ListFragment
             ul = doc.select("ul");
             li = ul.select("li"); // select all li from ul
             for (Element element : li) {
-                foodItems.add(element.select("a").text());
+                foodNames.add(element.select("a").text());
             }
 
         }
-        foodItems.add("LUNCH");
+        foodNames.add("LUNCH");
         for (JsonElement jsonElement : jsonArray) {
             JsonObject jsonObject;
             if (jsonElement.isJsonObject()) {
@@ -265,11 +270,11 @@ public class DiningHallMenuFragment extends ListFragment
             ul = doc.select("ul");
             li = ul.select("li"); // select all li from ul
             for (Element element : li) {
-                foodItems.add(element.select("a").text());
+                foodNames.add(element.select("a").text());
             }
 
         }
-        foodItems.add("DINNER");
+        foodNames.add("DINNER");
         for (JsonElement jsonElement : jsonArray) {
             JsonObject jsonObject;
             if (jsonElement.isJsonObject()) {
@@ -288,11 +293,11 @@ public class DiningHallMenuFragment extends ListFragment
             ul = doc.select("ul");
             li = ul.select("li"); // select all li from ul
             for (Element element : li) {
-                foodItems.add(element.select("a").text());
+                foodNames.add(element.select("a").text());
             }
         }
         setListAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, foodItems));
+                android.R.layout.simple_list_item_1, android.R.id.text1, foodNames));
     }
 
     public String getHallCode(int hall)
