@@ -17,6 +17,7 @@ import com.vanshgandhi.ucladining.Activities.FoodDetailActivity;
 import com.vanshgandhi.ucladining.Activities.MainActivity;
 import com.vanshgandhi.ucladining.Models.FoodItem;
 import com.vanshgandhi.ucladining.Models.Menu;
+import com.vanshgandhi.ucladining.R;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -66,12 +67,14 @@ public class DiningHallMenuFragment extends ListFragment
         String baseUrl = "https://api.import.io/store/data/";
         String twoMeal = "f20fc91a-caf1-409c-9322-efa0ef770223/_query?input/webpage/url=";
         String threeMeal = "d90c4352-d57c-4773-9064-4af17341beef/_query?input/webpage/url=";
-        String uclaUrl = "http%3A%2F%2Fmenu.ha.ucla.edu%2Ffoodpro%2Fdefault.asp%3Flocation%3D" + getHallCode(hall) + "%26date%3D" + (mainActivity.getMonth() + 1) + "%252F" + mainActivity.getDay() + "%252F" + mainActivity.getYear();
+        String ingredients = "eacba959-1feb-4119-9388-bbb5cd4fdfff/_query?input/webpage/url=";
+        String uclaBaseUrl = "http%3A%2F%2Fmenu.ha.ucla.edu%2Ffoodpro%2F";
+        String fullMenu = "default.asp%3Flocation%3D" + getHallCode(hall) + "%26date%3D" + (mainActivity.getMonth() + 1) + "%252F" + mainActivity.getDay() + "%252F" + mainActivity.getYear();
         String apiKey = "&_user=22403bda-b7eb-4c87-904a-78de1838426c&_apikey=22403bdab7eb4c87904a78de1838426c6e7d3048637d4bbae71657eb53b31c47d987e5e1cb53206a5fac41e1b938b1abcbb0ed68909ebb9d9e75447cc09546577d6725bd3f2bee95e827ee604fa7d84c";
         int dayOfWeek = mainActivity.getDayOfWeek();
         if (hall == COVEL || hall == FEAST || dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) //2 Meal
         {
-            url = baseUrl + twoMeal + uclaUrl + apiKey;
+            url = baseUrl + twoMeal + uclaBaseUrl + fullMenu + apiKey;
             Ion.with(this)
                     .load(url)
                     .asJsonObject()
@@ -89,7 +92,7 @@ public class DiningHallMenuFragment extends ListFragment
         }
         else //if(hall == DENEVE || hall == BPLATE) //3 Meal
         {
-            url = baseUrl + threeMeal + uclaUrl + apiKey;
+            url = baseUrl + threeMeal + fullMenu + apiKey;
             Ion.with(this)
                     .load(url)
                     .asJsonObject()
@@ -166,10 +169,7 @@ public class DiningHallMenuFragment extends ListFragment
             else {
                 continue;
             }
-            if (jsonObject.has("my_column")) {
-                lunch = jsonObject.get("my_column").getAsString();
-            }
-            else if (jsonObject.has("lunch")) {
+            if (jsonObject.has("lunch")) {
                 lunch = jsonObject.get("lunch").getAsString();
             }
             else {
@@ -180,6 +180,7 @@ public class DiningHallMenuFragment extends ListFragment
             li = ul.select("li"); // select all li from ul
             for (Element element : li) {
                 //foodNames.add(element.text());
+                foodItems.add(new FoodItem(element.select("a").text()));
                 foodNames.add(element.select("a").text());
             }
 
@@ -193,10 +194,7 @@ public class DiningHallMenuFragment extends ListFragment
             else {
                 continue;
             }
-            if (jsonObject.has("my_column_2")) {
-                dinner = jsonObject.get("my_column_2").getAsString();
-            }
-            else if (jsonObject.has("dinner")) {
+            if (jsonObject.has("dinner")) {
                 dinner = jsonObject.get("dinner").getAsString();
             }
             else {
@@ -210,7 +208,7 @@ public class DiningHallMenuFragment extends ListFragment
             }
         }
         setListAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, foodNames));
+                R.layout.list_item_food, R.id.title, foodNames));
     }
 
     public void processThreeMealList(JsonObject result)
@@ -297,7 +295,8 @@ public class DiningHallMenuFragment extends ListFragment
             }
         }
         setListAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, foodNames));
+                R.layout.list_item_food, R.id.title, foodNames));
+
     }
 
     public String getHallCode(int hall)

@@ -6,6 +6,8 @@ package com.vanshgandhi.ucladining.Models;
 public class FoodItem
 {
     private String title;
+    private int recipeNumber;
+    private int portionSize;
     private boolean isVegetarian;
     private boolean isVegan;
     private Nutrition nutrition;
@@ -18,6 +20,16 @@ public class FoodItem
     public String getTitle()
     {
         return title;
+    }
+
+    public int getRecipeNumber()
+    {
+        return recipeNumber;
+    }
+
+    public int getPortionSize()
+    {
+        return portionSize;
     }
 
     public boolean isVegetarian()
@@ -33,6 +45,16 @@ public class FoodItem
     public Nutrition getNutrition()
     {
         return nutrition;
+    }
+
+    public void setRecipeNumber(int recipeNumber)
+    {
+        this.recipeNumber = recipeNumber;
+    }
+
+    public void setPortionSize(int portionSize)
+    {
+        this.portionSize = portionSize;
     }
 
     public void setNutrition(Nutrition nutrition)
