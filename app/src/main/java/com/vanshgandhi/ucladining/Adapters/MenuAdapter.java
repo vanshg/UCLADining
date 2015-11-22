@@ -1,60 +1,65 @@
 package com.vanshgandhi.ucladining.Adapters;
 
-import android.support.v7.widget.RecyclerView;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.vanshgandhi.ucladining.Models.Menu;
+import com.vanshgandhi.ucladining.Models.FoodItem;
 import com.vanshgandhi.ucladining.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by vanshgandhi on 10/29/15.
  */
-public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
+public class MenuAdapter extends ArrayAdapter<FoodItem>
 {
+    //private Menu menu;
+    ArrayList<FoodItem> foodItems;
 
-    private Menu menu;
-
-    public static class ViewHolder extends RecyclerView.ViewHolder
+    private static class ViewHolder
     {
-        // each data item is just a string in this case
-        public TextView mTextView;
+        public TextView  textView;
+        public ImageView imageView;
 
         public ViewHolder(View v)
         {
-            super(v);
-            mTextView = (TextView) v.findViewById(R.id.title);
+            textView = (TextView) v.findViewById(R.id.title);
+            imageView = (ImageView) v.findViewById(R.id.indicator);
         }
     }
 
-    public MenuAdapter(Menu menu)
+    public MenuAdapter(Context context, int resource, ArrayList<FoodItem> objects)
     {
-        this.menu = menu;
+        super(context, resource, objects);
+        foodItems = objects;
     }
 
     @Override
-    public MenuAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public View getView(int position, View convertView, ViewGroup parent)
     {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.menu_list_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+
+        ViewHolder holder;
+
+        if (convertView == null) {
+
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_food, null);
+            holder = new ViewHolder(convertView);
+
+            convertView.setTag(holder);
+        }
+        else {
+            // view already exists, get the holder instance from the view
+            holder = (ViewHolder) convertView.getTag();
+        }
+
+        holder.textView.setText(foodItems.get(position).getTitle());
+
+        return convertView;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
-    @Override
-    public void onBindViewHolder(MenuAdapter.ViewHolder holder, int position)
-    {
-        // - get element from dataset at this position
-        // - replace the contents of the view with that element
-        holder.mTextView.setText(menu.getAllFood().get(position).getTitle());
-    }
-
-    @Override
-    public int getItemCount()
-    {
-        return menu.getAllFood().size();
-    }
 }

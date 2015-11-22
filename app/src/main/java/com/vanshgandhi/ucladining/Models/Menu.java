@@ -57,6 +57,11 @@ public class Menu
         return allFood;
     }
 
+    public FoodItem get(int index)
+    {
+        return allFood.get(index);
+    }
+
     public void add(FoodItem item)
     {
         allFood.add(item);

@@ -426,6 +426,13 @@
 
             </TableRow>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/nutrition_table_border_padding_topbot"
+                android:layout_marginTop="@dimen/nutrition_table_border_padding_topbot"
+                android:background="@android:color/black"/>
+
         </TableLayout>
 
         <TextView
@@ -433,15 +440,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/nutrition_facts"
-            android:layout_margin="@dimen/text_margin"
+            android:layout_marginTop="@dimen/text_margin"
+            android:layout_marginRight="@dimen/text_margin"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:layout_marginBottom="12dp"
             android:text="@string/ingredients"
             android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/ingredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ingredients_label"
-            android:layout_margin="@dimen/text_margin"/>
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"/>
 
 
     </RelativeLayout>
