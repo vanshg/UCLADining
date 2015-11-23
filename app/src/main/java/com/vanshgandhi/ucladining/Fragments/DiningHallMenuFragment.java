@@ -13,9 +13,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.vanshgandhi.ucladining.Activities.FoodDetailActivity;
 import com.vanshgandhi.ucladining.Activities.MainActivity;
 import com.vanshgandhi.ucladining.Adapters.MenuAdapter;
@@ -102,6 +99,7 @@ public class DiningHallMenuFragment extends ListFragment
                 @Override
                 public void onErrorResponse(VolleyError error)
                 {
+                    foodItems.add(new FoodItem("Error"));
                     setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
                 }
             });
@@ -129,6 +127,7 @@ public class DiningHallMenuFragment extends ListFragment
                 @Override
                 public void onErrorResponse(VolleyError error)
                 {
+                    foodItems.add(new FoodItem("Error"));
                     setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
                 }
             });
@@ -271,191 +270,6 @@ public class DiningHallMenuFragment extends ListFragment
          * TODO: such as Nutrition info, A Picture, and Ingredients
          */
         //FoodItem item = getListAdapter().getItem(position);
-    }
-
-    public void processTwoMealList(JsonObject result)
-    {
-        JsonArray jsonArray;
-        if (result.has("results")) {
-            jsonArray = result.getAsJsonArray("results");
-        }
-        else {
-            return;
-        }
-        System.out.println(jsonArray.toString());
-        String lunch;
-        String dinner;
-        Document doc;
-        Elements ul;
-        Elements li;
-        foodItems.add(new FoodItem("LUNCH"));
-        for (JsonElement jsonElement : jsonArray) {
-            JsonObject jsonObject;
-            if (jsonElement.isJsonObject()) {
-                jsonObject = jsonElement.getAsJsonObject();
-            }
-            else {
-                continue;
-            }
-            if (jsonObject.has("lunch")) {
-                lunch = jsonObject.get("lunch").getAsString();
-            }
-            else {
-                continue;
-            }
-            doc = Jsoup.parse(lunch);
-            ul = doc.select("ul");
-            li = ul.select("li"); // select all li from ul
-            for (Element element : li) {
-                String title = element.select("a").text();
-                FoodItem item = new FoodItem(title);
-                String href = element.select("a").attr("href");
-                if (href.contains("recipedetail.asp")) {
-                    System.out.println(href);
-                    item.setRecipeNumber(href.substring(30, 36));
-                    item.setPortionSize(href.substring(49));
-                }
-                foodItems.add(item);
-            }
-
-        }
-        foodItems.add(new FoodItem("DINNER"));
-        for (JsonElement jsonElement : jsonArray) {
-            JsonObject jsonObject;
-            if (jsonElement.isJsonObject()) {
-                jsonObject = jsonElement.getAsJsonObject();
-            }
-            else {
-                continue;
-            }
-            if (jsonObject.has("dinner")) {
-                dinner = jsonObject.get("dinner").getAsString();
-            }
-            else {
-                continue;
-            }
-            doc = Jsoup.parse(dinner);
-            ul = doc.select("ul");
-            li = ul.select("li"); // select all li from ul
-            for (Element element : li) {
-                String title = element.select("a").text();
-                FoodItem item = new FoodItem(title);
-                String href = element.select("a").attr("href");
-                if (href.contains("recipedetail.asp")) {
-                    item.setRecipeNumber(href.substring(30, 36));
-                    item.setPortionSize(href.substring(49));
-                }
-                foodItems.add(item);
-            }
-        }
-        setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
-    }
-
-    public void processThreeMealList(JsonObject result)
-    {
-        JsonArray jsonArray;
-        if (result.has("results")) {
-            jsonArray = result.getAsJsonArray("results");
-        }
-        else {
-            return;
-        }
-        System.out.println(jsonArray.toString());
-        String lunch;
-        String dinner;
-        Document doc;
-        Elements ul;
-        Elements li;
-        foodItems.add(new FoodItem("BREAKFAST"));
-        for (JsonElement jsonElement : jsonArray) {
-            JsonObject jsonObject;
-            if (jsonElement.isJsonObject()) {
-                jsonObject = jsonElement.getAsJsonObject();
-            }
-            else {
-                continue;
-            }
-            if (jsonObject.has("breakfast")) {
-                lunch = jsonObject.get("breakfast").getAsString();
-            }
-            else {
-                continue;
-            }
-            doc = Jsoup.parse(lunch);
-            ul = doc.select("ul");
-            li = ul.select("li"); // select all li from ul
-            for (Element element : li) {
-                String title = element.select("a").text();
-                FoodItem item = new FoodItem(title);
-                String href = element.select("a").attr("href");
-                if (href.contains("recipedetail.asp")) {
-                    item.setRecipeNumber(href.substring(30, 36));
-                    item.setPortionSize(href.substring(49));
-                }
-                foodItems.add(item);
-            }
-
-        }
-        foodItems.add(new FoodItem("LUNCH"));
-        for (JsonElement jsonElement : jsonArray) {
-            JsonObject jsonObject;
-            if (jsonElement.isJsonObject()) {
-                jsonObject = jsonElement.getAsJsonObject();
-            }
-            else {
-                continue;
-            }
-            if (jsonObject.has("lunch")) {
-                lunch = jsonObject.get("lunch").getAsString();
-            }
-            else {
-                continue;
-            }
-            doc = Jsoup.parse(lunch);
-            ul = doc.select("ul");
-            li = ul.select("li"); // select all li from ul
-            for (Element element : li) {
-                String title = element.select("a").text();
-                FoodItem item = new FoodItem(title);
-                String href = element.select("a").attr("href");
-                if (href.contains("recipedetail.asp")) {
-                    item.setRecipeNumber(href.substring(30, 36));
-                    item.setPortionSize(href.substring(49));
-                }
-                foodItems.add(item);
-            }
-
-        }
-        foodItems.add(new FoodItem("DINNER"));
-        for (JsonElement jsonElement : jsonArray) {
-            JsonObject jsonObject;
-            if (jsonElement.isJsonObject()) {
-                jsonObject = jsonElement.getAsJsonObject();
-            }
-            else {
-                continue;
-            }
-            if (jsonObject.has("dinner")) {
-                dinner = jsonObject.get("dinner").getAsString();
-            }
-            else {
-                continue;
-            }
-            doc = Jsoup.parse(dinner);
-            ul = doc.select("ul");
-            li = ul.select("li"); // select all li from ul
-            for (Element element : li) {
-                String title = element.select("a").text();
-                FoodItem item = new FoodItem(title);
-                String href = element.select("a").attr("href");
-                if (href.contains("recipedetail.asp")) {
-                    item.setRecipeNumber(href.substring(30, 36));
-                    item.setPortionSize(href.substring(49));
-                }
-                foodItems.add(item);
-            }
-        }
-        setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
     }
 
     public String getHallCode(int hall)
