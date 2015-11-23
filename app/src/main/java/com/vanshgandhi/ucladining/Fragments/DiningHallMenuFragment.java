@@ -7,11 +7,15 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 import com.vanshgandhi.ucladining.Activities.FoodDetailActivity;
 import com.vanshgandhi.ucladining.Activities.MainActivity;
 import com.vanshgandhi.ucladining.Adapters.MenuAdapter;
@@ -19,6 +23,9 @@ import com.vanshgandhi.ucladining.Models.FoodItem;
 import com.vanshgandhi.ucladining.Models.Menu;
 import com.vanshgandhi.ucladining.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -61,6 +68,7 @@ public class DiningHallMenuFragment extends ListFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        RequestQueue queue = Volley.newRequestQueue(getContext());
         int hall = getArguments().getInt(ARG_HALL_NUMBER);
         menu = new Menu(hall);
         String url;
@@ -75,40 +83,157 @@ public class DiningHallMenuFragment extends ListFragment
         if (hall == COVEL || hall == FEAST || dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) //2 Meal
         {
             url = baseUrl + twoMeal + uclaBaseUrl + fullMenu + apiKey;
-            Ion.with(this)
-                    .load(url)
-                    .asJsonObject()
-                    .setCallback(new FutureCallback<JsonObject>()
-                    {
-                        @Override
-                        public void onCompleted(Exception e, JsonObject result)
-                        {
-                            if (e != null) {
-                                return;
-                            }
-                            processTwoMealList(result);
-                        }
-                    });
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, "", new Response.Listener<JSONObject>()
+            {
+                @Override
+                public void onResponse(JSONObject response)
+                {
+                    try {
+                        processList(response, false);
+                    }
+                    catch (JSONException e) {
+                        foodItems.add(new FoodItem("Error"));
+                        setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
+                    }
+                }
+            }, new Response.ErrorListener()
+            {
+                @Override
+                public void onErrorResponse(VolleyError error)
+                {
+                    setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
+                }
+            });
+
+            queue.add(request);
         }
         else //if(hall == DENEVE || hall == BPLATE) //3 Meal
         {
             url = baseUrl + threeMeal + fullMenu + apiKey;
-            Ion.with(this)
-                    .load(url)
-                    .asJsonObject()
-                    .setCallback(new FutureCallback<JsonObject>()
-                    {
-                        @Override
-                        public void onCompleted(Exception e, JsonObject result)
-                        {
-                            if (e != null) {
-                                return;
-                            }
-                            processThreeMealList(result);
-                        }
-                    });
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, "", new Response.Listener<JSONObject>()
+            {
+                @Override
+                public void onResponse(JSONObject response)
+                {
+                    try {
+                        processList(response, true);
+                    }
+                    catch (JSONException e) {
+                        foodItems.add(new FoodItem("Error"));
+                        setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
+                    }
+                }
+            }, new Response.ErrorListener()
+            {
+                @Override
+                public void onErrorResponse(VolleyError error)
+                {
+                    setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
+                }
+            });
+
+            queue.add(request);
         }
 
+    }
+
+    private void processList(JSONObject result, boolean threeMeal) throws JSONException
+    {
+        JSONArray jsonArray;
+        if (result.has("results")) {
+            jsonArray = result.getJSONArray("results");
+        }
+        else {
+            return;
+        }
+
+        System.out.println(jsonArray.toString());
+        String lunch;
+        String dinner;
+        Document doc;
+        Elements ul;
+        Elements li;
+        if(threeMeal) {
+            foodItems.add(new FoodItem("BREAKFAST"));
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                if (jsonObject.has("breakfast")) {
+                    lunch = jsonObject.getString("breakfast");
+                }
+                else {
+                    continue;
+                }
+                doc = Jsoup.parse(lunch);
+                ul = doc.select("ul");
+                li = ul.select("li"); // select all li from ul
+                for (Element element : li) {
+                    String title = element.select("a").text();
+                    FoodItem item = new FoodItem(title);
+                    String href = element.select("a").attr("href");
+                    if (href.contains("recipedetail.asp")) {
+                        item.setRecipeNumber(href.substring(30, 36));
+                        item.setPortionSize(href.substring(49));
+                    }
+                    foodItems.add(item);
+                }
+
+            }
+        }
+        foodItems.add(new FoodItem("LUNCH"));
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+            if (jsonObject.has("lunch")) {
+                lunch = jsonObject.getString("lunch");
+            }
+            else {
+                continue;
+            }
+
+            doc = Jsoup.parse(lunch);
+            ul = doc.select("ul");
+            li = ul.select("li"); // select all li from ul
+            for (Element element : li) {
+                String title = element.select("a").text();
+                FoodItem item = new FoodItem(title);
+                String href = element.select("a").attr("href");
+                if (href.contains("recipedetail.asp")) {
+                    System.out.println(href);
+                    item.setRecipeNumber(href.substring(30, 36));
+                    item.setPortionSize(href.substring(49));
+                }
+                foodItems.add(item);
+            }
+
+        }
+        foodItems.add(new FoodItem("DINNER"));
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+            if (jsonObject.has("dinner")) {
+                dinner = jsonObject.getString("dinner");
+            }
+            else {
+                continue;
+            }
+            doc = Jsoup.parse(dinner);
+            ul = doc.select("ul");
+            li = ul.select("li"); // select all li from ul
+            for (Element element : li) {
+                String title = element.select("a").text();
+                FoodItem item = new FoodItem(title);
+                String href = element.select("a").attr("href");
+                if (href.contains("recipedetail.asp")) {
+                    item.setRecipeNumber(href.substring(30, 36));
+                    item.setPortionSize(href.substring(49));
+                }
+                foodItems.add(item);
+            }
+        }
+        setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
     }
 
 
