@@ -9,13 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Cache;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.vanshgandhi.ucladining.Helpers.JsonObjectRequestWithCache;
 import com.vanshgandhi.ucladining.R;
 
 import org.json.JSONException;
@@ -35,6 +37,7 @@ public class FoodDetailActivity extends AppCompatActivity
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_detail);
+        final TextView ingredientsTextView = (TextView) findViewById(R.id.ingredients);
         RequestQueue queue = Volley.newRequestQueue(this);
         Bundle args = getIntent().getExtras();
         String title = "Name of Food";
@@ -61,32 +64,50 @@ public class FoodDetailActivity extends AppCompatActivity
                 Snackbar.make(view, "Saved to Favorites", Snackbar.LENGTH_LONG).show();
             }
         });
+
         String url = "https://api.import.io/store/data/eacba959-1feb-4119-9388-bbb5cd4fdfff/_query?input/webpage/url=http%3A%2F%2Fmenu.ha.ucla.edu%2Ffoodpro%2Frecipedetail.asp%3FRecipeNumber%3D" + recipeNumber + "%26PortionSize%3D" + portionSize + "&_user=22403bda-b7eb-4c87-904a-78de1838426c&_apikey=22403bdab7eb4c87904a78de1838426c6e7d3048637d4bbae71657eb53b31c47d987e5e1cb53206a5fac41e1b938b1abcbb0ed68909ebb9d9e75447cc09546577d6725bd3f2bee95e827ee604fa7d84c";
-        //String url = URLEncoder.encode("http://menu.ha.ucla.edu/foodpro/recipedetail.asp?RecipeNumber=979485&PortionSize=1");
+        //TODO: split url up into smaller segments
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, "", new Response.Listener<JSONObject>()
+        Cache.Entry entry = queue.getCache().get(url);
+        if(entry != null)
         {
-            @Override
-            public void onResponse(JSONObject response)
-            {
-                try {
-                    String ingredients = processResponse(response);
-                    ((TextView) findViewById(R.id.ingredients)).setText(ingredients);
-                }
-                catch (JSONException e) {
-                    ((TextView) findViewById(R.id.ingredients)).setText("Error");
-                }
+            String data = new String(entry.data);
+            String ingredients = null;
+            try {
+                ingredients = processResponse(new JSONObject(data));
+                Toast.makeText(this, "It worked!", Toast.LENGTH_SHORT).show();
             }
-        }, new Response.ErrorListener()
-        {
-            @Override
-            public void onErrorResponse(VolleyError error)
-            {
-                ((TextView) findViewById(R.id.ingredients)).setText("Error");
+            catch (JSONException e) {
+                ingredientsTextView.setText("Error");
             }
-        });
+            ingredientsTextView.setText(ingredients);
+        }
+        else {
+            JsonObjectRequestWithCache request = new JsonObjectRequestWithCache(Request.Method.GET, url, new Response.Listener<JSONObject>()
+            {
+                @Override
+                public void onResponse(JSONObject response)
+                {
+                    try {
+                        String ingredients = processResponse(response);
+                        ingredientsTextView.setText(ingredients);
+                    }
+                    catch (JSONException e) {
+                        ingredientsTextView.setText("Error");
+                    }
+                }
+            }, new Response.ErrorListener()
+            {
+                @Override
+                public void onErrorResponse(VolleyError error)
+                {
+                    ingredientsTextView.setText("Error");
+                }
+            });
 
-        queue.add(request);
+            request.setShouldCache(true);
+            queue.add(request);
+        }
     }
 
 

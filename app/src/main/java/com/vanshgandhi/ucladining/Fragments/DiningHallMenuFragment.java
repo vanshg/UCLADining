@@ -7,15 +7,16 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
+import com.android.volley.Cache;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.vanshgandhi.ucladining.Activities.FoodDetailActivity;
 import com.vanshgandhi.ucladining.Activities.MainActivity;
 import com.vanshgandhi.ucladining.Adapters.MenuAdapter;
+import com.vanshgandhi.ucladining.Helpers.JsonObjectRequestWithCache;
 import com.vanshgandhi.ucladining.Models.FoodItem;
 import com.vanshgandhi.ucladining.Models.Menu;
 import com.vanshgandhi.ucladining.R;
@@ -68,7 +69,7 @@ public class DiningHallMenuFragment extends ListFragment
         RequestQueue queue = Volley.newRequestQueue(getContext());
         int hall = getArguments().getInt(ARG_HALL_NUMBER);
         menu = new Menu(hall);
-        String url;
+        final String url;
         String baseUrl = "https://api.import.io/store/data/";
         String twoMeal = "f20fc91a-caf1-409c-9322-efa0ef770223/_query?input/webpage/url=";
         String threeMeal = "d90c4352-d57c-4773-9064-4af17341beef/_query?input/webpage/url=";
@@ -81,58 +82,92 @@ public class DiningHallMenuFragment extends ListFragment
         {
             url = baseUrl + twoMeal + uclaBaseUrl + fullMenu + apiKey;
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, "", new Response.Listener<JSONObject>()
+            Cache cache = queue.getCache();
+            Cache.Entry entry = cache.get(url);
+            if(entry != null)
             {
-                @Override
-                public void onResponse(JSONObject response)
+                String data = new String(entry.data);
+                try {
+                    JSONObject response = new JSONObject(data);
+                    processList(response, false);
+                }
+                catch (JSONException e) {
+                    foodItems.add(new FoodItem("Error"));
+                    setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
+                    cache.remove(url);
+                }
+            }
+            else {
+                JsonObjectRequestWithCache request = new JsonObjectRequestWithCache(Request.Method.GET, url, new Response.Listener<JSONObject>()
                 {
-                    try {
-                        processList(response, false);
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        try {
+                            processList(response, false);
+                        }
+                        catch (JSONException e) {
+                            foodItems.add(new FoodItem("Error"));
+                            setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
+                        }
                     }
-                    catch (JSONException e) {
+                }, new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
                         foodItems.add(new FoodItem("Error"));
                         setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
                     }
-                }
-            }, new Response.ErrorListener()
-            {
-                @Override
-                public void onErrorResponse(VolleyError error)
-                {
-                    foodItems.add(new FoodItem("Error"));
-                    setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
-                }
-            });
+                });
 
-            queue.add(request);
+                queue.add(request);
+            }
         }
         else //if(hall == DENEVE || hall == BPLATE) //3 Meal
         {
             url = baseUrl + threeMeal + fullMenu + apiKey;
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, "", new Response.Listener<JSONObject>()
+            Cache cache = queue.getCache();
+            Cache.Entry entry = cache.get(url);
+            if(entry != null)
             {
-                @Override
-                public void onResponse(JSONObject response)
+                String data = new String(entry.data);
+                try {
+                    JSONObject response = new JSONObject(data);
+                    processList(response, false);
+                }
+                catch (JSONException e) {
+                    foodItems.add(new FoodItem("Error"));
+                    setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
+                    cache.remove(url);
+                }
+            }
+            else {
+                JsonObjectRequestWithCache request = new JsonObjectRequestWithCache(Request.Method.GET, url, new Response.Listener<JSONObject>()
                 {
-                    try {
-                        processList(response, true);
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        try {
+                            processList(response, true);
+                        }
+                        catch (JSONException e) {
+                            foodItems.add(new FoodItem("Error"));
+                            setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
+                        }
                     }
-                    catch (JSONException e) {
+                }, new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
                         foodItems.add(new FoodItem("Error"));
                         setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
                     }
-                }
-            }, new Response.ErrorListener()
-            {
-                @Override
-                public void onErrorResponse(VolleyError error)
-                {
-                    foodItems.add(new FoodItem("Error"));
-                    setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
-                }
-            });
+                });
 
-            queue.add(request);
+                queue.add(request);
+            }
         }
 
     }
