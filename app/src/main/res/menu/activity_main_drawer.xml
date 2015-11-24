@@ -6,14 +6,14 @@
             android:id="@+id/dining_hall"
             android:icon="@drawable/ic_dining_hall"
             android:title="@string/dining_hall"/>
-        <item
-            android:id="@+id/quick_service"
-            android:icon="@drawable/ic_quick_eat"
-            android:title="@string/quick_service"/>
-        <item
-            android:id="@+id/hours"
-            android:icon="@drawable/ic_time"
-            android:title="@string/hours"/>
+        <!--<item-->
+            <!--android:id="@+id/quick_service"-->
+            <!--android:icon="@drawable/ic_quick_eat"-->
+            <!--android:title="@string/quick_service"/>-->
+        <!--<item-->
+            <!--android:id="@+id/hours"-->
+            <!--android:icon="@drawable/ic_time"-->
+            <!--android:title="@string/hours"/>-->
         <item
             android:id="@+id/swipe_manager"
             android:icon="@drawable/ic_swipes"
@@ -22,10 +22,10 @@
 
     <item android:title="@string/other">
         <menu>
-            <item
-                android:id="@+id/settings"
-                android:icon="@drawable/ic_settings"
-                android:title="@string/settings"/>
+            <!--<item-->
+                <!--android:id="@+id/settings"-->
+                <!--android:icon="@drawable/ic_settings"-->
+                <!--android:title="@string/settings"/>-->
             <item
                 android:id="@+id/share"
                 android:icon="@drawable/ic_share"

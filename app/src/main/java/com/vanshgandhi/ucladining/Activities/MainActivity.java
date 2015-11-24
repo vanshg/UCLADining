@@ -22,8 +22,6 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.vanshgandhi.ucladining.Fragments.DiningHallMenusHolderFragment;
-import com.vanshgandhi.ucladining.Fragments.HoursFragment;
-import com.vanshgandhi.ucladining.Fragments.QuickServiceMenusHolderFragment;
 import com.vanshgandhi.ucladining.Fragments.SwipesFragment;
 import com.vanshgandhi.ucladining.R;
 
@@ -96,11 +94,10 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_select_date) {
-            new DatePickerFragment().show(getFragmentManager(), "datePicker");
-            return true;
-        }
+//        if (id == R.id.action_select_date) {
+//            new DatePickerFragment().show(getFragmentManager(), "datePicker");
+//            return true;
+//        }
         
         return super.onOptionsItemSelected(item);
     }
@@ -117,27 +114,27 @@ public class MainActivity extends AppCompatActivity
                         DiningHallMenusHolderFragment.newInstance()).commit();
             }
         }
-        else if (id == R.id.quick_service) {
-            if (!item.isChecked()) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                        QuickServiceMenusHolderFragment.newInstance()).commit();
-            }
-        }
-        else if (id == R.id.hours) {
-            if (!item.isChecked()) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                        HoursFragment.newInstance()).commit();
-            }
-        }
+//        else if (id == R.id.quick_service) {
+//            if (!item.isChecked()) {
+//                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+//                        QuickServiceMenusHolderFragment.newInstance()).commit();
+//            }
+//        }
+//        else if (id == R.id.hours) {
+//            if (!item.isChecked()) {
+//                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+//                        HoursFragment.newInstance()).commit();
+//            }
+//        }
         else if (id == R.id.swipe_manager) {
             if (!item.isChecked()) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
                         SwipesFragment.newInstance()).commit();
             }
         }
-        else if (id == R.id.settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
-        }
+//        else if (id == R.id.settings) {
+//            startActivity(new Intent(this, SettingsActivity.class));
+//        }
         else if (id == R.id.share) {
             String text = "Download this app from " +
                     "https://play.google.com/store/apps/details?id=com.vanshgandhi.ucladining";
