@@ -126,7 +126,7 @@ public class DiningHallMenuFragment extends ListFragment
         }
         else //if(hall == DENEVE || hall == BPLATE) //3 Meal
         {
-            url = baseUrl + threeMeal + fullMenu + apiKey;
+            url = baseUrl + threeMeal + uclaBaseUrl + fullMenu + apiKey;
             Cache cache = queue.getCache();
             Cache.Entry entry = cache.get(url);
             if(entry != null)
@@ -182,7 +182,6 @@ public class DiningHallMenuFragment extends ListFragment
             return;
         }
 
-        System.out.println(jsonArray.toString());
         String lunch;
         String dinner;
         Document doc;
@@ -235,7 +234,6 @@ public class DiningHallMenuFragment extends ListFragment
                 FoodItem item = new FoodItem(title);
                 String href = element.select("a").attr("href");
                 if (href.contains("recipedetail.asp")) {
-                    System.out.println(href);
                     item.setRecipeNumber(href.substring(30, 36));
                     item.setPortionSize(href.substring(49));
                 }
