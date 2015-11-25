@@ -3,7 +3,6 @@ package com.vanshgandhi.ucladining.Fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
@@ -18,8 +17,6 @@ import com.vanshgandhi.ucladining.Activities.MainActivity;
 import com.vanshgandhi.ucladining.Adapters.MenuAdapter;
 import com.vanshgandhi.ucladining.Helpers.JsonObjectRequestWithCache;
 import com.vanshgandhi.ucladining.Models.FoodItem;
-import com.vanshgandhi.ucladining.Models.Menu;
-import com.vanshgandhi.ucladining.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,9 +28,12 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
-public class DiningHallMenuFragment extends ListFragment
+public class DiningHallMenuFragment extends ExpandableListFragment
 {
     MainActivity mainActivity;
 
@@ -44,9 +44,7 @@ public class DiningHallMenuFragment extends ListFragment
     private static final int FEAST  = 2;
     private static final int BPLATE = 3;
 
-    private ArrayList<String>   foodNames = new ArrayList<>();
-    private ArrayList<FoodItem> foodItems = new ArrayList<>();
-    private Menu menu;
+    private static final String KEY = "KEY";
 
     public static DiningHallMenuFragment newInstance(int hallNumber)
     {
@@ -66,9 +64,8 @@ public class DiningHallMenuFragment extends ListFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        RequestQueue queue = Volley.newRequestQueue(getContext());
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
         int hall = getArguments().getInt(ARG_HALL_NUMBER);
-        menu = new Menu(hall);
         final String url;
         String baseUrl = "https://api.import.io/store/data/";
         String twoMeal = "f20fc91a-caf1-409c-9322-efa0ef770223/_query?input/webpage/url=";
@@ -84,16 +81,14 @@ public class DiningHallMenuFragment extends ListFragment
 
             Cache cache = queue.getCache();
             Cache.Entry entry = cache.get(url);
-            if(entry != null)
-            {
+            if (entry != null) {
                 String data = new String(entry.data);
                 try {
                     JSONObject response = new JSONObject(data);
                     processList(response, false);
                 }
                 catch (JSONException e) {
-                    foodItems.add(new FoodItem("Error"));
-                    setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
+                    setListAdapter(new MenuAdapter(getActivity()));
                     cache.remove(url);
                 }
             }
@@ -107,8 +102,7 @@ public class DiningHallMenuFragment extends ListFragment
                             processList(response, false);
                         }
                         catch (JSONException e) {
-                            foodItems.add(new FoodItem("Error"));
-                            setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
+                            setListAdapter(new MenuAdapter(getActivity()));
                         }
                     }
                 }, new Response.ErrorListener()
@@ -116,8 +110,7 @@ public class DiningHallMenuFragment extends ListFragment
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-                        foodItems.add(new FoodItem("Error"));
-                        setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
+                        setListAdapter(new MenuAdapter(getActivity()));
                     }
                 });
 
@@ -129,16 +122,14 @@ public class DiningHallMenuFragment extends ListFragment
             url = baseUrl + threeMeal + uclaBaseUrl + fullMenu + apiKey;
             Cache cache = queue.getCache();
             Cache.Entry entry = cache.get(url);
-            if(entry != null)
-            {
+            if (entry != null) {
                 String data = new String(entry.data);
                 try {
                     JSONObject response = new JSONObject(data);
                     processList(response, false);
                 }
                 catch (JSONException e) {
-                    foodItems.add(new FoodItem("Error"));
-                    setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
+                    setListAdapter(new MenuAdapter(getActivity()));
                     cache.remove(url);
                 }
             }
@@ -152,8 +143,7 @@ public class DiningHallMenuFragment extends ListFragment
                             processList(response, true);
                         }
                         catch (JSONException e) {
-                            foodItems.add(new FoodItem("Error"));
-                            setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
+                            setListAdapter(new MenuAdapter(getActivity()));
                         }
                     }
                 }, new Response.ErrorListener()
@@ -161,8 +151,7 @@ public class DiningHallMenuFragment extends ListFragment
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-                        foodItems.add(new FoodItem("Error"));
-                        setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
+                        setListAdapter(new MenuAdapter(getActivity()));
                     }
                 });
 
@@ -174,7 +163,10 @@ public class DiningHallMenuFragment extends ListFragment
 
     private void processList(JSONObject result, boolean threeMeal) throws JSONException
     {
+        List<Map<String, String>>  meals = new ArrayList<>();
+        List<List<Map<String, FoodItem>>> food = new ArrayList<>();
         JSONArray jsonArray;
+
         if (result.has("results")) {
             jsonArray = result.getJSONArray("results");
         }
@@ -182,39 +174,47 @@ public class DiningHallMenuFragment extends ListFragment
             return;
         }
 
+        String breakfast;
         String lunch;
         String dinner;
         Document doc;
         Elements ul;
         Elements li;
-        if(threeMeal) {
-            foodItems.add(new FoodItem("BREAKFAST"));
+        if (threeMeal) {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
                 if (jsonObject.has("breakfast")) {
-                    lunch = jsonObject.getString("breakfast");
+                    breakfast = jsonObject.getString("breakfast");
                 }
                 else {
                     continue;
                 }
-                doc = Jsoup.parse(lunch);
+
+                Map<String, String> thisMeal = new HashMap<>();
+                List<Map<String, FoodItem>> breakfastItems = new ArrayList<>();
+                meals.add(thisMeal);
+                thisMeal.put(KEY, "Breakfast");
+
+                doc = Jsoup.parse(breakfast);
                 ul = doc.select("ul");
                 li = ul.select("li"); // select all li from ul
                 for (Element element : li) {
                     String title = element.select("a").text();
-                    FoodItem item = new FoodItem(title);
+                    final FoodItem item = new FoodItem(title);
                     String href = element.select("a").attr("href");
                     if (href.contains("recipedetail.asp")) {
                         item.setRecipeNumber(href.substring(30, 36));
                         item.setPortionSize(href.substring(49));
                     }
-                    foodItems.add(item);
-                }
 
+                    Map<String, FoodItem> thisFood = new HashMap<>();
+                    breakfastItems.add(thisFood);
+                    thisFood.put(KEY, item);
+                }
+                food.add(breakfastItems);
             }
         }
-        foodItems.add(new FoodItem("LUNCH"));
 
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -226,22 +226,31 @@ public class DiningHallMenuFragment extends ListFragment
                 continue;
             }
 
+            Map<String, String> thisMeal = new HashMap<>();
+            List<Map<String, FoodItem>> lunchItems = new ArrayList<>();
+            meals.add(thisMeal);
+            thisMeal.put(KEY, "Lunch");
+
             doc = Jsoup.parse(lunch);
             ul = doc.select("ul");
             li = ul.select("li"); // select all li from ul
             for (Element element : li) {
                 String title = element.select("a").text();
-                FoodItem item = new FoodItem(title);
+                final FoodItem item = new FoodItem(title);
                 String href = element.select("a").attr("href");
                 if (href.contains("recipedetail.asp")) {
                     item.setRecipeNumber(href.substring(30, 36));
                     item.setPortionSize(href.substring(49));
                 }
-                foodItems.add(item);
+                Map<String, FoodItem> thisFood = new HashMap<>();
+                lunchItems.add(thisFood);
+                thisFood.put(KEY, item);
             }
+            food.add(lunchItems);
 
         }
-        foodItems.add(new FoodItem("DINNER"));
+
+
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -251,21 +260,34 @@ public class DiningHallMenuFragment extends ListFragment
             else {
                 continue;
             }
+
+            Map<String, String> thisMeal = new HashMap<>();
+            List<Map<String, FoodItem>> dinnerItems = new ArrayList<>();
+            meals.add(thisMeal);
+            thisMeal.put(KEY, "Lunch");
+
             doc = Jsoup.parse(dinner);
             ul = doc.select("ul");
             li = ul.select("li"); // select all li from ul
             for (Element element : li) {
                 String title = element.select("a").text();
-                FoodItem item = new FoodItem(title);
+                final FoodItem item = new FoodItem(title);
                 String href = element.select("a").attr("href");
                 if (href.contains("recipedetail.asp")) {
                     item.setRecipeNumber(href.substring(30, 36));
                     item.setPortionSize(href.substring(49));
                 }
-                foodItems.add(item);
+                Map<String, FoodItem> thisFood = new HashMap<>();
+                dinnerItems.add(thisFood);
+                thisFood.put(KEY, item);
             }
+            food.add(dinnerItems);
         }
-        setListAdapter(new MenuAdapter(getContext(), R.layout.list_item_food, foodItems));
+        MenuAdapter menuAdapter = new MenuAdapter(getActivity(), meals,
+                android.R.layout.simple_expandable_list_item_1, new String[] { KEY },
+                new int[] { android.R.id.text1 }, food, android.R.layout.simple_expandable_list_item_2,
+                new String[] { KEY }, new int[] { android.R.id.text1 });
+        setListAdapter(menuAdapter);
     }
 
 
@@ -287,7 +309,7 @@ public class DiningHallMenuFragment extends ListFragment
     {
         super.onListItemClick(l, v, position, id);
 
-        Intent intent = new Intent(getContext(), FoodDetailActivity.class);
+        Intent intent = new Intent(getActivity(), FoodDetailActivity.class);
         intent.putExtra("RECIPE_NUMBER", ((FoodItem) l.getAdapter().getItem(position)).getRecipeNumber());
         intent.putExtra("PORTION_SIZE", ((FoodItem) l.getAdapter().getItem(position)).getPortionSize());
         intent.putExtra("TITLE", ((FoodItem) l.getAdapter().getItem(position)).getTitle());
