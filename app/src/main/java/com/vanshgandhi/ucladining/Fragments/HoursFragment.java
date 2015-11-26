@@ -17,6 +17,17 @@ public class HoursFragment extends Fragment
     private MainActivity mainActivity;
     private Toolbar      toolbar;
 
+    private static final String[][] regularHours = {
+            {"7-11", "11-5", "5-9", "9-2"}, //Bcafe
+            {"7-9", "11-2", "5-8", null},   //Bplate
+            {null, "11-4", "5-9", "9-12"},  //1919
+            {null, "11-2", "5-9", null},    //Covel
+            {"7-10", "11-2", "5-8", "9-12"},//DeNeve
+            {"7-11", "11-3", null, null},   //Deneve on the go
+            {null, "11-2", "5-8", null},    //Feat
+            {"7-11", "12-4", "5-9", "9-12"} //Rendez
+    };
+
 
     public static HoursFragment newInstance()
     {
