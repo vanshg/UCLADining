@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/dining_hall"
+        android:icon="@drawable/ic_dining_hall"
+        android:title="@string/halls"/>
+    <item
+        android:id="@+id/quick_service"
+        android:icon="@drawable/ic_quick_eat"
+        android:title="@string/cafes"/>
+    <item
+        android:id="@+id/hours"
+        android:icon="@drawable/ic_time"
+        android:title="@string/hours"/>
+    <item
+        android:id="@+id/swipe_manager"
+        android:icon="@drawable/ic_swipes"
+        android:title="@string/swipes"/>
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings"/>
+</menu>

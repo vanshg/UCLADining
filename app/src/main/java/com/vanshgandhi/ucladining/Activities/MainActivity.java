@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,6 +22,8 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnMenuTabSelectedListener;
 import com.vanshgandhi.ucladining.Fragments.DiningHallMenusHolderFragment;
 import com.vanshgandhi.ucladining.Fragments.SwipesFragment;
 import com.vanshgandhi.ucladining.R;
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity
 {
     DrawerLayout          drawer;
     ActionBarDrawerToggle toggle;
+    BottomBar bottomBar;
     private final String[][] titles = {
             {"COVEL", "DE NEVE", "FEAST", "BPLATE"},
             {"RENDEZVOUS", "CAFé 1919", "BCAFé"}};
@@ -62,6 +66,18 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        bottomBar = BottomBar.attach(this, savedInstanceState);
+        bottomBar.setActiveTabColor(ContextCompat.getColor(this, R.color.colorAccent));
+        bottomBar.setItemsFromMenu(R.menu.activity_main_bottom_bar, new OnMenuTabSelectedListener() {
+            @Override
+            public void onMenuItemSelected(int resId) {
+                if (resId == R.id.dining_hall) {
+                    Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
+                    // the user selected item number one
+                }
+            }
+        });
 
         c = Calendar.getInstance();
 
