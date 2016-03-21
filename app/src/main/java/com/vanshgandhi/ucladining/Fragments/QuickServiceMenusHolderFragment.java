@@ -71,7 +71,7 @@ public class QuickServiceMenusHolderFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        mainActivity.setupNavigationDrawer(toolbar);
+        //mainActivity.setupNavigationDrawer(toolbar);
     }
     
 }

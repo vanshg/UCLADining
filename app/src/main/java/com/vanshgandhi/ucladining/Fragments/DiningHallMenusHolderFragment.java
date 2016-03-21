@@ -69,6 +69,6 @@ public class DiningHallMenusHolderFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        mainActivity.setupNavigationDrawer(toolbar);
+        //mainActivity.setupNavigationDrawer(toolbar);
     }
 }

@@ -3,42 +3,29 @@ package com.vanshgandhi.ucladining.Activities;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnMenuTabSelectedListener;
+import com.roughike.bottombar.BottomBarFragment;
 import com.vanshgandhi.ucladining.Fragments.DiningHallMenusHolderFragment;
+import com.vanshgandhi.ucladining.Fragments.HoursFragment;
+import com.vanshgandhi.ucladining.Fragments.QuickServiceMenusHolderFragment;
 import com.vanshgandhi.ucladining.Fragments.SwipesFragment;
 import com.vanshgandhi.ucladining.R;
 
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener
 {
-    DrawerLayout          drawer;
-    ActionBarDrawerToggle toggle;
-    BottomBar bottomBar;
-    private final String[][] titles = {
-            {"COVEL", "DE NEVE", "FEAST", "BPLATE"},
-            {"RENDEZVOUS", "CAFé 1919", "BCAFé"}};
+    BottomBar             bottomBar;
+    private final String[][] titles = {{"COVEL", "DE NEVE", "FEAST", "BPLATE"}, {"RENDEZVOUS", "CAFé 1919", "BCAFé"}};
 
     static Calendar c;
 
@@ -48,7 +35,6 @@ public class MainActivity extends AppCompatActivity
 
     public SharedPreferences        preferences;
     public SharedPreferences.Editor editor;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -62,22 +48,41 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
         bottomBar = BottomBar.attach(this, savedInstanceState);
         bottomBar.setActiveTabColor(ContextCompat.getColor(this, R.color.colorAccent));
-        bottomBar.setItemsFromMenu(R.menu.activity_main_bottom_bar, new OnMenuTabSelectedListener() {
-            @Override
-            public void onMenuItemSelected(int resId) {
-                if (resId == R.id.dining_hall) {
-                    Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
-                    // the user selected item number one
-                }
-            }
-        });
+        bottomBar.setFragmentItems(getSupportFragmentManager(), R.id.content_frame,
+                new BottomBarFragment(DiningHallMenusHolderFragment.newInstance(), R.drawable.ic_dining_hall, R.string.halls),
+                new BottomBarFragment(QuickServiceMenusHolderFragment.newInstance(), R.drawable.ic_quick_eat, R.string.cafes),
+                new BottomBarFragment(HoursFragment.newInstance(), R.drawable.ic_time, R.string.hours),
+                new BottomBarFragment(SwipesFragment.newInstance(), R.drawable.ic_swipes, R.string.swipes));
+//        bottomBar.setItemsFromMenu(R.menu.activity_main_bottom_bar, new OnMenuTabSelectedListener()
+//        {
+//            @Override
+//            public void onMenuItemSelected(int id)
+//            {
+//                if (id == R.id.dining_hall) {
+//                    getSupportFragmentManager().beginTransaction()
+//                            .replace(R.id.content_frame,
+//                                    DiningHallMenusHolderFragment.newInstance())
+//                            .commit();
+//                } else if (id == R.id.quick_service) {
+//                    getSupportFragmentManager().beginTransaction()
+//                            .replace(R.id.content_frame,
+//                                    QuickServiceMenusHolderFragment.newInstance())
+//                            .commit();
+//                } else if (id == R.id.hours) {
+//                    getSupportFragmentManager().beginTransaction()
+//                            .replace(R.id.content_frame, HoursFragment.newInstance())
+//                            .commit();
+//                } else if (id == R.id.swipe_manager) {
+//                    getSupportFragmentManager().beginTransaction()
+//                            .replace(R.id.content_frame, SwipesFragment.newInstance())
+//                            .commit();
+//                } else if (id == R.id.settings) {
+//                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+//                }
+//            }
+//        });
 
         c = Calendar.getInstance();
 
@@ -88,11 +93,10 @@ public class MainActivity extends AppCompatActivity
         editor.putInt(DAY_KEY, c.get(Calendar.DAY_OF_MONTH));
         editor.apply();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                DiningHallMenusHolderFragment.newInstance()).commit();
-        navigationView.getMenu().getItem(0).setChecked(true);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_frame, DiningHallMenusHolderFragment.newInstance())
+                .commit();
     }
-    
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -109,92 +113,13 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        
+
 //        if (id == R.id.action_select_date) {
 //            new DatePickerFragment().show(getFragmentManager(), "datePicker");
 //            return true;
 //        }
         
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item)
-    {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.dining_hall) {
-            if (!item.isChecked()) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                        DiningHallMenusHolderFragment.newInstance()).commit();
-            }
-        }
-//        else if (id == R.id.quick_service) {
-//            if (!item.isChecked()) {
-//                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-//                        QuickServiceMenusHolderFragment.newInstance()).commit();
-//            }
-//        }
-//        else if (id == R.id.hours) {
-//            if (!item.isChecked()) {
-//                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-//                        HoursFragment.newInstance()).commit();
-//            }
-//        }
-        else if (id == R.id.swipe_manager) {
-            if (!item.isChecked()) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                        SwipesFragment.newInstance()).commit();
-            }
-        }
-//        else if (id == R.id.settings) {
-//            startActivity(new Intent(this, SettingsActivity.class));
-//        }
-        else if (id == R.id.share) {
-            String text = "Download this app from " +
-                    "https://play.google.com/store/apps/details?id=com.vanshgandhi.ucladining";
-            try {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, text);
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
-            }
-            catch (Exception e) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText(getString(R.string.app_name), text);
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(this, "Link copied to clipboard", Toast.LENGTH_SHORT).show();
-            }
-        }
-        else if (id == R.id.about) {
-            startActivity(new Intent(this, AboutActivity.class));
-        }
-
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    public void setupNavigationDrawer(Toolbar toolbar)
-    {
-        toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        {
-            @Override
-            public void onDrawerOpened(View drawerView)
-            {
-                super.onDrawerOpened(drawerView);
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView)
-            {
-                super.onDrawerClosed(drawerView);
-            }
-        };
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
     }
 
     public String[][] getTitles()
@@ -204,11 +129,9 @@ public class MainActivity extends AppCompatActivity
 
     public int getYear()
     {
-        if(preferences.contains(YEAR_KEY)) {
+        if (preferences.contains(YEAR_KEY)) {
             return preferences.getInt(YEAR_KEY, -1);
-        }
-        else
-        {
+        } else {
             Calendar calendar = Calendar.getInstance();
             return calendar.get(Calendar.YEAR);
         }
@@ -216,11 +139,9 @@ public class MainActivity extends AppCompatActivity
 
     public int getDay()
     {
-        if(preferences.contains(DAY_KEY)) {
+        if (preferences.contains(DAY_KEY)) {
             return preferences.getInt(DAY_KEY, -1);
-        }
-        else
-        {
+        } else {
             Calendar calendar = Calendar.getInstance();
             return calendar.get(Calendar.DAY_OF_MONTH);
         }
@@ -228,11 +149,9 @@ public class MainActivity extends AppCompatActivity
 
     public int getMonth()
     {
-        if(preferences.contains(MONTH_KEY)) {
+        if (preferences.contains(MONTH_KEY)) {
             return preferences.getInt(MONTH_KEY, -1);
-        }
-        else
-        {
+        } else {
             Calendar calendar = Calendar.getInstance();
             return calendar.get(Calendar.MONTH);
         }
@@ -257,7 +176,9 @@ public class MainActivity extends AppCompatActivity
         {
             preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             // Use the current date as the default date in the picker
-            DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, preferences.getInt(YEAR_KEY, 0), preferences.getInt(MONTH_KEY, 0), preferences.getInt(DAY_KEY, 0));
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(), this,
+                    preferences.getInt(YEAR_KEY, 0), preferences.getInt(MONTH_KEY, 0),
+                    preferences.getInt(DAY_KEY, 0));
             DatePicker datePicker = dialog.getDatePicker();
             c.add(Calendar.DAY_OF_MONTH, 7); //View menus 1 week in advance
             datePicker.setMaxDate(c.getTimeInMillis());
