@@ -135,7 +135,6 @@ public class SwipesFragment extends Fragment implements View.OnClickListener//im
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-//        mainActivity.setupNavigationDrawer(toolbar);
     }
 
     @Override
