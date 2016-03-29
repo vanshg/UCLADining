@@ -5,154 +5,262 @@ package com.vanshgandhi.ucladining.Models;
  */
 public class Nutrition
 {
-    private int servingSize;
-    private int amountPerServing;
-    private int calories;
-    private int fatCalories;
-    private int totalFat;
-    private int saturatedFat;
-    private int transFat;
-    private int cholesterol;
-    private int sodium;
-    private int totalCarbohydrates;
-    private int fiber;
-    private int sugars;
-    private int protein;
+    private String servingSize;
+    private String amountPerServing;
+    private String calories;
+    private String fatCalories;
+    private String totalFatPercent;
+    private String totalFatGrams;
+    private String saturatedFatPercent;
+    private String saturatedFatGrams;
+    private String transFatPercent;
+    private String cholesterolPercent;
+    private String cholesterolGrams;
+    private String sodiumPercent;
+    private String sodiumGrams;
+    private String totalCarbohydratesPercent;
+    private String totalCarbohydratesGrams;
+    private String fiberPercent;
+    private String fiberGrams;
+    private String sugarsGrams;
+    private String proteinGrams;
+    private String vitaminAPercent;
+    private String vitaminCPercent;
+    private String calciumPercent;
+    private String ironPercent;
 
     public Nutrition()
     {
 
     }
 
-    public int getServingSize()
+    public String getServingSize()
     {
         return servingSize;
     }
 
-    public void setServingSize(int servingSize)
+    public void setServingSize(String servingSize)
     {
         this.servingSize = servingSize;
     }
 
-    public int getAmountPerServing()
+    public String getAmountPerServing()
     {
         return amountPerServing;
     }
 
-    public void setAmountPerServing(int amountPerServing)
+    public void setAmountPerServing(String amountPerServing)
     {
         this.amountPerServing = amountPerServing;
     }
 
-    public int getCalories()
+    public String getCalories()
     {
         return calories;
     }
 
-    public void setCalories(int calories)
+    public void setCalories(String calories)
     {
         this.calories = calories;
     }
 
-    public int getFatCalories()
+    public String getFatCalories()
     {
         return fatCalories;
     }
 
-    public void setFatCalories(int fatCalories)
+    public void setFatCalories(String fatCalories)
     {
         this.fatCalories = fatCalories;
     }
 
-    public int getTotalFat()
+    public String getTotalFatPercent()
     {
-        return totalFat;
+        return totalFatPercent;
     }
 
-    public void setTotalFat(int totalFat)
+    public void setTotalFatPercent(String totalFatPercent)
     {
-        this.totalFat = totalFat;
+        this.totalFatPercent = totalFatPercent;
     }
 
-    public int getSaturatedFat()
+    public String getTotalFatGrams()
     {
-        return saturatedFat;
+        return totalFatGrams;
     }
 
-    public void setSaturatedFat(int saturatedFat)
+    public void setTotalFatGrams(String totalFatGrams)
     {
-        this.saturatedFat = saturatedFat;
+        this.totalFatGrams = totalFatGrams;
     }
 
-    public int getTransFat()
+    public String getSaturatedFatPercent()
     {
-        return transFat;
+        return saturatedFatPercent;
     }
 
-    public void setTransFat(int transFat)
+    public void setSaturatedFatPercent(String saturatedFatPercent)
     {
-        this.transFat = transFat;
+        this.saturatedFatPercent = saturatedFatPercent;
     }
 
-    public int getCholesterol()
+    public String getSaturatedFatGrams()
     {
-        return cholesterol;
+        return saturatedFatGrams;
     }
 
-    public void setCholesterol(int cholesterol)
+    public void setSaturatedFatGrams(String saturatedFatGrams)
     {
-        this.cholesterol = cholesterol;
+        this.saturatedFatGrams = saturatedFatGrams;
     }
 
-    public int getSodium()
+    public String getTransFatPercent()
     {
-        return sodium;
+        return transFatPercent;
     }
 
-    public void setSodium(int sodium)
+    public void setTransFatPercent(String transFatPercent)
     {
-        this.sodium = sodium;
+        this.transFatPercent = transFatPercent;
     }
 
-    public int getTotalCarbohydrates()
+    public String getCholesterolPercent()
     {
-        return totalCarbohydrates;
+        return cholesterolPercent;
     }
 
-    public void setTotalCarbohydrates(int totalCarbohydrates)
+    public void setCholesterolPercent(String cholesterolPercent)
     {
-        this.totalCarbohydrates = totalCarbohydrates;
+        this.cholesterolPercent = cholesterolPercent;
     }
 
-    public int getFiber()
+    public String getCholesterolGrams()
     {
-        return fiber;
+        return cholesterolGrams;
     }
 
-    public void setFiber(int fiber)
+    public void setCholesterolGrams(String cholesterolGrams)
     {
-        this.fiber = fiber;
+        this.cholesterolGrams = cholesterolGrams;
     }
 
-    public int getSugars()
+    public String getSodiumPercent()
     {
-        return sugars;
+        return sodiumPercent;
     }
 
-    public void setSugars(int sugars)
+    public void setSodiumPercent(String sodiumPercent)
     {
-        this.sugars = sugars;
+        this.sodiumPercent = sodiumPercent;
     }
 
-    public int getProtein()
+    public String getSodiumGrams()
     {
-        return protein;
+        return sodiumGrams;
     }
 
-    public void setProtein(int protein)
+    public void setSodiumGrams(String sodiumGrams)
     {
-        this.protein = protein;
+        this.sodiumGrams = sodiumGrams;
     }
 
-    //TODO: Add vitamins dynamically somehow
+    public String getTotalCarbohydratesPercent()
+    {
+        return totalCarbohydratesPercent;
+    }
+
+    public void setTotalCarbohydratesPercent(String totalCarbohydratesPercent)
+    {
+        this.totalCarbohydratesPercent = totalCarbohydratesPercent;
+    }
+
+    public String getTotalCarbohydratesGrams()
+    {
+        return totalCarbohydratesGrams;
+    }
+
+    public void setTotalCarbohydratesGrams(String totalCarbohydratesGrams)
+    {
+        this.totalCarbohydratesGrams = totalCarbohydratesGrams;
+    }
+
+    public String getFiberPercent()
+    {
+        return fiberPercent;
+    }
+
+    public void setFiberPercent(String fiberPercent)
+    {
+        this.fiberPercent = fiberPercent;
+    }
+
+    public String getFiberGrams()
+    {
+        return fiberGrams;
+    }
+
+    public void setFiberGrams(String fiberGrams)
+    {
+        this.fiberGrams = fiberGrams;
+    }
+
+    public String getSugarsGrams()
+    {
+        return sugarsGrams;
+    }
+
+    public void setSugarsGrams(String sugarsGrams)
+    {
+        this.sugarsGrams = sugarsGrams;
+    }
+
+    public String getProteinGrams()
+    {
+        return proteinGrams;
+    }
+
+    public void setProteinGrams(String proteinGrams)
+    {
+        this.proteinGrams = proteinGrams;
+    }
+
+    public String getVitaminAPercent()
+    {
+        return vitaminAPercent;
+    }
+
+    public void setVitaminAPercent(String vitaminAPercent)
+    {
+        this.vitaminAPercent = vitaminAPercent;
+    }
+
+    public String getVitaminCPercent()
+    {
+        return vitaminCPercent;
+    }
+
+    public void setVitaminCPercent(String vitaminCPercent)
+    {
+        this.vitaminCPercent = vitaminCPercent;
+    }
+
+    public String getCalciumPercent()
+    {
+        return calciumPercent;
+    }
+
+    public void setCalciumPercent(String calciumPercent)
+    {
+        this.calciumPercent = calciumPercent;
+    }
+
+    public String getIronPercent()
+    {
+        return ironPercent;
+    }
+
+    public void setIronPercent(String ironPercent)
+    {
+        this.ironPercent = ironPercent;
+    }
 }

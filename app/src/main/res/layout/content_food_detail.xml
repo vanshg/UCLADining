@@ -17,17 +17,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <!--<include layout="@layout/nutrition_table"/>-->
-        <!--android:layout_below="@id/nutrition_facts"-->
+        <include
+            android:id="@+id/nutrition_table"
+            layout="@layout/nutrition_table"/>
 
         <TextView
             android:id="@+id/ingredients_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/text_margin"
-            android:layout_marginRight="@dimen/text_margin"
-            android:layout_marginLeft="@dimen/text_margin"
+            android:layout_below="@id/nutrition_table"
             android:layout_marginBottom="12dp"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:layout_marginRight="@dimen/text_margin"
+            android:layout_marginTop="@dimen/text_margin"
             android:text="@string/ingredients"
             android:textStyle="bold"/>
 
@@ -36,9 +38,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ingredients_label"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginRight="16dp"/>
 
 
     </RelativeLayout>

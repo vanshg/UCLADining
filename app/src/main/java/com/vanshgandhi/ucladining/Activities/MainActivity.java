@@ -56,34 +56,6 @@ public class MainActivity extends AppCompatActivity
                 new BottomBarFragment(QuickServiceMenusHolderFragment.newInstance(), R.drawable.ic_quick_eat, R.string.cafes),
                 new BottomBarFragment(HoursFragment.newInstance(), R.drawable.ic_time, R.string.hours),
                 new BottomBarFragment(SwipesFragment.newInstance(), R.drawable.ic_swipes, R.string.swipes));
-//        bottomBar.setItemsFromMenu(R.menu.activity_main_bottom_bar, new OnMenuTabSelectedListener()
-//        {
-//            @Override
-//            public void onMenuItemSelected(int id)
-//            {
-//                if (id == R.id.dining_hall) {
-//                    getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.content_frame,
-//                                    DiningHallMenusHolderFragment.newInstance())
-//                            .commit();
-//                } else if (id == R.id.quick_service) {
-//                    getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.content_frame,
-//                                    QuickServiceMenusHolderFragment.newInstance())
-//                            .commit();
-//                } else if (id == R.id.hours) {
-//                    getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.content_frame, HoursFragment.newInstance())
-//                            .commit();
-//                } else if (id == R.id.swipe_manager) {
-//                    getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.content_frame, SwipesFragment.newInstance())
-//                            .commit();
-//                } else if (id == R.id.settings) {
-//                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-//                }
-//            }
-//        });
 
         c = Calendar.getInstance();
 
@@ -115,10 +87,10 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-//        if (id == R.id.action_select_date) {
-//            new DatePickerFragment().show(getFragmentManager(), "datePicker");
-//            return true;
-//        }
+        if (id == R.id.action_select_date) {
+            new DatePickerFragment().show(getFragmentManager(), "datePicker");
+            return true;
+        }
         
         return super.onOptionsItemSelected(item);
     }
