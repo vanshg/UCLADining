@@ -7,10 +7,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.vanshgandhi.ucladining.Fragments.DiningHallMenuFragment;
 import com.vanshgandhi.ucladining.Fragments.QuickServiceMenuFragment;
 
-/**
- * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
- * one of the sections/tabs/pages.
- */
 public class SectionsPagerAdapter extends FragmentPagerAdapter
 {
     int        type;

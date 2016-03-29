@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomBar = BottomBar.attach(this, savedInstanceState);
+        bottomBar = BottomBar.attachShy((CoordinatorLayout) findViewById(R.id.main_content), findViewById(R.id.content_frame), savedInstanceState);
         bottomBar.setActiveTabColor(ContextCompat.getColor(this, R.color.colorAccent));
         bottomBar.setFragmentItems(getSupportFragmentManager(), R.id.content_frame,
                 new BottomBarFragment(DiningHallMenusHolderFragment.newInstance(), R.drawable.ic_dining_hall, R.string.halls),
@@ -198,4 +199,5 @@ public class MainActivity extends AppCompatActivity
 
         }
     }
+
 }

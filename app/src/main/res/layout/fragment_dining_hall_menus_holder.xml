@@ -19,7 +19,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
         <include
-            layout="@layout/app_bar_tabs" />
+            layout="@layout/app_bar_tabs_spinner" />
 
     </android.support.design.widget.CoordinatorLayout>
 
