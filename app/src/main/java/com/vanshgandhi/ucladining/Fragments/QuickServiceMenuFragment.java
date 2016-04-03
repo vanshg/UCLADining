@@ -1,13 +1,8 @@
 package com.vanshgandhi.ucladining.Fragments;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.view.View;
-import android.widget.ListView;
-
-import com.vanshgandhi.ucladining.Activities.FoodDetailActivity;
 
 import java.util.ArrayList;
 
@@ -56,23 +51,5 @@ public class QuickServiceMenuFragment extends ListFragment
         super.onDetach();
     }
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id)
-    {
-        super.onListItemClick(l, v, position, id);
 
-        Intent intent = new Intent(getContext(), FoodDetailActivity.class);
-        startActivity(intent);
-        //TODO: Proper Transitions
-        // ActivityCompat.startActivity(getActivity(), intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
-
-        /**
-         * TODO: When a menu item is selected, a new activity must be launched, containing details
-         * TODO: about that food item (identfied through a URL?).
-         * TODO: TBD is how information will be passed from fragment to Activity
-         * TODO: Probably through some sort of identifier and the actual activity will get details
-         * TODO: such as Nutrition info, A Picture, and Ingredients
-         */
-        //FoodItem item = getListAdapter().getItem(position);
-    }
 }

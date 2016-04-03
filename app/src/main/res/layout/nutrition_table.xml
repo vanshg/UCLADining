@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/nutrition_margin"
     android:layout_marginRight="@dimen/nutrition_margin"
-    tools:showIn="@layout/content_food_detail">
+    tools:showIn="@layout/food_detail">
 
     <TextView
         android:layout_width="wrap_content"

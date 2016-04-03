@@ -1,7 +1,6 @@
 package com.vanshgandhi.ucladining.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.android.volley.Cache;
 import com.android.volley.Request;
@@ -18,7 +16,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.vanshgandhi.ucladining.Activities.FoodDetailActivity;
 import com.vanshgandhi.ucladining.Activities.MainActivity;
 import com.vanshgandhi.ucladining.Adapters.MenuAdapter;
 import com.vanshgandhi.ucladining.Helpers.GridSpacingItemDecoration;
@@ -305,29 +302,6 @@ public class DiningHallMenuFragment extends Fragment
             DiningHallMenusHolderFragment f = (DiningHallMenusHolderFragment) getParentFragment();
             f.setCurrentHall(getArguments().getInt(ARG_HALL_NUMBER));
         }
-    }
-
-    // @Override
-    public void onListItemClick(ListView l, View v, int position, long id)
-    {
-        //super.onListItemClick(l, v, position, id);
-
-        Intent intent = new Intent(getActivity(), FoodDetailActivity.class);
-        intent.putExtra("RECIPE_NUMBER", ((FoodItem) l.getAdapter().getItem(position)).getRecipeNumber());
-        intent.putExtra("PORTION_SIZE", ((FoodItem) l.getAdapter().getItem(position)).getPortionSize());
-        intent.putExtra("TITLE", ((FoodItem) l.getAdapter().getItem(position)).getTitle());
-        startActivity(intent);
-        //TODO: Proper Transitions
-        // ActivityCompat.startActivity(getActivity(), intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
-
-        /**
-         * TODO: When a menu item is selected, a new activity must be launched, containing details
-         * TODO: about that food item (identfied through a URL?).
-         * TODO: TBD is how information will be passed from fragment to Activity
-         * TODO: Probably through some sort of identifier and the actual activity will get details
-         * TODO: such as Nutrition info, A Picture, and Ingredients
-         */
-        //FoodItem item = getListAdapter().getItem(position);
     }
 
     public String getHallCode(int hall)
