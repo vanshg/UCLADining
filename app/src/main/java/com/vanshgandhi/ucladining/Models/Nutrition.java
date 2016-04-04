@@ -31,7 +31,10 @@ public class Nutrition
 
     public Nutrition()
     {
-
+        vitaminAPercent = "0%";
+        vitaminCPercent = "0%";
+        calciumPercent = "0%";
+        ironPercent = "0%";
     }
 
     public String getServingSize()

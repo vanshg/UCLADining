@@ -89,7 +89,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
                 public void onClick(View v)
                 {
                     AlertDialog dialog = new AlertDialog.Builder(v.getContext()).setView(
-                            R.layout.food_detail).show();
+                            R.layout.food_detail).setPositiveButton("Done", null).setTitle(item.getTitle()).show();
                     tableLayout = (TableLayout) dialog.findViewById(R.id.nutrition_table);
                     ingredientsTextView = (TextView) dialog.findViewById(R.id.ingredients);
                     setInfo(dialog);
@@ -182,13 +182,13 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
                     } else if (temp.startsWith("Protein")) {
                         nutrition.setProteinGrams(splitTemp[1]);
                     } else if (temp.startsWith("Vitamin A")) {
-                        nutrition.setVitaminAPercent(splitTemp[1]);
+                        nutrition.setVitaminAPercent(splitTemp[2]);
                     } else if (temp.startsWith("Vitamin C")) {
-                        nutrition.setVitaminCPercent(splitTemp[1]);
+                        nutrition.setVitaminCPercent(splitTemp[2]);
                     } else if (temp.startsWith("Calcium")) {
-                        nutrition.setCalciumPercent(splitTemp[1]);
+                        nutrition.setCalciumPercent(splitTemp[2]);
                     } else if (temp.startsWith("Iron")) {
-                        nutrition.setIronPercent(splitTemp[1]);
+                        nutrition.setIronPercent(splitTemp[2]);
                     }
                 }
 
