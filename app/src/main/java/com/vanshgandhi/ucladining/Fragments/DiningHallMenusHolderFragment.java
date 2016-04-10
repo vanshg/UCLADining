@@ -3,7 +3,7 @@ package com.vanshgandhi.ucladining.Fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -106,7 +106,7 @@ public class DiningHallMenusHolderFragment extends Fragment
             @Override
             public void onNothingSelected(AdapterView<?> parent)
             {
-                Toast.makeText(getContext(), "?", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "?", Toast.LENGTH_SHORT).show();
             }
         });
         mainActivity.setSupportActionBar(toolbar);
@@ -121,7 +121,7 @@ public class DiningHallMenusHolderFragment extends Fragment
         tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         for (int i = 0; i < 4; i++) {
-            View view = getLayoutInflater(savedInstanceState).inflate(R.layout.tab_layout, null);
+            View view = getActivity().getLayoutInflater().inflate(R.layout.tab_layout, null);
             TextView textView = (TextView) view.findViewById(R.id.open);
             textView.setText(isHallOpen(i) ? "Open" : "Closed");
             tabLayout.getTabAt(i).setCustomView(view);
@@ -130,8 +130,9 @@ public class DiningHallMenusHolderFragment extends Fragment
         return rootView;
     }
 
-    private void refresh()
+    public void refresh()
     {
+
         //TODO: Refresh the menu!!
     }
 

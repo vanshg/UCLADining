@@ -157,6 +157,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
                     String splitTemp[] = temp.split(" ");
                     if (temp.startsWith("Calories")) {
                         nutrition.setCalories(splitTemp[1]);
+                        nutrition.setFatCalories(splitTemp[4]);
                     } else if (temp.startsWith("Total Fat")) {
                         nutrition.setTotalFatGrams(splitTemp[2]);
                         nutrition.setTotalFatPercent(splitTemp[3]);
@@ -186,9 +187,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
                     } else if (temp.startsWith("Vitamin C")) {
                         nutrition.setVitaminCPercent(splitTemp[2]);
                     } else if (temp.startsWith("Calcium")) {
-                        nutrition.setCalciumPercent(splitTemp[2]);
+                        nutrition.setCalciumPercent(splitTemp[1]);
                     } else if (temp.startsWith("Iron")) {
-                        nutrition.setIronPercent(splitTemp[2]);
+                        nutrition.setIronPercent(splitTemp[1]);
                     }
                 }
 

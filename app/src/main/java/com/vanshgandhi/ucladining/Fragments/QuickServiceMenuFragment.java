@@ -1,8 +1,8 @@
 package com.vanshgandhi.ucladining.Fragments;
 
-import android.app.Activity;
+import android.app.ListFragment;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 
 import java.util.ArrayList;
 
@@ -40,9 +40,9 @@ public class QuickServiceMenuFragment extends ListFragment
     
     
     @Override
-    public void onAttach(Activity activity)
+    public void onAttach(Context context)
     {
-        super.onAttach(activity);
+        super.onAttach(context);
     }
     
     @Override

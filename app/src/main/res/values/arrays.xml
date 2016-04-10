@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="meals">
+        <item>19P</item>
+        <item>14P</item>
+        <item>19</item>
+        <item>14</item>
+        <item>11</item>
+    </string-array>
+</resources>

@@ -1,16 +1,16 @@
 package com.vanshgandhi.ucladining.Fragments;
 
-
-import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.preference.PreferenceManager;
+import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.vanshgandhi.ucladining.Activities.MainActivity;
 import com.vanshgandhi.ucladining.R;
@@ -19,34 +19,35 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class SwipesFragment extends Fragment implements View.OnClickListener//implements CompoundButton.OnCheckedChangeListener
+public class SwipesFragment extends Fragment
 {
     static final String STATE_MEAL_PLAN = "mealPlan";
 
-    static final String MEAL_PLAN_11  = "11";
-    static final String MEAL_PLAN_14  = "14";
-    static final String MEAL_PLAN_19  = "19";
-    static final String MEAL_PLAN_14P = "14P";
-    static final String MEAL_PLAN_19P = "19P";
+    enum MealPlan
+    {
+        MEAL_11, MEAL_14, MEAL_19, MEAL_14P, MEAL_19P
+    }
 
-    static final int TOTAL_19P = 214;
-    static final int TOTAL_14P = 158;
-    static final int TOTAL_19  = 19;
-    static final int TOTAL_14  = 14;
-    static final int TOTAL_11  = 11;
+    private static final int TOTAL_19P = 214;
+    private static final int TOTAL_14P = 158;
+    private static final int TOTAL_19  = 19;
+    private static final int TOTAL_14  = 14;
+    private static final int TOTAL_11  = 11;
 
-    private String currentPlan;
+    private MealPlan currentPlan;
 
     private MainActivity mainActivity;
     private Toolbar      toolbar;
     private TextView     swipes;
     private TextView     dateText;
 
-    Calendar rightNow;
-    Calendar quarterStart;
+    private Calendar rightNow;
+    private Calendar quarterStart;
 
-    int weeksElapsed;
+    private int weeksElapsed;
 
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     public static SwipesFragment newInstance()
     {
@@ -59,30 +60,28 @@ public class SwipesFragment extends Fragment implements View.OnClickListener//im
     }
 
     @Override
-    public void onAttach(Activity activity)
+    public void onAttach(Context context)
     {
-        super.onAttach(activity);
-        mainActivity = (MainActivity) activity;
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            mainActivity = (MainActivity) context;
+        }
     }
     
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        currentPlan = (savedInstanceState != null) ?
-                savedInstanceState.getString(STATE_MEAL_PLAN, MEAL_PLAN_19P) : MEAL_PLAN_19P;
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        editor = preferences.edit();
+        int ordinal = preferences.getInt(STATE_MEAL_PLAN, MealPlan.MEAL_19P.ordinal());
+        currentPlan = MealPlan.values()[ordinal];
     }
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        ToggleButton meal19P;
-        ToggleButton meal14P;
-        ToggleButton meal19;
-        ToggleButton meal14;
-        ToggleButton meal11;
-
         View rootView = inflater.inflate(R.layout.fragment_swipes, container, false);
 
         toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
@@ -92,101 +91,80 @@ public class SwipesFragment extends Fragment implements View.OnClickListener//im
         swipes = (TextView) rootView.findViewById(R.id.swipes);
         dateText = (TextView) rootView.findViewById(R.id.date);
 
-        meal19P = (ToggleButton) rootView.findViewById(R.id.toggle_19p);
-        meal14P = (ToggleButton) rootView.findViewById(R.id.toggle_14p);
-        meal19 = (ToggleButton) rootView.findViewById(R.id.toggle_19);
-        meal14 = (ToggleButton) rootView.findViewById(R.id.toggle_14);
-        meal11 = (ToggleButton) rootView.findViewById(R.id.toggle_11);
-
-        meal19P.setOnClickListener(this);
-        meal14P.setOnClickListener(this);
-        meal19.setOnClickListener(this);
-        meal14.setOnClickListener(this);
-        meal11.setOnClickListener(this);
-
-        ((RadioGroup) rootView.findViewById(R.id.meal_selector)).setOnCheckedChangeListener(
-                new RadioGroup.OnCheckedChangeListener()
-                {
-                    @Override
-                    public void onCheckedChanged(final RadioGroup radioGroup, final int i)
-                    {
-                        for (int j = 0; j < radioGroup.getChildCount(); j++) {
-                            final ToggleButton view = (ToggleButton) radioGroup.getChildAt(j);
-                            //Log.v("TAG", ""+view.isChecked()); TODO: sometimes, 2 buttons are marked as true
-                            view.setChecked(view.getId() == i);
-                        }
-                    }
-                });
-
         rightNow = Calendar.getInstance();
         rightNow.set(mainActivity.getYear(), mainActivity.getMonth(), mainActivity.getDay());
         quarterStart = Calendar.getInstance();
-        quarterStart.set(2015, Calendar.SEPTEMBER, 20);
+        quarterStart.set(2016, Calendar.MARCH, 28); //TODO: Find a way to not hardcode this
         int nowWeek = rightNow.get(Calendar.WEEK_OF_YEAR);
         int quarterStartWeek = quarterStart.get(Calendar.WEEK_OF_YEAR);
         weeksElapsed = nowWeek - quarterStartWeek;
-        updateSwipeCount();
 
-
-        return rootView;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState)
-    {
-        savedInstanceState.putString(STATE_MEAL_PLAN, currentPlan);
-
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onClick(View view)
-    {
-        int id = view.getId();
-        ((RadioGroup) view.getParent()).check(id);
-        switch (id) {
-            case R.id.toggle_11:
-                currentPlan = MEAL_PLAN_11;
+        RadioGroup radioGroup = (RadioGroup) rootView.findViewById(R.id.meal_selector);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+                switch (checkedId) {
+                    case R.id.toggle_11:
+                        currentPlan = MealPlan.MEAL_11;
+                        break;
+                    case R.id.toggle_14:
+                        currentPlan = MealPlan.MEAL_14;
+                        break;
+                    case R.id.toggle_19:
+                        currentPlan = MealPlan.MEAL_19;
+                        break;
+                    case R.id.toggle_14p:
+                        currentPlan = MealPlan.MEAL_14P;
+                        break;
+                    case R.id.toggle_19p:
+                        currentPlan = MealPlan.MEAL_19P;
+                        break;
+                }
+                editor.putInt(STATE_MEAL_PLAN, currentPlan.ordinal());
+                editor.apply();
+                updateSwipeCount();
+            }
+        });
+        int id;
+        switch (currentPlan) {
+            case MEAL_11:
+                id = R.id.toggle_11;
                 break;
-            case R.id.toggle_14:
-                currentPlan = MEAL_PLAN_14;
+            case MEAL_14:
+                id = R.id.toggle_14;
                 break;
-            case R.id.toggle_19:
-                currentPlan = MEAL_PLAN_19;
+            case MEAL_19:
+                id = R.id.toggle_19;
                 break;
-            case R.id.toggle_14p:
-                currentPlan = MEAL_PLAN_14P;
+            case MEAL_14P:
+                id = R.id.toggle_14p;
                 break;
-            case R.id.toggle_19p:
-                currentPlan = MEAL_PLAN_19P;
-                break;
+            default:
+                id = R.id.toggle_19p;
         }
-        updateSwipeCount();
+        radioGroup.check(id);
+        return rootView;
     }
 
     private void updateSwipeCount()
     {
         int swipesLeft = 0;
         switch (currentPlan) {
-            case MEAL_PLAN_11:
+            case MEAL_11:
                 swipesLeft = TOTAL_11;
                 break;
-            case MEAL_PLAN_14:
+            case MEAL_14:
                 swipesLeft = TOTAL_14;
                 break;
-            case MEAL_PLAN_19:
+            case MEAL_19:
                 swipesLeft = TOTAL_19;
                 break;
-            case MEAL_PLAN_14P:
+            case MEAL_14P:
                 swipesLeft = TOTAL_14P;
                 break;
-            case MEAL_PLAN_19P:
+            case MEAL_19P:
                 swipesLeft = TOTAL_19P;
                 break;
         }
@@ -204,79 +182,72 @@ public class SwipesFragment extends Fragment implements View.OnClickListener//im
         int day = rightNow.get(Calendar.DAY_OF_WEEK);
         switch (day) {
             case Calendar.SUNDAY:
-                if (currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19)) {
+                if (currentPlan == MealPlan.MEAL_19P || currentPlan == MealPlan.MEAL_19) {
+                    swipes -= 2;
+                } else if (currentPlan == MealPlan.MEAL_14P || currentPlan == MealPlan.MEAL_14) {
                     swipes -= 2;
                 }
-                else if (currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14)) {
-                    swipes -= 2;
-                }
-                if (currentPlan.equals(MEAL_PLAN_11)) {
+                if (currentPlan == MealPlan.MEAL_11) {
                     swipes -= 0; //Assumes person doesn't eat on weekends
                 }
                 break;
             case Calendar.MONDAY:
-                if (currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19)) {
+                if (currentPlan == MealPlan.MEAL_19P || currentPlan == MealPlan.MEAL_19) {
                     swipes -= 3;
-                }
-                else if (currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14)) {
+                } else if (currentPlan == MealPlan.MEAL_14P || currentPlan == MealPlan.MEAL_14) {
                     swipes -= 2;
                 }
-                if (currentPlan.equals(MEAL_PLAN_11)) {
+                if (currentPlan == MealPlan.MEAL_11) {
                     swipes -= 2;
                 }
                 break;
             case Calendar.TUESDAY:
-                if (currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19)) {
+                if (currentPlan == MealPlan.MEAL_19P || currentPlan == MealPlan.MEAL_19) {
                     swipes -= 3;
-                }
-                else if (currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14)) {
+                } else if (currentPlan == MealPlan.MEAL_14P || currentPlan == MealPlan.MEAL_14) {
                     swipes -= 2;
                 }
-                if (currentPlan.equals(MEAL_PLAN_11)) {
+                if (currentPlan == MealPlan.MEAL_11) {
                     swipes -= 2;
                 }
                 break;
             case Calendar.WEDNESDAY:
-                if (currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19)) {
+                if (currentPlan == MealPlan.MEAL_19P || currentPlan == MealPlan.MEAL_19) {
                     swipes -= 3;
-                }
-                else if (currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14)) {
+                } else if (currentPlan == MealPlan.MEAL_14P || currentPlan == MealPlan.MEAL_14) {
                     swipes -= 2;
                 }
-                if (currentPlan.equals(MEAL_PLAN_11)) {
+                if (currentPlan == MealPlan.MEAL_11) {
                     swipes -= 2;
                 }
                 break;
             case Calendar.THURSDAY:
-                if (currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19)) {
+                if (currentPlan == MealPlan.MEAL_19P || currentPlan == MealPlan.MEAL_19) {
                     swipes -= 3;
-                }
-                else if (currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14)) {
+                } else if (currentPlan == MealPlan.MEAL_14P || currentPlan == MealPlan.MEAL_14) {
                     swipes -= 2;
                 }
-                if (currentPlan.equals(MEAL_PLAN_11)) {
+                if (currentPlan == MealPlan.MEAL_11) {
                     swipes -= 2;
                 }
                 break;
             case Calendar.FRIDAY:
-                if (currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19)) {
+                if (currentPlan == MealPlan.MEAL_19P || currentPlan == MealPlan.MEAL_19) {
                     swipes -= 3;
-                }
-                else if (currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14)) {
+                } else if (currentPlan == MealPlan.MEAL_14P || currentPlan == MealPlan.MEAL_14) {
                     swipes -= 2;
                 }
-                if (currentPlan.equals(MEAL_PLAN_11)) {
+                if (currentPlan == MealPlan.MEAL_11) {
                     swipes -= 2;
                 }
                 break;
             case Calendar.SATURDAY:
-                if (currentPlan.equals(MEAL_PLAN_19P) || currentPlan.equals(MEAL_PLAN_19)) {
+                if (currentPlan == MealPlan.MEAL_19P || currentPlan == MealPlan.MEAL_19) {
+                    swipes -= 2;
+                } else if (currentPlan == MealPlan.MEAL_14P || currentPlan == MealPlan.MEAL_14) {
                     swipes -= 2;
                 }
-                else if (currentPlan.equals(MEAL_PLAN_14P) || currentPlan.equals(MEAL_PLAN_14)) {
-                    swipes -= 2;
-                }
-                if (currentPlan.equals(MEAL_PLAN_11)) {
+                if (currentPlan == MealPlan.MEAL_11) {
                     swipes -= 1;
                 }
                 break;
@@ -286,12 +257,11 @@ public class SwipesFragment extends Fragment implements View.OnClickListener//im
 
     private int removeWeekSwipes(int swipes)
     {
-        if (currentPlan.equals(MEAL_PLAN_19P)) {
+        if (currentPlan == MealPlan.MEAL_19P) {
             for (int i = 0; i < weeksElapsed; i++) {
                 swipes -= 19;
             }
-        }
-        else if (currentPlan.equals(MEAL_PLAN_14P)) {
+        } else if (currentPlan == MealPlan.MEAL_14P) {
             for (int i = 0; i < weeksElapsed; i++) {
                 swipes -= 14;
             }

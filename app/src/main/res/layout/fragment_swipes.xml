@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     tools:context="com.vanshgandhi.ucladining.Fragments.SwipesFragment">
 
@@ -10,57 +11,10 @@
         layout="@layout/app_bar"/>
 
 
-    <RadioGroup
-        android:id="@+id/meal_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/appbar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:orientation="horizontal">
-
-        <ToggleButton
-            android:id="@+id/toggle_19p"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:textOff="19P"
-            android:textOn="19P"/>
-
-        <ToggleButton
-            android:id="@+id/toggle_14p"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:textOff="14P"
-            android:textOn="14P"/>
-
-        <ToggleButton
-            android:id="@+id/toggle_19"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:textOff="19"
-            android:textOn="19"/>
-
-        <ToggleButton
-            android:id="@+id/toggle_14"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:textOff="14"
-            android:textOn="14"/>
-
-        <ToggleButton
-            android:id="@+id/toggle_11"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:textOff="11"
-            android:textOn="11"/>
-    </RadioGroup>
-
-
     <TextView
         android:id="@+id/should_have_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/meal_selector"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="72dp"
@@ -96,6 +50,47 @@
         android:layout_marginTop="1dp"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"/>
+
+    <RadioGroup
+        android:id="@+id/meal_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/date"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/toggle_19p"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="19P"/>
+
+        <RadioButton
+            android:id="@+id/toggle_14p"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="14P"/>
+
+        <RadioButton
+            android:id="@+id/toggle_19"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="19"/>
+
+        <RadioButton
+            android:id="@+id/toggle_14"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="14"/>
+
+        <RadioButton
+            android:id="@+id/toggle_11"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="11"/>
+    </RadioGroup>
+
 
 
 </RelativeLayout>

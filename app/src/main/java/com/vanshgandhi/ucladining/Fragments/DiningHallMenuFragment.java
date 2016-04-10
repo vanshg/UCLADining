@@ -3,7 +3,7 @@ package com.vanshgandhi.ucladining.Fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-
 public class DiningHallMenuFragment extends Fragment
 {
     MainActivity mainActivity;
@@ -47,7 +46,7 @@ public class DiningHallMenuFragment extends Fragment
     private static final int FEAST  = 2;
     private static final int BPLATE = 3;
 
-    RecyclerView recyclerView;
+    RecyclerView   recyclerView;
     List<FoodItem> food;
 
     public static DiningHallMenuFragment newInstance(int hallNumber)
@@ -64,7 +63,6 @@ public class DiningHallMenuFragment extends Fragment
         //Mandatory empty constructor
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -73,7 +71,7 @@ public class DiningHallMenuFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_dining_hall_menu, container, false);
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         recyclerView = (RecyclerView) v.findViewById(R.id.grid);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, 24, true));
         food = new ArrayList<>();
         int hall = getArguments().getInt(ARG_HALL_NUMBER);
@@ -84,7 +82,9 @@ public class DiningHallMenuFragment extends Fragment
         String threeMeal = "d90c4352-d57c-4773-9064-4af17341beef/_query?input/webpage/url=";
         String ingredients = "eacba959-1feb-4119-9388-bbb5cd4fdfff/_query?input/webpage/url=";
         String uclaBaseUrl = "http%3A%2F%2Fmenu.ha.ucla.edu%2Ffoodpro%2F";
-        String fullMenu = "default.asp%3Flocation%3D" + getHallCode(hall) + "%26date%3D" + (mainActivity.getMonth() + 1) + "%252F" + mainActivity.getDay() + "%252F" + mainActivity.getYear();
+        String fullMenu = "default.asp%3Flocation%3D" + getHallCode(
+                hall) + "%26date%3D" + (mainActivity.getMonth() + 1) + "%252F" + mainActivity.getDay() + "%252F" + mainActivity
+                .getYear();
         String apiKey = "&_user=22403bda-b7eb-4c87-904a-78de1838426c&_apikey=22403bdab7eb4c87904a78de1838426c6e7d3048637d4bbae71657eb53b31c47d987e5e1cb53206a5fac41e1b938b1abcbb0ed68909ebb9d9e75447cc09546577d6725bd3f2bee95e827ee604fa7d84c";
         int dayOfWeek = mainActivity.getDayOfWeek();
         if (hall == COVEL || hall == FEAST || dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) //2 Meal
@@ -97,22 +97,20 @@ public class DiningHallMenuFragment extends Fragment
                 try {
                     JSONObject response = new JSONObject(data);
                     processList(response, false);
-                }
-                catch (JSONException e) {
+                } catch (JSONException e) {
                     recyclerView.setAdapter(new MenuAdapter(food));
                     cache.remove(url);
                 }
-            }
-            else {
-                JsonObjectRequestWithCache request = new JsonObjectRequestWithCache(Request.Method.GET, url, new Response.Listener<JSONObject>()
+            } else {
+                JsonObjectRequestWithCache request = new JsonObjectRequestWithCache(
+                        Request.Method.GET, url, new Response.Listener<JSONObject>()
                 {
                     @Override
                     public void onResponse(JSONObject response)
                     {
                         try {
                             processList(response, false);
-                        }
-                        catch (JSONException e) {
+                        } catch (JSONException e) {
                             recyclerView.setAdapter(new MenuAdapter(food));
                         }
                     }
@@ -127,8 +125,7 @@ public class DiningHallMenuFragment extends Fragment
 
                 queue.add(request);
             }
-        }
-        else //if(hall == DENEVE || hall == BPLATE) //3 Meal
+        } else //if(hall == DENEVE || hall == BPLATE) //3 Meal
         {
             url = baseUrl + threeMeal + uclaBaseUrl + fullMenu + apiKey;
             Cache cache = queue.getCache();
@@ -138,22 +135,20 @@ public class DiningHallMenuFragment extends Fragment
                 try {
                     JSONObject response = new JSONObject(data);
                     processList(response, false);
-                }
-                catch (JSONException e) {
+                } catch (JSONException e) {
                     recyclerView.setAdapter(new MenuAdapter(food));
                     cache.remove(url);
                 }
-            }
-            else {
-                JsonObjectRequestWithCache request = new JsonObjectRequestWithCache(Request.Method.GET, url, new Response.Listener<JSONObject>()
+            } else {
+                JsonObjectRequestWithCache request = new JsonObjectRequestWithCache(
+                        Request.Method.GET, url, new Response.Listener<JSONObject>()
                 {
                     @Override
                     public void onResponse(JSONObject response)
                     {
                         try {
                             processList(response, true);
-                        }
-                        catch (JSONException e) {
+                        } catch (JSONException e) {
                             recyclerView.setAdapter(new MenuAdapter(food));
                         }
                     }
@@ -178,8 +173,7 @@ public class DiningHallMenuFragment extends Fragment
 
         if (result.has("results")) {
             jsonArray = result.getJSONArray("results");
-        }
-        else {
+        } else {
             return;
         }
 
@@ -195,8 +189,7 @@ public class DiningHallMenuFragment extends Fragment
 
                 if (jsonObject.has("breakfast")) {
                     breakfast = jsonObject.getString("breakfast");
-                }
-                else {
+                } else {
                     continue;
                 }
 
@@ -225,11 +218,9 @@ public class DiningHallMenuFragment extends Fragment
 
             if (jsonObject.has("lunch")) {
                 lunch = jsonObject.getString("lunch");
-            }
-            else {
+            } else {
                 continue;
             }
-
 
             doc = Jsoup.parse(lunch);
             ul = doc.select("ul");
@@ -249,14 +240,12 @@ public class DiningHallMenuFragment extends Fragment
             }
         }
 
-
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
             if (jsonObject.has("dinner")) {
                 dinner = jsonObject.getString("dinner");
-            }
-            else {
+            } else {
                 continue;
             }
 
@@ -279,7 +268,6 @@ public class DiningHallMenuFragment extends Fragment
         }
         recyclerView.setAdapter(new MenuAdapter(food));
     }
-
 
     @Override
     public void onAttach(Context context)
