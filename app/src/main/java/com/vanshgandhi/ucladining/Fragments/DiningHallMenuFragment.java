@@ -35,11 +35,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class DiningHallMenuFragment extends Fragment
-{
+public class DiningHallMenuFragment extends Fragment {
     MainActivity mainActivity;
 
-    private static final String ARG_HALL_NUMBER = "hall_number";
+    private static final String ARG_MEAL = "meal_type";
+
+    public enum Meal {Breakfast, Lunch, Dinner}
 
     private static final int COVEL  = 0;
     private static final int DENEVE = 1;
@@ -49,32 +50,29 @@ public class DiningHallMenuFragment extends Fragment
     RecyclerView   recyclerView;
     List<FoodItem> food;
 
-    public static DiningHallMenuFragment newInstance(int hallNumber)
-    {
+    public static DiningHallMenuFragment newInstance(Meal meal) {
         DiningHallMenuFragment fragment = new DiningHallMenuFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_HALL_NUMBER, hallNumber);
+        args.putInt(ARG_MEAL, meal.ordinal());
         fragment.setArguments(args);
         return fragment;
     }
 
-    public DiningHallMenuFragment()
-    {
+    public DiningHallMenuFragment() {
         //Mandatory empty constructor
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState)
-    {
+                             @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_dining_hall_menu, container, false);
         RequestQueue queue = Volley.newRequestQueue(getActivity());
-        recyclerView = (RecyclerView) v.findViewById(R.id.grid);
+        recyclerView = (RecyclerView) v.findViewById(R.id.list);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, 24, true));
         food = new ArrayList<>();
-        int hall = getArguments().getInt(ARG_HALL_NUMBER);
+        int hall = getArguments().getInt(ARG_MEAL);
 
         final String url;
         String baseUrl = "https://api.import.io/store/data/";
@@ -103,22 +101,18 @@ public class DiningHallMenuFragment extends Fragment
                 }
             } else {
                 JsonObjectRequestWithCache request = new JsonObjectRequestWithCache(
-                        Request.Method.GET, url, new Response.Listener<JSONObject>()
-                {
+                        Request.Method.GET, url, new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONObject response)
-                    {
+                    public void onResponse(JSONObject response) {
                         try {
                             processList(response, false);
                         } catch (JSONException e) {
                             recyclerView.setAdapter(new MenuAdapter(food));
                         }
                     }
-                }, new Response.ErrorListener()
-                {
+                }, new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
+                    public void onErrorResponse(VolleyError error) {
                         recyclerView.setAdapter(new MenuAdapter(food));
                     }
                 });
@@ -141,22 +135,18 @@ public class DiningHallMenuFragment extends Fragment
                 }
             } else {
                 JsonObjectRequestWithCache request = new JsonObjectRequestWithCache(
-                        Request.Method.GET, url, new Response.Listener<JSONObject>()
-                {
+                        Request.Method.GET, url, new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONObject response)
-                    {
+                    public void onResponse(JSONObject response) {
                         try {
                             processList(response, true);
                         } catch (JSONException e) {
                             recyclerView.setAdapter(new MenuAdapter(food));
                         }
                     }
-                }, new Response.ErrorListener()
-                {
+                }, new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
+                    public void onErrorResponse(VolleyError error) {
                         recyclerView.setAdapter(new MenuAdapter(food));
                     }
                 });
@@ -167,8 +157,7 @@ public class DiningHallMenuFragment extends Fragment
         return v;
     }
 
-    private void processList(JSONObject result, boolean threeMeal) throws JSONException
-    {
+    private void processList(JSONObject result, boolean threeMeal) throws JSONException {
         JSONArray jsonArray;
 
         if (result.has("results")) {
@@ -270,30 +259,26 @@ public class DiningHallMenuFragment extends Fragment
     }
 
     @Override
-    public void onAttach(Context context)
-    {
+    public void onAttach(Context context) {
         super.onAttach(context);
         mainActivity = (MainActivity) context;
     }
 
     @Override
-    public void onDetach()
-    {
+    public void onDetach() {
         super.onDetach();
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser)
-    {
+    public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             DiningHallMenusHolderFragment f = (DiningHallMenusHolderFragment) getParentFragment();
-            f.setCurrentHall(getArguments().getInt(ARG_HALL_NUMBER));
+            f.setCurrentHall(getArguments().getInt(ARG_MEAL));
         }
     }
 
-    public String getHallCode(int hall)
-    {
+    public String getHallCode(int hall) {
         switch (hall) {
             case COVEL:
                 return "07";

@@ -8,4 +8,5 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="nutrition_table_border_padding_topbot">5dp</dimen>
     <dimen name="nutrition_margin">48dp</dimen>
+    <dimen name="tablerow_padding_bottom">12dp</dimen>
 </resources>

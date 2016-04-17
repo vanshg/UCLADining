@@ -21,8 +21,7 @@ import com.vanshgandhi.ucladining.R;
 
 import java.util.Calendar;
 
-public class DiningHallMenusHolderFragment extends Fragment
-{
+public class DiningHallMenusHolderFragment extends Fragment {
     public static final  String[] twoMealSpinnerArray   = {"Lunch", "Dinner"};
     public static final  String[] threeMealSpinnerArray = {"Breakfast", "Lunch", "Dinner"};
     private static final int      COVEL                 = 0;
@@ -31,8 +30,7 @@ public class DiningHallMenusHolderFragment extends Fragment
     private static final int      BPLATE                = 3;
     private static int currentHall;
 
-    public enum Meal
-    {
+    public enum Meal {
         Breakfast, Lunch, Dinner
     }
 
@@ -42,26 +40,22 @@ public class DiningHallMenusHolderFragment extends Fragment
     private Toolbar      toolbar;
     private Spinner      spinner;
 
-    public static DiningHallMenusHolderFragment newInstance()
-    {
+    public static DiningHallMenusHolderFragment newInstance() {
         return new DiningHallMenusHolderFragment();
     }
 
-    public DiningHallMenusHolderFragment()
-    {
+    public DiningHallMenusHolderFragment() {
     }
 
     @Override
-    public void onAttach(Activity activity)
-    {
+    public void onAttach(Activity activity) {
         super.onAttach(activity);
         mainActivity = (MainActivity) activity;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         TabLayout tabLayout;
         ViewPager viewPager;             //Hosts the section contents
         SectionsPagerAdapter mSectionsPagerAdapter; //provides fragments for each section
@@ -74,11 +68,9 @@ public class DiningHallMenusHolderFragment extends Fragment
         spinner = (Spinner) rootView.findViewById(R.id.spinner);
         spinner.setAdapter(new MealTypeSpinnerAdapter(toolbar.getContext(),
                 getArrayBasedOnSelectedDiningHall()));
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (parent.getAdapter().getCount() == 3) {
                     switch (position) {
                         case 0:
@@ -104,8 +96,7 @@ public class DiningHallMenusHolderFragment extends Fragment
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
+            public void onNothingSelected(AdapterView<?> parent) {
                 Toast.makeText(getActivity(), "?", Toast.LENGTH_SHORT).show();
             }
         });
@@ -130,8 +121,7 @@ public class DiningHallMenusHolderFragment extends Fragment
         return rootView;
     }
 
-    public void refresh()
-    {
+    public void refresh() {
 
         //TODO: Refresh the menu!!
     }
@@ -145,26 +135,22 @@ public class DiningHallMenusHolderFragment extends Fragment
         return threeMealSpinnerArray;
     }
 
-    public void setCurrentHall(int hall)
-    {
+    public void setCurrentHall(int hall) {
         currentHall = hall;
     }
 
-    private Meal recommendedMealPeriod()
-    {
+    private Meal recommendedMealPeriod() {
         //TODO: Use time to figure out what meal period it should be
         return Meal.Lunch;
     }
 
-    private boolean isHallOpen(int hallNumber)
-    {
+    private boolean isHallOpen(int hallNumber) {
         //TODO: Figure out how to see if each hall is open
         return true;
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
 }

@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 
 import com.vanshgandhi.ucladining.Fragments.DiningHallMenuFragment;
-import com.vanshgandhi.ucladining.Fragments.QuickServiceMenuFragment;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter
 {
@@ -24,12 +23,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
     {
         // getItem is called to instantiate the fragment for the given page.
         // Return a DiningHallMenusHolderFragment
-        if (type == 0)
-            return DiningHallMenuFragment.newInstance(position);
-        else if (type == 1)
-            return QuickServiceMenuFragment.newInstance(position);
-        else
-            return null;
+        //TODO:CHANGE THIS TO RETURN MEAL NOT POSITION BASED ON TIME OF DAY
+        return DiningHallMenuFragment.newInstance(DiningHallMenuFragment.Meal.Breakfast);
+//        if (type == 0)
+//            return DiningHallMenuFragment.newInstance(position);
+//        else if (type == 1)
+//            return QuickServiceMenuFragment.newInstance(position);
+//        else
+//            return null;
 
     }
 

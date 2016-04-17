@@ -24,12 +24,14 @@ import com.vanshgandhi.ucladining.R;
 
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
     BottomBar bottomBar;
     private final String[][] titles = {{"COVEL", "DE NEVE", "FEAST", "BPLATE"}, {"RENDEZVOUS", "CAFé 1919", "BCAFé"}};
 
-    static Calendar c;
+    private static Calendar c = null;
+    private static int calMonth;
+    private static int calYear;
+    private static int calDay;
 
     private static final String YEAR_KEY   = "YEAR";
     private static final String MONTH_KEY  = "MONTH";
@@ -40,8 +42,7 @@ public class MainActivity extends AppCompatActivity
     public SharedPreferences.Editor editor;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
 //            //TODO: Proper Transitions
@@ -65,12 +66,15 @@ public class MainActivity extends AppCompatActivity
                         R.string.swipes));
 
         c = Calendar.getInstance();
+        calDay = c.get(Calendar.DAY_OF_MONTH);
+        calMonth = c.get(Calendar.MONTH);
+        calYear = c.get(Calendar.YEAR);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
-        editor.putInt(YEAR_KEY, c.get(Calendar.YEAR));
-        editor.putInt(MONTH_KEY, c.get(Calendar.MONTH));
-        editor.putInt(DAY_KEY, c.get(Calendar.DAY_OF_MONTH));
+        editor.putInt(YEAR_KEY, calYear);
+        editor.putInt(MONTH_KEY, calYear);
+        editor.putInt(DAY_KEY, calDay);
         editor.apply();
 
         getFragmentManager().beginTransaction()
@@ -80,16 +84,14 @@ public class MainActivity extends AppCompatActivity
     }
     
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
     
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -103,85 +105,60 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public String[][] getTitles()
-    {
+    public String[][] getTitles() {
         return titles;
     }
 
-    public int getYear()
-    {
-        if (preferences.contains(YEAR_KEY)) {
-            return preferences.getInt(YEAR_KEY, -1);
-        } else {
-            Calendar calendar = Calendar.getInstance();
-            return calendar.get(Calendar.YEAR);
-        }
+    public Calendar getCalendarFromSelectedDate() {
+        return c;
     }
 
-    public int getDay()
-    {
-        if (preferences.contains(DAY_KEY)) {
-            return preferences.getInt(DAY_KEY, -1);
-        } else {
-            Calendar calendar = Calendar.getInstance();
-            return calendar.get(Calendar.DAY_OF_MONTH);
-        }
+    public int getYear() {
+        return calYear;
     }
 
-    public int getMonth()
-    {
-        if (preferences.contains(MONTH_KEY)) {
-            return preferences.getInt(MONTH_KEY, -1);
-        } else {
-            Calendar calendar = Calendar.getInstance();
-            return calendar.get(Calendar.MONTH);
-        }
+    public int getDay() {
+        return calDay;
     }
 
-    public int getDayOfWeek()
-    {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(getYear(), getMonth(), getDay());
-        return calendar.get(Calendar.DAY_OF_WEEK);
+    public int getMonth() {
+        return calMonth;
+    }
+
+    public int getDayOfWeek() {
+        return c.get(Calendar.DAY_OF_WEEK);
     }
 
     public static class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener
-    {
+            implements DatePickerDialog.OnDateSetListener {
 
         public SharedPreferences        preferences;
         public SharedPreferences.Editor editor;
         FragmentManager fm;
 
-        public DatePickerFragment(FragmentManager fm)
-        {
+        public DatePickerFragment(FragmentManager fm) {
             this.fm = fm;
         }
 
         @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState)
-        {
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
             preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             // Use the current date as the default date in the picker
-            DatePickerDialog dialog = new DatePickerDialog(getActivity(), this,
-                    preferences.getInt(YEAR_KEY, 0), preferences.getInt(MONTH_KEY, 0),
-                    preferences.getInt(DAY_KEY, 0));
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, calYear, calMonth,
+                    calDay);
             DatePicker datePicker = dialog.getDatePicker();
-            c.add(Calendar.DAY_OF_MONTH, 7); //View menus 1 week in advance
+            Calendar temp = Calendar.getInstance();
+            temp.add(Calendar.DAY_OF_MONTH, 7); //View menus 1 week in advance
             datePicker.setMaxDate(c.getTimeInMillis());
-            c.add(Calendar.DAY_OF_MONTH, -10); //View menus from 3 days ago
-            datePicker.setMinDate(c.getTimeInMillis());
-            c = Calendar.getInstance(); //Revert back to today's date
+            temp.add(Calendar.DAY_OF_MONTH, -10); //View menus from 3 days ago
+            datePicker.setMinDate(temp.getTimeInMillis());
             return dialog;
         }
 
-        public void onDateSet(DatePicker view, int year, int month, int day)
-        {
-            editor = preferences.edit();
-            editor.putInt(YEAR_KEY, year);
-            editor.putInt(MONTH_KEY, month);
-            editor.putInt(DAY_KEY, day);
-            editor.apply();
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            calDay = day;
+            calYear = year;
+            calMonth = month;
 //            DiningHallMenusHolderFragment fragment = (DiningHallMenusHolderFragment) fm.getFragment(null, DINING_KEY);
 //            fragment.refresh();
         }
