@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +39,7 @@ public class HoursFragment extends Fragment implements Callback {
     Map<Integer, String> halls;
     TableLayout          hallHoursTable;
     TableLayout          cafeHoursTable;
+    private API api;
 
     public static HoursFragment newInstance() {
         return new HoursFragment();
@@ -75,14 +75,21 @@ public class HoursFragment extends Fragment implements Callback {
         halls.put(9, "Rendezvous");
         hallHoursTable = (TableLayout) rootView.findViewById(R.id.hallHours);
         cafeHoursTable = (TableLayout) rootView.findViewById(R.id.cafeHours);
-        API api = API.getInstance();
+        api = API.getInstance();
+        refresh();
+        return rootView;
+    }
+
+    public void refresh() {
+        if (api == null) {
+            api = API.getInstance();
+        }
         try {
             api.loadHours(mainActivity.getCalendarFromSelectedDate(), this);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             showError();
         }
-        return rootView;
     }
     
     @Override
@@ -98,8 +105,6 @@ public class HoursFragment extends Fragment implements Callback {
             return;
         }
         final String responseData = response.body().string();
-        Log.d("test", "test");
-        Log.d("JSON", responseData);
         mainActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -114,10 +119,27 @@ public class HoursFragment extends Fragment implements Callback {
             JSONArray array = new JSONObject(response).getJSONArray("results");
             for (int i = 1; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
+                //^[0-9][0-9]?:[0-9][0-9][ap]m - [0-9][0-9]?:[0-9][0-9][ap]m
                 String breakfast = object.getString(breakfastJsonKey);
                 String lunch = object.getString(lunchJsonKey);
                 String dinner = object.getString(dinnerJsonKey);
                 String night = object.getString(latenightJsonKey);
+                int breakfastIndex = breakfast.indexOf("(");
+                int lunchIndex = lunch.indexOf("(");
+                int dinnerIndex = dinner.indexOf("(");
+                int nightIndex = night.indexOf("(");
+                if (breakfastIndex != -1) {
+                    breakfast = breakfast.substring(0, breakfastIndex);
+                }
+                if (lunchIndex != -1) {
+                    lunch = lunch.substring(0, lunchIndex);
+                }
+                if (dinnerIndex != -1) {
+                    dinner = dinner.substring(0, dinnerIndex);
+                }
+                if (nightIndex != -1) {
+                    night = night.substring(0, nightIndex);
+                }
                 switch (i) {
                     case 1: //Bcafe
                         setMealPeriodHoursText(cafeHoursTable, 3, breakfast, lunch, dinner, night);
@@ -144,7 +166,7 @@ public class HoursFragment extends Fragment implements Callback {
                         setMealPeriodHoursText(cafeHoursTable, 1, breakfast, lunch, dinner, night);
                 }
             }
-        } catch (JSONException e) {
+        } catch (JSONException|IllegalStateException e) {
             e.printStackTrace();
             showError();
         }

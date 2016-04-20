@@ -23,10 +23,13 @@
                 android:id="@+id/hallHours"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="100dp">
+                android:layout_marginTop="100dp"
+                android:stretchColumns="*">
 
                 <TableRow
-                    android:paddingBottom="@dimen/tablerow_padding_bottom">
+                    android:layout_width="0dp"
+                    android:paddingBottom="@dimen/tablerow_padding_bottom"
+                    android:weightSum="5">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -60,7 +63,9 @@
                 </TableRow>
 
                 <TableRow
-                    android:paddingBottom="@dimen/tablerow_padding_bottom">
+                    android:layout_width="0dp"
+                    android:paddingBottom="@dimen/tablerow_padding_bottom"
+                    android:weightSum="5">
 
                     <TextView
                         android:layout_weight="1"
@@ -89,7 +94,9 @@
                 </TableRow>
 
                 <TableRow
-                    android:paddingBottom="@dimen/tablerow_padding_bottom">
+                    android:layout_width="0dp"
+                    android:paddingBottom="@dimen/tablerow_padding_bottom"
+                    android:weightSum="5">
 
                     <TextView
                         android:layout_weight="1"
@@ -118,7 +125,9 @@
                 </TableRow>
 
                 <TableRow
-                    android:paddingBottom="@dimen/tablerow_padding_bottom">
+                    android:layout_width="0dp"
+                    android:paddingBottom="@dimen/tablerow_padding_bottom"
+                    android:weightSum="5">
 
                     <TextView
                         android:layout_weight="1"
@@ -147,7 +156,9 @@
                 </TableRow>
 
                 <TableRow
-                    android:paddingBottom="@dimen/tablerow_padding_bottom">
+                    android:layout_width="0dp"
+                    android:paddingBottom="@dimen/tablerow_padding_bottom"
+                    android:weightSum="5">
 
                     <TextView
                         android:layout_weight="1"
@@ -180,10 +191,13 @@
                 android:id="@+id/cafeHours"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="100dp">
+                android:layout_marginTop="100dp"
+                android:stretchColumns="*">
 
                 <TableRow
-                    android:paddingBottom="@dimen/tablerow_padding_bottom">
+                    android:layout_width="0dp"
+                    android:paddingBottom="@dimen/tablerow_padding_bottom"
+                    android:weightSum="5">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -217,7 +231,9 @@
                 </TableRow>
 
                 <TableRow
-                    android:paddingBottom="@dimen/tablerow_padding_bottom">
+                    android:layout_width="0dp"
+                    android:paddingBottom="@dimen/tablerow_padding_bottom"
+                    android:weightSum="5">
 
                     <TextView
                         android:layout_weight="1"
@@ -246,7 +262,9 @@
                 </TableRow>
 
                 <TableRow
-                    android:paddingBottom="@dimen/tablerow_padding_bottom">
+                    android:layout_width="0dp"
+                    android:paddingBottom="@dimen/tablerow_padding_bottom"
+                    android:weightSum="5">
 
                     <TextView
                         android:layout_weight="1"
@@ -275,7 +293,9 @@
                 </TableRow>
 
                 <TableRow
-                    android:paddingBottom="@dimen/tablerow_padding_bottom">
+                    android:layout_width="0dp"
+                    android:paddingBottom="@dimen/tablerow_padding_bottom"
+                    android:weightSum="5">
 
                     <TextView
                         android:layout_weight="1"
@@ -304,7 +324,9 @@
                 </TableRow>
 
                 <TableRow
-                    android:paddingBottom="@dimen/tablerow_padding_bottom">
+                    android:layout_width="0dp"
+                    android:paddingBottom="@dimen/tablerow_padding_bottom"
+                    android:weightSum="5">
 
                     <TextView
                         android:layout_weight="1"

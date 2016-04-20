@@ -3,11 +3,11 @@ package com.vanshgandhi.ucladining.Activities;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
-import android.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -15,7 +15,8 @@ import android.view.MenuItem;
 import android.widget.DatePicker;
 
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.BottomBarFragment;
+import com.roughike.bottombar.BottomBarTab;
+import com.roughike.bottombar.OnTabClickListener;
 import com.vanshgandhi.ucladining.Fragments.DiningHallMenusHolderFragment;
 import com.vanshgandhi.ucladining.Fragments.HoursFragment;
 import com.vanshgandhi.ucladining.Fragments.QuickServiceMenusHolderFragment;
@@ -37,9 +38,12 @@ public class MainActivity extends AppCompatActivity {
     private static final String MONTH_KEY  = "MONTH";
     private static final String DAY_KEY    = "DAY";
     private static final String DINING_KEY = "DINING";
+    private static final String CAFE_KEY   = "CAFE";
+    private static final String HOURS_KEY  = "HOURS";
+    private static final String SWIPES_KEY = "SWIPES";
 
-    public SharedPreferences        preferences;
-    public SharedPreferences.Editor editor;
+    private static SharedPreferences        preferences;
+    private static SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,19 +56,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomBar = BottomBar.attachShy((CoordinatorLayout) findViewById(R.id.main_content),
-                findViewById(R.id.content_frame), savedInstanceState);
-        bottomBar.setActiveTabColor(ContextCompat.getColor(this, R.color.colorAccent));
-        bottomBar.setFragmentItems(getFragmentManager(), R.id.content_frame,
-                new BottomBarFragment(DiningHallMenusHolderFragment.newInstance(),
-                        R.drawable.ic_dining_hall, R.string.halls),
-                new BottomBarFragment(QuickServiceMenusHolderFragment.newInstance(),
-                        R.drawable.ic_quick_eat, R.string.cafes),
-                new BottomBarFragment(HoursFragment.newInstance(), R.drawable.ic_time,
-                        R.string.hours),
-                new BottomBarFragment(SwipesFragment.newInstance(), R.drawable.ic_swipes,
-                        R.string.swipes));
-
         c = Calendar.getInstance();
         calDay = c.get(Calendar.DAY_OF_MONTH);
         calMonth = c.get(Calendar.MONTH);
@@ -72,15 +63,57 @@ public class MainActivity extends AppCompatActivity {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
+        dateChanged();
+
+        bottomBar = BottomBar.attachShy((CoordinatorLayout) findViewById(R.id.main_content),
+                findViewById(R.id.content_frame), savedInstanceState);
+        bottomBar.setActiveTabColor(ContextCompat.getColor(this, R.color.colorAccent));
+        bottomBar.setItems(new BottomBarTab(R.drawable.ic_dining_hall, R.string.halls),
+                new BottomBarTab(R.drawable.ic_quick_eat, R.string.cafes),
+                new BottomBarTab(R.drawable.ic_time, R.string.hours),
+                new BottomBarTab(R.drawable.ic_swipes, R.string.swipes));
+        bottomBar.setOnTabClickListener(new OnTabClickListener() {
+            @Override
+            public void onTabSelected(int position) {
+                Fragment f;
+                String tag;
+                switch (position) {
+                    default:
+                    case 0:
+                        f = DiningHallMenusHolderFragment.newInstance();
+                        tag = DINING_KEY;
+                        break;
+                    case 1:
+                        f = QuickServiceMenusHolderFragment.newInstance();
+                        tag = CAFE_KEY;
+                        break;
+                    case 2:
+                        f = HoursFragment.newInstance();
+                        tag = HOURS_KEY;
+                        break;
+                    case 3:
+                        f = SwipesFragment.newInstance();
+                        tag = SWIPES_KEY;
+                        break;
+                }
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, f, tag)
+                        .commit();
+            }
+
+            @Override
+            public void onTabReSelected(int position) {
+                //TODO: scroll to top
+            }
+        });
+    }
+
+    private static void dateChanged() {
         editor.putInt(YEAR_KEY, calYear);
         editor.putInt(MONTH_KEY, calYear);
         editor.putInt(DAY_KEY, calDay);
         editor.apply();
-
-        getFragmentManager().beginTransaction()
-                .replace(R.id.content_frame, DiningHallMenusHolderFragment.newInstance(),
-                        DINING_KEY)
-                .commit();
+        //TODO: REFRESH ALL ACTIVE FRAGMENTS WITH CURRENT DATE
     }
     
     @Override
@@ -96,12 +129,10 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         if (id == R.id.action_select_date) {
-            new DatePickerFragment(getFragmentManager()).show(getFragmentManager(), "datePicker");
+            new DatePickerFragment().show(getFragmentManager(), "datePicker");
             return true;
         }
-        
         return super.onOptionsItemSelected(item);
     }
 
@@ -132,12 +163,7 @@ public class MainActivity extends AppCompatActivity {
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
-        public SharedPreferences        preferences;
-        public SharedPreferences.Editor editor;
-        FragmentManager fm;
-
-        public DatePickerFragment(FragmentManager fm) {
-            this.fm = fm;
+        public DatePickerFragment() {
         }
 
         @Override
@@ -159,8 +185,7 @@ public class MainActivity extends AppCompatActivity {
             calDay = day;
             calYear = year;
             calMonth = month;
-//            DiningHallMenusHolderFragment fragment = (DiningHallMenusHolderFragment) fm.getFragment(null, DINING_KEY);
-//            fragment.refresh();
+            dateChanged();
         }
     }
 
