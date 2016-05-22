@@ -1,10 +1,10 @@
 package com.vanshgandhi.ucladining.Fragments;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +18,8 @@ import com.vanshgandhi.ucladining.R;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+//TODO: REWork entire swipes architecture to be more efficient and less explicit
 
 public class SwipesFragment extends Fragment
 {
@@ -72,7 +74,7 @@ public class SwipesFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = preferences.edit();
         int ordinal = preferences.getInt(STATE_MEAL_PLAN, MealPlan.MEAL_19P.ordinal());
         currentPlan = MealPlan.values()[ordinal];
@@ -90,7 +92,6 @@ public class SwipesFragment extends Fragment
 
         swipes = (TextView) rootView.findViewById(R.id.swipes);
         dateText = (TextView) rootView.findViewById(R.id.date);
-
         rightNow = Calendar.getInstance();
         rightNow.set(mainActivity.getYear(), mainActivity.getMonth(), mainActivity.getDay());
         quarterStart = Calendar.getInstance();
@@ -98,7 +99,7 @@ public class SwipesFragment extends Fragment
         int nowWeek = rightNow.get(Calendar.WEEK_OF_YEAR);
         int quarterStartWeek = quarterStart.get(Calendar.WEEK_OF_YEAR);
         weeksElapsed = nowWeek - quarterStartWeek;
-
+        updateSwipeCount();
         RadioGroup radioGroup = (RadioGroup) rootView.findViewById(R.id.meal_selector);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
@@ -127,6 +128,7 @@ public class SwipesFragment extends Fragment
                 updateSwipeCount();
             }
         });
+
         int id;
         switch (currentPlan) {
             case MEAL_11:
@@ -145,7 +147,21 @@ public class SwipesFragment extends Fragment
                 id = R.id.toggle_19p;
         }
         radioGroup.check(id);
+
+        refresh();
+
         return rootView;
+    }
+
+    private void refresh() {
+        rightNow = Calendar.getInstance();
+        rightNow.set(mainActivity.getYear(), mainActivity.getMonth(), mainActivity.getDay());
+        quarterStart = Calendar.getInstance();
+        quarterStart.set(2016, Calendar.MARCH, 28); //TODO: Find a way to not hardcode this
+        int nowWeek = rightNow.get(Calendar.WEEK_OF_YEAR);
+        int quarterStartWeek = quarterStart.get(Calendar.WEEK_OF_YEAR);
+        weeksElapsed = nowWeek - quarterStartWeek;
+        updateSwipeCount();
     }
 
     private void updateSwipeCount()
@@ -269,5 +285,3 @@ public class SwipesFragment extends Fragment
         return swipes;
     }
 }
-
-//TODO: REWork entire swipes architecture to be more efficient and less explicit

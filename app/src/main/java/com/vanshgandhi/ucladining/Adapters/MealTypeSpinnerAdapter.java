@@ -40,7 +40,6 @@ public class MealTypeSpinnerAdapter extends ArrayAdapter<String> implements Them
 
         TextView textView = (TextView) view.findViewById(android.R.id.text1);
         textView.setText(getItem(position));
-
         return view;
     }
 

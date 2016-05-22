@@ -1,9 +1,12 @@
 package com.vanshgandhi.ucladining.Models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by vanshgandhi on 10/29/15.
  */
-public class FoodItem
+public class FoodItem implements Parcelable
 {
     private String title;
     private String recipeNumber;
@@ -60,5 +63,40 @@ public class FoodItem
     public void setNutrition(Nutrition nutrition)
     {
         this.nutrition = nutrition;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(recipeNumber);
+        dest.writeString(portionSize);
+        dest.writeValue(isVegetarian);
+        dest.writeValue(isVegan);
+        dest.writeSerializable(nutrition);
+    }
+
+    public static final Parcelable.Creator<FoodItem> CREATOR
+            = new Parcelable.Creator<FoodItem>() {
+        public FoodItem createFromParcel(Parcel in) {
+            return new FoodItem(in);
+        }
+
+        public FoodItem[] newArray(int size) {
+            return new FoodItem[size];
+        }
+    };
+
+    private FoodItem(Parcel in) {
+        title = in.readString();
+        recipeNumber = in.readString();
+        portionSize = in.readString();
+        isVegetarian = (Boolean) in.readValue(null);
+        isVegan = (Boolean) in.readValue(null);
+        nutrition = (Nutrition) in.readSerializable();
     }
 }

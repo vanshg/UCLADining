@@ -147,7 +147,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity
         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
         
         // Trigger the listener immediately with the preference's
-        // current value.
+        // currentMeal value.
         sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
                 PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())

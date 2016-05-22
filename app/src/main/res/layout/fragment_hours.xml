@@ -7,353 +7,359 @@
     android:fitsSystemWindows="true"
     tools:context="com.vanshgandhi.ucladining.Fragments.HoursFragment">
 
-    <include
-        layout="@layout/app_bar"/>
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <include
+            android:id="@+id/app_bar"
+            layout="@layout/app_bar"/>
 
-        <LinearLayout
+        <ScrollView
+            android:layout_below="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <TableLayout
-                android:id="@+id/hallHours"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:stretchColumns="*">
-
-                <TableRow
-                    android:layout_width="0dp"
-                    android:paddingBottom="@dimen/tablerow_padding_bottom"
-                    android:weightSum="5">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="BPlate"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="FEAST"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Covel"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="De Neve"/>
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="0dp"
-                    android:paddingBottom="@dimen/tablerow_padding_bottom"
-                    android:weightSum="5">
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:text="Breakfast"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="0dp"
-                    android:paddingBottom="@dimen/tablerow_padding_bottom"
-                    android:weightSum="5">
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:text="Lunch"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="0dp"
-                    android:paddingBottom="@dimen/tablerow_padding_bottom"
-                    android:weightSum="5">
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:text="Dinner"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="0dp"
-                    android:paddingBottom="@dimen/tablerow_padding_bottom"
-                    android:weightSum="5">
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:text="Night"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-                </TableRow>
-            </TableLayout>
-
-
-            <TableLayout
-                android:id="@+id/cafeHours"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:stretchColumns="*">
-
-                <TableRow
-                    android:layout_width="0dp"
-                    android:paddingBottom="@dimen/tablerow_padding_bottom"
-                    android:weightSum="5">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Rendez"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="1919"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="BCafé"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="De Neve On the Go"/>
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="0dp"
-                    android:paddingBottom="@dimen/tablerow_padding_bottom"
-                    android:weightSum="5">
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:text="Breakfast"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="0dp"
-                    android:paddingBottom="@dimen/tablerow_padding_bottom"
-                    android:weightSum="5">
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:text="Lunch"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="0dp"
-                    android:paddingBottom="@dimen/tablerow_padding_bottom"
-                    android:weightSum="5">
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:text="Dinner"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="0dp"
-                    android:paddingBottom="@dimen/tablerow_padding_bottom"
-                    android:weightSum="5">
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:text="Night"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-                </TableRow>
-            </TableLayout>
-
-        </LinearLayout>
-    </ScrollView>
+                android:orientation="vertical">
+
+                <TableLayout
+                    android:id="@+id/hallHours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="*">
+
+                    <TableRow
+                        android:layout_width="0dp"
+                        android:paddingBottom="@dimen/tablerow_padding_bottom"
+                        android:weightSum="5">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="BPlate"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="FEAST"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Covel"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="De Neve"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="0dp"
+                        android:paddingBottom="@dimen/tablerow_padding_bottom"
+                        android:weightSum="5">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="Breakfast"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="0dp"
+                        android:paddingBottom="@dimen/tablerow_padding_bottom"
+                        android:weightSum="5">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="Lunch"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="0dp"
+                        android:paddingBottom="@dimen/tablerow_padding_bottom"
+                        android:weightSum="5">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="Dinner"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="0dp"
+                        android:paddingBottom="@dimen/tablerow_padding_bottom"
+                        android:weightSum="5">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="Night"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+                    </TableRow>
+                </TableLayout>
+
+
+                <TableLayout
+                    android:id="@+id/cafeHours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:stretchColumns="*">
+
+                    <TableRow
+                        android:layout_width="0dp"
+                        android:paddingBottom="@dimen/tablerow_padding_bottom"
+                        android:weightSum="5">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Rendez"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="1919"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="BCafé"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="De Neve On the Go"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="0dp"
+                        android:paddingBottom="@dimen/tablerow_padding_bottom"
+                        android:weightSum="5">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="Breakfast"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="0dp"
+                        android:paddingBottom="@dimen/tablerow_padding_bottom"
+                        android:weightSum="5">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="Lunch"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="0dp"
+                        android:paddingBottom="@dimen/tablerow_padding_bottom"
+                        android:weightSum="5">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="Dinner"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="0dp"
+                        android:paddingBottom="@dimen/tablerow_padding_bottom"
+                        android:weightSum="5">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="Night"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
 </android.support.design.widget.CoordinatorLayout>

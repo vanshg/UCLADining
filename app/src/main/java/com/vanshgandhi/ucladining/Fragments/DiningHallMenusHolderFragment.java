@@ -1,9 +1,9 @@
 package com.vanshgandhi.ucladining.Fragments;
 
-import android.app.Activity;
+import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -15,8 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vanshgandhi.ucladining.Activities.MainActivity;
+import com.vanshgandhi.ucladining.Activities.MainActivity.Meal;
 import com.vanshgandhi.ucladining.Adapters.MealTypeSpinnerAdapter;
 import com.vanshgandhi.ucladining.Adapters.SectionsPagerAdapter;
+import com.vanshgandhi.ucladining.Helpers.Refreshable;
 import com.vanshgandhi.ucladining.R;
 
 import java.util.Calendar;
@@ -30,15 +32,10 @@ public class DiningHallMenusHolderFragment extends Fragment {
     private static final int      BPLATE                = 3;
     private static int currentHall;
 
-    public enum Meal {
-        Breakfast, Lunch, Dinner
-    }
-
-    ;
-    Meal current;
-    private MainActivity mainActivity;
-    private Toolbar      toolbar;
-    private Spinner      spinner;
+    private MainActivity         mainActivity;
+    private Toolbar              toolbar;
+    private Spinner              spinner;
+    private SectionsPagerAdapter sectionsPagerAdapter; //provides fragments for each section
 
     public static DiningHallMenusHolderFragment newInstance() {
         return new DiningHallMenusHolderFragment();
@@ -48,9 +45,9 @@ public class DiningHallMenusHolderFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mainActivity = (MainActivity) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mainActivity = (MainActivity) context;
     }
 
     @Override
@@ -58,13 +55,12 @@ public class DiningHallMenusHolderFragment extends Fragment {
                              Bundle savedInstanceState) {
         TabLayout tabLayout;
         ViewPager viewPager;             //Hosts the section contents
-        SectionsPagerAdapter mSectionsPagerAdapter; //provides fragments for each section
 
         View rootView = inflater.inflate(R.layout.fragment_dining_hall_menus_holder, container,
                 false);
         toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         toolbar.setTitle("");
-        current = recommendedMealPeriod();
+        mainActivity.setCurrentMeal(recommendedMealPeriod());
         spinner = (Spinner) rootView.findViewById(R.id.spinner);
         spinner.setAdapter(new MealTypeSpinnerAdapter(toolbar.getContext(),
                 getArrayBasedOnSelectedDiningHall()));
@@ -74,23 +70,19 @@ public class DiningHallMenusHolderFragment extends Fragment {
                 if (parent.getAdapter().getCount() == 3) {
                     switch (position) {
                         case 0:
-                            current = Meal.Breakfast;
-                            return;
+                            mainActivity.setCurrentMeal(Meal.Breakfast);
                         case 1:
-                            current = Meal.Lunch;
-                            return;
+                            mainActivity.setCurrentMeal(Meal.Lunch);
                         case 2:
-                            current = Meal.Dinner;
-                            return;
+                            mainActivity.setCurrentMeal(Meal.Dinner);
                     }
-                }
-                switch (position) {
-                    case 0:
-                        current = Meal.Lunch;
-                        return;
-                    case 1:
-                        current = Meal.Dinner;
-                        return;
+                } else {
+                    switch (position) {
+                        case 0:
+                            mainActivity.setCurrentMeal(Meal.Lunch);
+                        case 1:
+                            mainActivity.setCurrentMeal(Meal.Dinner);
+                    }
                 }
                 refresh();
             }
@@ -102,9 +94,10 @@ public class DiningHallMenusHolderFragment extends Fragment {
         });
         mainActivity.setSupportActionBar(toolbar);
         viewPager = (ViewPager) rootView.findViewById(R.id.container);
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager(), 0,
+        viewPager.setOffscreenPageLimit(3); //
+        sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager(), 0,
                 mainActivity.getTitles());
-        viewPager.setAdapter(mSectionsPagerAdapter);
+        viewPager.setAdapter(sectionsPagerAdapter);
 
 //        AppBarLayout appBarLayout = (AppBarLayout) rootView.findViewById(R.id.appbar);
 //        TabLayout test = new TabLayout(getContext());
@@ -121,9 +114,11 @@ public class DiningHallMenusHolderFragment extends Fragment {
         return rootView;
     }
 
-    public void refresh() {
-
-        //TODO: Refresh the menu!!
+    public void refresh() { //MainActivity calls this to refesh all Dining Halls
+        for (int i = 0; i < sectionsPagerAdapter.getCount(); i++) {
+            Refreshable refreshable = (Refreshable) sectionsPagerAdapter.getFragment(i);
+            refreshable.refresh();
+        }
     }
 
     private String[] getArrayBasedOnSelectedDiningHall() //And Day of week
@@ -133,6 +128,10 @@ public class DiningHallMenusHolderFragment extends Fragment {
             return twoMealSpinnerArray;
         }
         return threeMealSpinnerArray;
+    }
+
+    public SectionsPagerAdapter getSectionsPagerAdapter() {
+        return sectionsPagerAdapter;
     }
 
     public void setCurrentHall(int hall) {

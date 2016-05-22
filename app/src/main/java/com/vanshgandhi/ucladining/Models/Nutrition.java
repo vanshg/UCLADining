@@ -1,9 +1,11 @@
 package com.vanshgandhi.ucladining.Models;
 
+import java.io.Serializable;
+
 /**
  * Created by vanshgandhi on 11/17/15.
  */
-public class Nutrition
+public class Nutrition implements Serializable
 {
     private String servingSize;
     private String amountPerServing;

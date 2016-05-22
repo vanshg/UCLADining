@@ -44,7 +44,7 @@ public class HoursFragment extends Fragment implements Callback {
     public static HoursFragment newInstance() {
         return new HoursFragment();
     }
-    
+
     public HoursFragment() {
         // Required empty public constructor
     }
@@ -56,7 +56,7 @@ public class HoursFragment extends Fragment implements Callback {
             mainActivity = (MainActivity) context;
         }
     }
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -91,7 +91,7 @@ public class HoursFragment extends Fragment implements Callback {
             showError();
         }
     }
-    
+
     @Override
     public void onFailure(Call call, IOException e) {
         showError();
@@ -166,7 +166,7 @@ public class HoursFragment extends Fragment implements Callback {
                         setMealPeriodHoursText(cafeHoursTable, 1, breakfast, lunch, dinner, night);
                 }
             }
-        } catch (JSONException|IllegalStateException e) {
+        } catch (JSONException | IllegalStateException e) {
             e.printStackTrace();
             showError();
         }

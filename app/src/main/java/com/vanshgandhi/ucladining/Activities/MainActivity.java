@@ -19,7 +19,6 @@ import com.roughike.bottombar.BottomBarTab;
 import com.roughike.bottombar.OnTabClickListener;
 import com.vanshgandhi.ucladining.Fragments.DiningHallMenusHolderFragment;
 import com.vanshgandhi.ucladining.Fragments.HoursFragment;
-import com.vanshgandhi.ucladining.Fragments.QuickServiceMenusHolderFragment;
 import com.vanshgandhi.ucladining.Fragments.SwipesFragment;
 import com.vanshgandhi.ucladining.R;
 
@@ -29,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
     BottomBar bottomBar;
     private final String[][] titles = {{"COVEL", "DE NEVE", "FEAST", "BPLATE"}, {"RENDEZVOUS", "CAFé 1919", "BCAFé"}};
 
-    private static Calendar c = null;
-    private static int calMonth;
-    private static int calYear;
-    private static int calDay;
+    private Calendar c = null;
+    private int calMonth;
+    private int calYear;
+    private int calDay;
 
     private static final String YEAR_KEY   = "YEAR";
     private static final String MONTH_KEY  = "MONTH";
@@ -41,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String CAFE_KEY   = "CAFE";
     private static final String HOURS_KEY  = "HOURS";
     private static final String SWIPES_KEY = "SWIPES";
+
+    public enum Meal {Breakfast, Lunch, Dinner}
+    public enum DiningHall {Covel, DeNeve, Feast, Bplate}
+
+    Meal currentMeal;
 
     private static SharedPreferences        preferences;
     private static SharedPreferences.Editor editor;
@@ -67,9 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
         bottomBar = BottomBar.attachShy((CoordinatorLayout) findViewById(R.id.main_content),
                 findViewById(R.id.content_frame), savedInstanceState);
+        bottomBar.setMaxFixedTabs(2);
         bottomBar.setActiveTabColor(ContextCompat.getColor(this, R.color.colorAccent));
         bottomBar.setItems(new BottomBarTab(R.drawable.ic_dining_hall, R.string.halls),
-                new BottomBarTab(R.drawable.ic_quick_eat, R.string.cafes),
+//                new BottomBarTab(R.drawable.ic_quick_eat, R.string.cafes),
                 new BottomBarTab(R.drawable.ic_time, R.string.hours),
                 new BottomBarTab(R.drawable.ic_swipes, R.string.swipes));
         bottomBar.setOnTabClickListener(new OnTabClickListener() {
@@ -83,15 +88,15 @@ public class MainActivity extends AppCompatActivity {
                         f = DiningHallMenusHolderFragment.newInstance();
                         tag = DINING_KEY;
                         break;
+//                    case 1:
+//                        f = QuickServiceMenusHolderFragment.newInstance();
+//                        tag = CAFE_KEY;
+//                        break;
                     case 1:
-                        f = QuickServiceMenusHolderFragment.newInstance();
-                        tag = CAFE_KEY;
-                        break;
-                    case 2:
                         f = HoursFragment.newInstance();
                         tag = HOURS_KEY;
                         break;
-                    case 3:
+                    case 2:
                         f = SwipesFragment.newInstance();
                         tag = SWIPES_KEY;
                         break;
@@ -108,12 +113,26 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private static void dateChanged() {
+    private void dateChanged() {
         editor.putInt(YEAR_KEY, calYear);
         editor.putInt(MONTH_KEY, calYear);
         editor.putInt(DAY_KEY, calDay);
         editor.apply();
-        //TODO: REFRESH ALL ACTIVE FRAGMENTS WITH CURRENT DATE
+    }
+
+    private void refresh() {
+        DiningHallMenusHolderFragment dining = (DiningHallMenusHolderFragment) getFragmentManager().findFragmentByTag(DINING_KEY);
+        if (dining != null) {
+            dining.refresh();
+        }
+
+        //TODO: QuickService Refresh
+
+        HoursFragment hours = (HoursFragment) getFragmentManager().findFragmentByTag(HOURS_KEY);
+        if (hours != null) {
+            hours.refresh();
+        }
+
     }
     
     @Override
@@ -160,7 +179,15 @@ public class MainActivity extends AppCompatActivity {
         return c.get(Calendar.DAY_OF_WEEK);
     }
 
-    public static class DatePickerFragment extends DialogFragment
+    public Meal getCurrentMeal() {
+        return currentMeal;
+    }
+
+    public void setCurrentMeal(Meal currentMeal) {
+        this.currentMeal = currentMeal;
+    }
+
+    public class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
         public DatePickerFragment() {
@@ -169,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            // Use the current date as the default date in the picker
+            // Use the currentMeal date as the default date in the picker
             DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, calYear, calMonth,
                     calDay);
             DatePicker datePicker = dialog.getDatePicker();
@@ -186,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
             calYear = year;
             calMonth = month;
             dateChanged();
+            refresh();
         }
     }
 
