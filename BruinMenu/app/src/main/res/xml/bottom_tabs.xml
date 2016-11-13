@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/action_hall"
+        icon="@drawable/ic_restaurant"
+        title="@string/hall"/>
+    <tab
+        id="@+id/action_cafe"
+        icon="@drawable/ic_cafe"
+        title="@string/cafe"/>
+    <tab
+        id="@+id/action_swipe"
+        icon="@drawable/ic_swipe"
+        title="@string/swipes"/>
+</tabs>

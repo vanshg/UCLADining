@@ -2,4 +2,7 @@
     <string name="app_name">Bruin Menu</string>
     <string name="action_calendar">Date</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="hall">Hall</string>
+    <string name="cafe">Cafés</string>
+    <string name="swipes">Swipes</string>
 </resources>
