@@ -14,10 +14,8 @@
         android:id="@+id/user_id_label"
         android:actionViewClass="android.widget.TextView"
         app:showAsAction="always"
-        android:title="Date Picked"
+        android:title="@string/pickDate"
         android:focusable="false"
-        android:clickable="false"
-
-    />
+        android:clickable="false" />
 
 </menu>

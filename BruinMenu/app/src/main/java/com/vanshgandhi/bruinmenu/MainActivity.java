@@ -3,6 +3,7 @@ package com.vanshgandhi.bruinmenu;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.TabLayout;
@@ -12,13 +13,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.DatePicker;
-import android.widget.TextView;
 
 import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import butterknife.BindView;
@@ -32,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private Menu menu;
 
     DialogFragment dateFragment;
-    DialogFragment timeFragment;
 
     @BindView (R.id.container) ViewPager viewPager;
     @BindView (R.id.tabs) TabLayout tabLayout;
@@ -46,10 +46,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        sectionsPagerAdapter = new MenuSectionsPagerAdapter(
-                getSupportFragmentManager());
+
+        //MenuFragment mf = new MenuFragment().newInstance(0);
+        //getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, mf).commit();
+
+        sectionsPagerAdapter = new MenuSectionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(sectionsPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -61,10 +65,51 @@ public class MainActivity extends AppCompatActivity {
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
-
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0){}
+                else{
+                    getSupportFragmentManager().popBackStack();
+                }
+                // write things with the bottom tabs
+                if (tabId == R.id.action_swipe) {
+                    Log.d("myapp", "you have selected to go to the swipes");
+                    tabLayout.setVisibility(View.GONE);
+                    viewPager.setVisibility(View.GONE);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, SwipesFragment.newInstance()).addToBackStack(null).commit();
+                }
+                else if (tabId == R.id.action_hall)
+                {
+                    tabLayout.setVisibility(View.VISIBLE);
+                    viewPager.setVisibility(View.VISIBLE);
+                }
+                else if (tabId == R.id.action_cafe)
+                {
+                    tabLayout.setVisibility(View.VISIBLE);
+                    viewPager.setVisibility(View.VISIBLE);
+                }
+                else if (tabId == R.id.action_hours)
+                {
+                    tabLayout.setVisibility(View.GONE);
+                    viewPager.setVisibility(View.GONE);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, HoursFragment.newInstance()).addToBackStack(null).commit();
+                }
             }
         });
+
+//        bottomBar.setOnTabReselectListener(new OnTabReselectListener() {        // we don't need to reselect anything but this is how you do it!
+//            @Override
+//            public void onTabReSelected(@IdRes int tabId) {
+//                // write things with the bottom tabs on they are re-selected
+//                if (tabId == R.id.action_swipe)
+//                    Log.d("myapp", "you have tried to re-select to go to the swipes");
+//            }
+//        });
     }
+
+    @Override
+    public void onBackPressed(){
+        // overriden so back button pressed does not do anything now!!
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,8 +127,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_calendar) {
             showDatePickerDialog(id);
-
-            //showDialog(R.id.action_calendar);
         }
         return super.onOptionsItemSelected(item);
     }

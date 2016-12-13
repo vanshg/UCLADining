@@ -4,5 +4,9 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="hall">Hall</string>
     <string name="cafe">Cafés</string>
-    <string name="swipes">Swipes</string>
+    <string name="swipes">Swi.pes</string>
+    <string name="pickDate">Date Picked</string>
+    <string name="swipesLeft">You should have </string>
+    <string name="swipesAsOf">as of </string>
+
 </resources>
