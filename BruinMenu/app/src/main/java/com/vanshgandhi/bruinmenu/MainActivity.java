@@ -1,21 +1,38 @@
 package com.vanshgandhi.bruinmenu;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.DatePicker;
 
 import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
+
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
+
+    private int mDay, mMonth, mYear;
+    private Calendar c;
+    private MenuItem date;
+    private Menu menu;
+
+    DialogFragment dateFragment;
 
     @BindView (R.id.container) ViewPager viewPager;
     @BindView (R.id.tabs) TabLayout tabLayout;
@@ -29,33 +46,121 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        sectionsPagerAdapter = new MenuSectionsPagerAdapter(
-                getSupportFragmentManager());
+
+        //MenuFragment mf = new MenuFragment().newInstance(0);
+        //getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, mf).commit();
+
+        sectionsPagerAdapter = new MenuSectionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(sectionsPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+
+        c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        mMonth = c.get(Calendar.MONTH);
+
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
-
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0){}
+                else{
+                    getSupportFragmentManager().popBackStack();
+                }
+                // write things with the bottom tabs
+                if (tabId == R.id.action_swipe) {
+                    Log.d("myapp", "you have selected to go to the swipes");
+                    tabLayout.setVisibility(View.GONE);
+                    viewPager.setVisibility(View.GONE);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, SwipesFragment.newInstance()).addToBackStack(null).commit();
+                }
+                else if (tabId == R.id.action_hall)
+                {
+                    tabLayout.setVisibility(View.VISIBLE);
+                    viewPager.setVisibility(View.VISIBLE);
+                }
+                else if (tabId == R.id.action_cafe)
+                {
+                    tabLayout.setVisibility(View.VISIBLE);
+                    viewPager.setVisibility(View.VISIBLE);
+                }
+                else if (tabId == R.id.action_hours)
+                {
+                    tabLayout.setVisibility(View.GONE);
+                    viewPager.setVisibility(View.GONE);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, HoursFragment.newInstance()).addToBackStack(null).commit();
+                }
             }
         });
+
+//        bottomBar.setOnTabReselectListener(new OnTabReselectListener() {        // we don't need to reselect anything but this is how you do it!
+//            @Override
+//            public void onTabReSelected(@IdRes int tabId) {
+//                // write things with the bottom tabs on they are re-selected
+//                if (tabId == R.id.action_swipe)
+//                    Log.d("myapp", "you have tried to re-select to go to the swipes");
+//            }
+//        });
     }
 
     @Override
+    public void onBackPressed(){
+        // overriden so back button pressed does not do anything now!!
+    }
+
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        date = menu.findItem(R.id.user_id_label);
+        updateDisplay();
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+
         if (id == R.id.action_calendar) {
-            //TODO: Show date picker
-            return true;
+            showDatePickerDialog(id);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showDatePickerDialog(int id)
+    {
+        dateFragment = new DatePickerFragment();
+        dateFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
+    {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), this, mYear, mMonth, mDay);
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            c.set(Calendar.YEAR, year);
+            c.set(Calendar.MONTH, month);
+            c.set(Calendar.DAY_OF_MONTH, day);
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
+            updateDisplay();
+        }
+    }
+
+    private void updateDisplay()
+    {
+        date.setTitle(new StringBuilder().append(mMonth + 1).append("-").append(mDay).append("-").append(mYear).append(""));
     }
 }

@@ -9,6 +9,11 @@
         icon="@drawable/ic_cafe"
         title="@string/cafe"/>
     <tab
+        id="@+id/action_hours"
+        icon="@drawable/ic_hours"
+        title="Hours" />
+
+    <tab
         id="@+id/action_swipe"
         icon="@drawable/ic_swipe"
         title="@string/swipes"/>
