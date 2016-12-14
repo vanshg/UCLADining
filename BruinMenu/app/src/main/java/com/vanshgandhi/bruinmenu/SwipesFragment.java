@@ -1,6 +1,7 @@
 package com.vanshgandhi.bruinmenu;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,9 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.ToggleButton;
-
-import org.w3c.dom.Text;
+import android.widget.RadioGroup;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,19 +25,13 @@ public class SwipesFragment extends Fragment {
     private TextView swipesText;
     private TextView dateText;
 
-    enum MealPlan{
-        MEAL_11, MEAL_14, MEAL_19, MEAL_14P, MEAL_19P
-    }
-
     private final static int TOT_19P = 214;
     private final static int TOT_14P = 158;
-    private final static int TOT_19 = 19;
-    private final static int TOT_14 = 14;
-    private final static int TOT_11 = 11;
-
-    private MealPlan mealPlan;
 
     private int weeksSinceStart;
+    private int swipesLeft;
+
+    private int id;
 
     Calendar rightNow;
     Calendar startOfQuarter;
@@ -52,7 +45,7 @@ public class SwipesFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context){
+    public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof MainActivity) {
             mainActivity = (MainActivity) context;
@@ -60,28 +53,136 @@ public class SwipesFragment extends Fragment {
     }
 
     @Override
-    public void onCreate (Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_swipes, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_swipes, container, false);
 
-//        mainActivity = (MainActivity)getActivity();
-        rightNow = mainActivity.getCurrentCal();
+        id = mainActivity.getPreviousSwipeToggle();
 
-        swipesText = (TextView)rootView.findViewById(R.id.swipes);
-        dateText = (TextView)rootView.findViewById(R.id.date);
+        rightNow = mainActivity.getCurrentCal();          // TODO: somehow make a listener or something to change this date appropriately instead of relying on erasing the current fragment and replacing it with the new date
 
-        swipesText.setText("0");
-        SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy ", Locale.US);
+        swipesText = (TextView) rootView.findViewById(R.id.swipes);
+        dateText = (TextView) rootView.findViewById(R.id.date);
+
+        SimpleDateFormat df = new SimpleDateFormat("MMMM d, yyyy ", Locale.US);
         String formattedDate = df.format(rightNow.getTime());
         dateText.setText(formattedDate);
 
+        startOfQuarter = Calendar.getInstance();
+        startOfQuarter.set(2017, Calendar.JANUARY, 9);      // TODO: Find way to not hardcode this -> look at jaunt API, then grep for Instruction begins ... probably best way to do it http://jaunt-api.com/
+        int currentWeek = rightNow.get(Calendar.WEEK_OF_YEAR);
+        int quarterWeek = startOfQuarter.get(Calendar.WEEK_OF_YEAR);
+        weeksSinceStart = currentWeek - quarterWeek;
+        swipesLeft = 0;
+
+        RadioGroup radioGroup = (RadioGroup) rootView.findViewById(R.id.meal_selector);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                id = checkedId;
+                swipesLeft = refresh(checkedId);
+                swipesText.setText(new StringBuilder().append(swipesLeft));
+                mainActivity.setPreviousSwipeToggle(id);
+            }
+        });
+        radioGroup.check(id);
 
         return rootView;
     }
 
+    private int refresh(int mealPlanType) {
+        rightNow = mainActivity.getCurrentCal();
+        SimpleDateFormat df = new SimpleDateFormat("MMMM dd, yyyy ", Locale.US);
+        String formattedDate = df.format(rightNow.getTime());
+        dateText.setText(formattedDate);
+
+        startOfQuarter = Calendar.getInstance();
+        startOfQuarter.set(2017, Calendar.JANUARY, 9);      // TODO: Find way to not hardcode this -> look at jaunt API, then grep for Instruction begins ... probably best way to do it http://jaunt-api.com/
+        int currentWeek = rightNow.get(Calendar.WEEK_OF_YEAR);
+        int quarterWeek = startOfQuarter.get(Calendar.WEEK_OF_YEAR);
+        weeksSinceStart = currentWeek - quarterWeek;
+
+        int weekSwipesRemoved = 0;
+        weekSwipesRemoved = removeWeekSwipes(mealPlanType);
+        weekSwipesRemoved = removeDaySwipes(weekSwipesRemoved, mealPlanType);
+
+        return weekSwipesRemoved;
+    }
+
+    private int removeWeekSwipes(int mealPlanType) {
+        int swipesLeft = 0;
+        switch (mealPlanType) {
+            case R.id.toggle_14p:
+                swipesLeft = TOT_14P;
+                for (int i = 0; i < weeksSinceStart; i++)
+                    swipesLeft -= 14;
+                break;
+            case R.id.toggle_19p:
+                swipesLeft = TOT_19P;
+                for (int i = 0; i < weeksSinceStart; i++)
+                    swipesLeft -= 19;
+                break;
+            case R.id.toggle_11:
+                swipesLeft = 11;
+                break;
+            case R.id.toggle_14:
+                swipesLeft = 14;
+                break;
+            case R.id.toggle_19:
+                swipesLeft = 19;
+                break;
+        }
+        return swipesLeft;
+    }
+
+    private int removeDaySwipes(int currSwipes, int mealPlanType) {
+        int day = rightNow.get(Calendar.DAY_OF_WEEK);
+        switch (day) {
+            case Calendar.MONDAY:           // monday is beginning of day so as of monday morning, you should have ur full amount of swipes
+                return currSwipes;
+            case Calendar.TUESDAY:
+                if (mealPlanType == R.id.toggle_19 || mealPlanType == R.id.toggle_19p)
+                    currSwipes -=3;
+                else
+                    currSwipes -=2;
+                break;
+            case Calendar.WEDNESDAY:
+                if (mealPlanType == R.id.toggle_19 || mealPlanType == R.id.toggle_19p)
+                    currSwipes -=6;
+                else
+                    currSwipes -=4;
+                break;
+            case Calendar.THURSDAY:
+                if (mealPlanType == R.id.toggle_19 || mealPlanType == R.id.toggle_19p)
+                    currSwipes -=9;
+                else
+                    currSwipes -=6;
+                break;
+            case Calendar.FRIDAY:
+                if (mealPlanType == R.id.toggle_19 || mealPlanType == R.id.toggle_19p)
+                    currSwipes -=12;
+                else
+                    currSwipes -=8;
+                break;
+            case Calendar.SATURDAY:
+                if (mealPlanType == R.id.toggle_19 || mealPlanType == R.id.toggle_19p)
+                    currSwipes -=15;
+                else
+                    currSwipes -=10;
+                break;
+            case Calendar.SUNDAY:
+                if (mealPlanType == R.id.toggle_19 || mealPlanType == R.id.toggle_19p)
+                    currSwipes -=17;
+                else if (mealPlanType == R.id.toggle_14 || mealPlanType == R.id.toggle_14p)
+                    currSwipes -=12;
+                else
+                    currSwipes -= 11;       // no more swipes left for 11 ppl
+                break;
+        }
+        return currSwipes;
+    }
 }

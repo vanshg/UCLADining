@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="120dp"
         android:text="@string/swipesLeft"
         android:textSize="24sp"/>
 
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/swipes_left"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="20dp"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"/>
 

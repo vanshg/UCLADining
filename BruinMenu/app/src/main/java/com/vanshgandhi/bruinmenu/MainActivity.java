@@ -29,15 +29,19 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     private int mDay, mMonth, mYear;
+    private int previousSwipeToggle = R.id.toggle_19p;
     private Calendar c;
     private MenuItem date;
     private Menu menu;
 
     DialogFragment dateFragment;
 
-    @BindView (R.id.container) ViewPager viewPager;
-    @BindView (R.id.tabs) TabLayout tabLayout;
-    @BindView (R.id.bottom_navigation) BottomBar bottomBar;
+    @BindView(R.id.container)
+    ViewPager viewPager;
+    @BindView(R.id.tabs)
+    TabLayout tabLayout;
+    @BindView(R.id.bottom_navigation)
+    BottomBar bottomBar;
 
 
     MenuSectionsPagerAdapter sectionsPagerAdapter;
@@ -66,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
-                if (getSupportFragmentManager().getBackStackEntryCount() == 0){}
-                else{
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                } else {
                     getSupportFragmentManager().popBackStack();
                 }
                 // write things with the bottom tabs
@@ -76,19 +80,13 @@ public class MainActivity extends AppCompatActivity {
                     tabLayout.setVisibility(View.GONE);
                     viewPager.setVisibility(View.GONE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, SwipesFragment.newInstance(), "SwipesFrag").addToBackStack(null).commit();
-                }
-                else if (tabId == R.id.action_hall)
-                {
+                } else if (tabId == R.id.action_hall) {
                     tabLayout.setVisibility(View.VISIBLE);
                     viewPager.setVisibility(View.VISIBLE);
-                }
-                else if (tabId == R.id.action_cafe)
-                {
+                } else if (tabId == R.id.action_cafe) {
                     tabLayout.setVisibility(View.VISIBLE);
                     viewPager.setVisibility(View.VISIBLE);
-                }
-                else if (tabId == R.id.action_hours)
-                {
+                } else if (tabId == R.id.action_hours) {
                     tabLayout.setVisibility(View.GONE);
                     viewPager.setVisibility(View.GONE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, HoursFragment.newInstance(), "HoursFrag").addToBackStack(null).commit();
@@ -107,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         // overriden so back button pressed does not do anything now!!
     }
 
@@ -132,14 +130,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void showDatePickerDialog(int id)
-    {
+    public void showDatePickerDialog(int id) {
         dateFragment = new DatePickerFragment();
         dateFragment.show(getFragmentManager(), "datePicker");
     }
 
-    public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
-    {
+    public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -160,27 +156,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateDisplay()
-    {
+    private void updateDisplay() {
         date.setTitle(new StringBuilder().append(mMonth + 1).append("-").append(mDay).append("-").append(mYear).append(""));
-        SwipesFragment sf = (SwipesFragment)getSupportFragmentManager().findFragmentByTag("SwipesFrag");
-        HoursFragment hf = (HoursFragment)getSupportFragmentManager().findFragmentByTag("HoursFrag");
-        if(sf != null && sf.isVisible())
-        {
+        SwipesFragment sf = (SwipesFragment) getSupportFragmentManager().findFragmentByTag("SwipesFrag");
+        HoursFragment hf = (HoursFragment) getSupportFragmentManager().findFragmentByTag("HoursFrag");
+        if (sf != null && sf.isVisible()) {
             getSupportFragmentManager().popBackStack();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, SwipesFragment.newInstance(), "SwipesFrag").addToBackStack(null).commit();
-        }
-        else if (hf != null && hf.isVisible())
-        {
+        } else if (hf != null && hf.isVisible()) {
             getSupportFragmentManager().popBackStack();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, HoursFragment.newInstance(), "HoursFrag").addToBackStack(null).commit();
         }
-
-
     }
 
-    public Calendar getCurrentCal (){
+    ////////////////////////// Getters and Setters //////////////////////////
+
+    public Calendar getCurrentCal() {
         return c;
     }
+
+    public void setPreviousSwipeToggle(int id) {
+        previousSwipeToggle = id;
+    }
+
+    public int getPreviousSwipeToggle() {
+        return previousSwipeToggle;
+    }
+
 
 }
