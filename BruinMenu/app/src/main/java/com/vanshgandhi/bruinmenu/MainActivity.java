@@ -21,6 +21,7 @@ import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("myapp", "you have selected to go to the swipes");
                     tabLayout.setVisibility(View.GONE);
                     viewPager.setVisibility(View.GONE);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, SwipesFragment.newInstance()).addToBackStack(null).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, SwipesFragment.newInstance(), "SwipesFrag").addToBackStack(null).commit();
                 }
                 else if (tabId == R.id.action_hall)
                 {
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     tabLayout.setVisibility(View.GONE);
                     viewPager.setVisibility(View.GONE);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, HoursFragment.newInstance()).addToBackStack(null).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, HoursFragment.newInstance(), "HoursFrag").addToBackStack(null).commit();
                 }
             }
         });
@@ -162,5 +163,24 @@ public class MainActivity extends AppCompatActivity {
     private void updateDisplay()
     {
         date.setTitle(new StringBuilder().append(mMonth + 1).append("-").append(mDay).append("-").append(mYear).append(""));
+        SwipesFragment sf = (SwipesFragment)getSupportFragmentManager().findFragmentByTag("SwipesFrag");
+        HoursFragment hf = (HoursFragment)getSupportFragmentManager().findFragmentByTag("HoursFrag");
+        if(sf != null && sf.isVisible())
+        {
+            getSupportFragmentManager().popBackStack();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, SwipesFragment.newInstance(), "SwipesFrag").addToBackStack(null).commit();
+        }
+        else if (hf != null && hf.isVisible())
+        {
+            getSupportFragmentManager().popBackStack();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, HoursFragment.newInstance(), "HoursFrag").addToBackStack(null).commit();
+        }
+
+
     }
+
+    public Calendar getCurrentCal (){
+        return c;
+    }
+
 }

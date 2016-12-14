@@ -7,6 +7,6 @@
     <string name="swipes">Swi.pes</string>
     <string name="pickDate">Date Picked</string>
     <string name="swipesLeft">You should have </string>
-    <string name="swipesAsOf">as of </string>
+    <string name="swipesAsOf">swipes as of </string>
 
 </resources>
