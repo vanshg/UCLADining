@@ -109,8 +109,49 @@ public class SwipesFragment extends Fragment {
         int weekSwipesRemoved = 0;
         weekSwipesRemoved = removeWeekSwipes(mealPlanType);
         weekSwipesRemoved = removeDaySwipes(weekSwipesRemoved, mealPlanType);
+        weekSwipesRemoved = removeHourSwipes(weekSwipesRemoved, mealPlanType);
 
         return weekSwipesRemoved;
+    }
+
+    private int removeHourSwipes(int currSwipes, int mealPlanType) {
+        int currHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        int day = rightNow.get(Calendar.DAY_OF_WEEK);
+
+        if (day == Calendar.SATURDAY) {
+            if (currHour >= 17 && currHour < 21)
+                currSwipes -= 1;
+            else if (currHour >= 21) {
+                if (mealPlanType != R.id.toggle_11)
+                    currSwipes -= 2;
+            }
+        } else if (day == Calendar.SUNDAY) {
+            if (mealPlanType != R.id.toggle_11) {
+                if (currHour >= 17 && currHour < 21)
+                    currSwipes -= 1;
+                else if (currHour >= 21) {
+                    currSwipes -= 2;
+                }
+            }
+        } else {
+            if (currHour >= 11 && currHour < 16)     // remove 1 swipe for 19 and 19p
+            {
+                if (mealPlanType == R.id.toggle_19p || mealPlanType == R.id.toggle_19)
+                    currSwipes -= 1;
+            } else if (currHour >= 16 && currHour < 21)    // remove 2 swipes for 19 and 19p, remove 1 for the rest
+            {
+                if (mealPlanType == R.id.toggle_19p || mealPlanType == R.id.toggle_19)
+                    currSwipes -= 2;
+                else
+                    currSwipes -= 1;
+            } else if (currHour >= 21) {            // remove 3 swipes for 19 and 19p, remove 2 for the rest
+                if (mealPlanType == R.id.toggle_19p || mealPlanType == R.id.toggle_19)
+                    currSwipes -= 3;
+                else
+                    currSwipes -= 2;
+            }
+        }
+        return currSwipes;
     }
 
     private int removeWeekSwipes(int mealPlanType) {
@@ -146,39 +187,39 @@ public class SwipesFragment extends Fragment {
                 return currSwipes;
             case Calendar.TUESDAY:
                 if (mealPlanType == R.id.toggle_19 || mealPlanType == R.id.toggle_19p)
-                    currSwipes -=3;
+                    currSwipes -= 3;
                 else
-                    currSwipes -=2;
+                    currSwipes -= 2;
                 break;
             case Calendar.WEDNESDAY:
                 if (mealPlanType == R.id.toggle_19 || mealPlanType == R.id.toggle_19p)
-                    currSwipes -=6;
+                    currSwipes -= 6;
                 else
-                    currSwipes -=4;
+                    currSwipes -= 4;
                 break;
             case Calendar.THURSDAY:
                 if (mealPlanType == R.id.toggle_19 || mealPlanType == R.id.toggle_19p)
-                    currSwipes -=9;
+                    currSwipes -= 9;
                 else
-                    currSwipes -=6;
+                    currSwipes -= 6;
                 break;
             case Calendar.FRIDAY:
                 if (mealPlanType == R.id.toggle_19 || mealPlanType == R.id.toggle_19p)
-                    currSwipes -=12;
+                    currSwipes -= 12;
                 else
-                    currSwipes -=8;
+                    currSwipes -= 8;
                 break;
             case Calendar.SATURDAY:
                 if (mealPlanType == R.id.toggle_19 || mealPlanType == R.id.toggle_19p)
-                    currSwipes -=15;
+                    currSwipes -= 15;
                 else
-                    currSwipes -=10;
+                    currSwipes -= 10;
                 break;
             case Calendar.SUNDAY:
                 if (mealPlanType == R.id.toggle_19 || mealPlanType == R.id.toggle_19p)
-                    currSwipes -=17;
+                    currSwipes -= 17;
                 else if (mealPlanType == R.id.toggle_14 || mealPlanType == R.id.toggle_14p)
-                    currSwipes -=12;
+                    currSwipes -= 12;
                 else
                     currSwipes -= 11;       // no more swipes left for 11 ppl
                 break;
