@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     private int mDay, mMonth, mYear;
     private int previousSwipeToggle = R.id.toggle_19p;
     private Calendar c;
+    private Calendar minDate;
+    private Calendar maxDate;
+
     private MenuItem date;
     private Menu menu;
 
@@ -55,9 +58,6 @@ public class MainActivity extends AppCompatActivity {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //MenuFragment mf = new MenuFragment().newInstance(0);
-        //getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, mf).commit();
-
         sectionsPagerAdapter = new MenuSectionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(sectionsPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -66,6 +66,12 @@ public class MainActivity extends AppCompatActivity {
         mYear = c.get(Calendar.YEAR);
         mDay = c.get(Calendar.DAY_OF_MONTH);
         mMonth = c.get(Calendar.MONTH);
+
+        minDate = (Calendar) c.clone();
+        maxDate = (Calendar) c.clone();
+        minDate.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
+        maxDate.set(Calendar.DATE, minDate.get(Calendar.DATE) + 6);
+
 
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
@@ -93,22 +99,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-//        bottomBar.setOnTabReselectListener(new OnTabReselectListener() {        // we don't need to reselect anything but this is how you do it!
-//            @Override
-//            public void onTabReSelected(@IdRes int tabId) {
-//                // write things with the bottom tabs on they are re-selected
-//                if (tabId == R.id.action_swipe)
-//                    Log.d("myapp", "you have tried to re-select to go to the swipes");
-//            }
-//        });
     }
 
     @Override
     public void onBackPressed() {
         // overriden so back button pressed does not do anything now!!
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -122,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
 
         if (id == R.id.action_calendar) {
             showDatePickerDialog(id);
@@ -139,10 +134,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
-
-            // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, mYear, mMonth, mDay);
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, mYear, mMonth, mDay);
+            dialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+            dialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+            return dialog;
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -182,6 +177,14 @@ public class MainActivity extends AppCompatActivity {
     public int getPreviousSwipeToggle() {
         return previousSwipeToggle;
     }
-
-
 }
+
+
+//        bottomBar.setOnTabReselectListener(new OnTabReselectListener() {        // we don't need to reselect anything but this is how you do it! Add to onCreate method
+//            @Override
+//            public void onTabReSelected(@IdRes int tabId) {
+//                // write things with the bottom tabs on they are re-selected
+//                if (tabId == R.id.action_swipe)
+//                    Log.d("myapp", "you have tried to re-select to go to the swipes");
+//            }
+//        });
