@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BruinMenu.iml" filepath="$PROJECT_DIR$/BruinMenu.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$USER_HOME$/Google Drive/Development/UCLADining/BruinMenu/BruinMenu.iml" filepath="$USER_HOME$/Google Drive/Development/UCLADining/BruinMenu/BruinMenu.iml" />
+      <module fileurl="file://$USER_HOME$/Google Drive/Development/UCLADining/BruinMenu/app/app.iml" filepath="$USER_HOME$/Google Drive/Development/UCLADining/BruinMenu/app/app.iml" />
     </modules>
   </component>
 </project>

@@ -1,0 +1,29 @@
+uclamenu.com/
+
+Abbreviated/Highlights:
+
+Url: /
+Parameters: date
+
+Sample response:
+{
+	"breakfast": [],
+	"lunch": [{
+		"name": "Covel Dining",
+		"location_code": 7,
+		"menu": [{
+			"section_name": "Exhibition Kitchen",
+			"items": [{
+				"name": "Linguine w/ Quatro Fromaggio",
+				"recipe_number": 165054,
+				"default_portion_size": 6,
+				"vegetarian": true,
+				"vegan": false
+				"low_carbon": true
+			}]
+		}]
+	}], 
+	"dinner": []
+}
+
+
