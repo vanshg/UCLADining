@@ -108,7 +108,6 @@ for (var i = 1; i <= 5; i++)
 	}
 	for (var j = (3-offset); j < table.length; j++)
 	{
-		var obj = {};
 		var obj1 = 
 		{
 			"section_name" : "",
