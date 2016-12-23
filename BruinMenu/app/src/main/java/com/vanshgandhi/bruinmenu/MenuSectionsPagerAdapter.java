@@ -11,6 +11,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class MenuSectionsPagerAdapter extends FragmentPagerAdapter {
 
+    private boolean displayCafe = true;
+
     public MenuSectionsPagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -30,16 +32,34 @@ public class MenuSectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        switch (position) {
-            case 0:
-                return "COVEL";
-            case 1:
-                return "DE NEVE";
-            case 2:
-                return "FEAST";
-            case 3:
-                return "BPLATE";
+
+        if (displayCafe) {
+            switch (position) {
+                case 0:
+                    return "CAFE 1919";
+                case 1:
+                    return "RENDEZVOUS EAST";
+                case 2:
+                    return "RENDEZVOUS WEST";
+                case 3:
+                    return "BRUIN CAFE";
+            }
+        } else {
+            switch (position) {
+                case 0:
+                    return "COVEL";
+                case 1:
+                    return "DE NEVE";
+                case 2:
+                    return "FEAST";
+                case 3:
+                    return "BPLATE";
+            }
         }
         return "";
+    }
+
+    void setDisplayCafe(boolean b) {
+        displayCafe = b;
     }
 }

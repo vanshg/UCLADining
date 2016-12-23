@@ -1,5 +1,6 @@
 package com.vanshgandhi.bruinmenu;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         sectionsPagerAdapter = new MenuSectionsPagerAdapter(getSupportFragmentManager());
+        sectionsPagerAdapter.setDisplayCafe(false);
         viewPager.setAdapter(sectionsPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -82,14 +84,19 @@ public class MainActivity extends AppCompatActivity {
                 }
                 // write things with the bottom tabs
                 if (tabId == R.id.action_swipe) {
-                    Log.d("myapp", "you have selected to go to the swipes");
                     tabLayout.setVisibility(View.GONE);
                     viewPager.setVisibility(View.GONE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, SwipesFragment.newInstance(), "SwipesFrag").addToBackStack(null).commit();
                 } else if (tabId == R.id.action_hall) {
+                    sectionsPagerAdapter.setDisplayCafe(false);
+                    viewPager.setAdapter(sectionsPagerAdapter);
+                    tabLayout.setupWithViewPager(viewPager);
                     tabLayout.setVisibility(View.VISIBLE);
                     viewPager.setVisibility(View.VISIBLE);
                 } else if (tabId == R.id.action_cafe) {
+                    sectionsPagerAdapter.setDisplayCafe(true);
+                    viewPager.setAdapter(sectionsPagerAdapter);
+                    tabLayout.setupWithViewPager(viewPager);
                     tabLayout.setVisibility(View.VISIBLE);
                     viewPager.setVisibility(View.VISIBLE);
                 } else if (tabId == R.id.action_hours) {
@@ -106,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         // overriden so back button pressed does not do anything now!!
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
@@ -120,20 +128,22 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_calendar) {
-            showDatePickerDialog(id);
+            showDatePickerDialog();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void showDatePickerDialog(int id) {
+    public void showDatePickerDialog() {
         dateFragment = new DatePickerFragment();
         dateFragment.show(getFragmentManager(), "datePicker");
     }
 
+    @SuppressLint("ValidFragment")
     public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Create a new instance of DatePickerDialog and return it
             DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, mYear, mMonth, mDay);
             dialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
             dialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
@@ -180,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
 }
 
 
-//        bottomBar.setOnTabReselectListener(new OnTabReselectListener() {        // we don't need to reselect anything but this is how you do it! Add to onCreate method
+//        bottomBar.setOnTabReselectListener(new OnTabReselectListener() {        // we don't need to reselect anything but this is how you do it!
 //            @Override
 //            public void onTabReSelected(@IdRes int tabId) {
 //                // write things with the bottom tabs on they are re-selected

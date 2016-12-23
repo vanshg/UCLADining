@@ -1,16 +1,15 @@
 package com.vanshgandhi.bruinmenu;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.RadioGroup;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -25,8 +24,12 @@ public class SwipesFragment extends Fragment {
     private TextView swipesText;
     private TextView dateText;
 
-    private final static int TOT_19P = 214;
-    private final static int TOT_14P = 158;
+    private final static int TOT_19P = 209;
+    private final static int TOT_14P = 154;
+
+//    private int [] regular_19 = new int[] {2, 19, 16, 13, 10, 7, 4};
+//    private int [] regular_14 = new int[] {2, 14, 12, 10, 8, 6, 4};
+//    private int [] regular_11 = new int[] {0, 11, 9, 7, 5, 3, 1};
 
     private int weeksSinceStart;
     private int swipesLeft;
@@ -107,6 +110,7 @@ public class SwipesFragment extends Fragment {
         weeksSinceStart = currentWeek - quarterWeek;
 
         int weekSwipesRemoved = 0;
+
         weekSwipesRemoved = removeWeekSwipes(mealPlanType);
         weekSwipesRemoved = removeDaySwipes(weekSwipesRemoved, mealPlanType);
         weekSwipesRemoved = removeHourSwipes(weekSwipesRemoved, mealPlanType);
@@ -159,13 +163,11 @@ public class SwipesFragment extends Fragment {
         switch (mealPlanType) {
             case R.id.toggle_14p:
                 swipesLeft = TOT_14P;
-                for (int i = 0; i < weeksSinceStart; i++)
-                    swipesLeft -= 14;
+                swipesLeft -= 14 * weeksSinceStart;
                 break;
             case R.id.toggle_19p:
                 swipesLeft = TOT_19P;
-                for (int i = 0; i < weeksSinceStart; i++)
-                    swipesLeft -= 19;
+                swipesLeft -= 19 * weeksSinceStart;
                 break;
             case R.id.toggle_11:
                 swipesLeft = 11;
