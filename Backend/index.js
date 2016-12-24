@@ -10,6 +10,7 @@ var fs = require('fs');
 
 let hoursUrl = 'https://secure5.ha.ucla.edu/restauranthours/dining-hall-hours-by-day.cfm?serviceDate=%d%%2F%d%%2F%d'
 let overviewUrl = 'http://menu.ha.ucla.edu/foodpro/default.asp?date=%d%%2F%d%%2F%d'
+let calendarUrl = 'http://www.registrar.ucla.edu/Calendars/Annual-Academic-Calendar'
 
 app.set('port', (process.env.PORT || 5000))
 app.use(bodyParser.urlencoded({extended: false}))
@@ -68,6 +69,22 @@ app.get('/menus', function (req, res) {
 */
 app.get('/swipes', function (req, res) {
     res.send('TODO')
+})
+
+app.get('/calendarYear', function(req, res){
+    // TODO: get the calendar years for several 
+    var url = util.format(calendarUrl);
+    request(url, function(error, response, body)
+    {
+        if (error)
+        {
+            sendError(res, error)
+        }
+        else{
+            res.send('TODO')
+        }
+    })
+    res.send('TODO');
 })
 
 // Spin up the server
