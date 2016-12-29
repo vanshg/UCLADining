@@ -107,7 +107,7 @@ function parseMealPeriod(body, mealNumber) {
 }
 
 function parseHours(res, body) {
-    var response = {}
+    var response = []
     var $ = cheerio.load(body)
     $('.articleBody table tr').each(function(index, element) {
         if (index < 3) return
@@ -116,22 +116,19 @@ function parseHours(res, body) {
         $(this).find('td').each(function(index, element) {
             var text = $(this).text().replace(/\r\n\t/g, '').trim()
             if (index == 0) {
-                name = text
-            } else {
-                if (index == 1) {
-                    var key = 'breakfast'
-                } else if (index == 2) {
-                    var key = 'lunch'
-                } else if (index == 3) {
-                    var key = 'dinner'
-                } else if (index == 4) {
-                    var key = 'late_night'
-                }
-                // TODO: Sometimes, they put full words into the hours, this gets rid of the spacing in those words. But we need this right now to get rid of whacky spacing in the returned String
-                obj[key] = text.replace(/ /g, '').trim()
+                var key = "hall_name"
+            } else  if (index == 1) {
+                var key = 'breakfast'
+            } else if (index == 2) {
+                var key = 'lunch'
+            } else if (index == 3) {
+                var key = 'dinner'
+            } else if (index == 4) {
+                var key = 'late_night'
             }
+            obj[key] = text.replace(/- +/g, '- ').trim()
         })
-        response[name] = obj
+        response.push(obj)
     })
     res.send(response)
 }
