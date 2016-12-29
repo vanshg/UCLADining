@@ -63,14 +63,6 @@ app.get('/menus', function (req, res) {
     parseMenus(res, html);
 })
 
-
-/* Parameters:
-    Date
-*/
-app.get('/swipes', function (req, res) {
-    res.send('TODO')
-})
-
 app.get('/calendarYear', function(req, res){
     // TODO: get the calendar years for several 
     var url = util.format(calendarUrl);
