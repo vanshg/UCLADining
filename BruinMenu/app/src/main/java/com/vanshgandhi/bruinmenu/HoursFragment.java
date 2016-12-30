@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,6 +22,8 @@ import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -36,9 +39,11 @@ import okhttp3.Response;
 public class HoursFragment extends Fragment {
 
     private MainActivity mainActivity;
-    private Calendar rightNow;
 
     private TextView test;
+    private String hoursText;
+
+    private String[] restaurants = {"Bruin Café", "Bruin Plate","Covel", "Café 1919", "De Neve", "De Neve Grab 'N Go", "FEAST at Rieber", "Rendezvous"};
 
     public HoursFragment() {
     }
@@ -59,49 +64,57 @@ public class HoursFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_hours, container, false);
         test = (TextView) rootView.findViewById(R.id.textView);
-        rightNow = mainActivity.getCurrentCal();
-        String url = "https://salty-shelf-63361.herokuapp.com/hours";
-        //String charset = "UTF-8";
-        //SimpleDateFormat df = new SimpleDateFormat("MM/DD/yyyy", Locale.US);
-        //String param1 = df.format(rightNow.getTime());
+        Calendar rightNow = mainActivity.getCurrentCal();
+        String url = "https://bruinmenu.herokuapp.com/hours?date=";
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        String param1 = df.format(rightNow.getTime());
+        url += param1;
 
+        Log.d("test", "The url is " + url);
         OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url("https://salty-shelf-63361.herokuapp.com/hours").get().build();
+        Request request = new Request.Builder().url(url).get().build();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e("Test", "Oh noez! Error!!", e);
+                Log.d("Test", "Oh noez! Error!!", e);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String stringResponse = response.body().string();
+                hoursText = response.body().string();
                 response.body().close();
-                Log.v("Test", "Yay! Got response: " + stringResponse);
+                Log.d("Test", "Yay! Got response: " + hoursText);
+
+                parseHourText();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // This code will always run on the UI thread, therefore is safe to modify UI elements.
+                        test.setText(hoursText);                    }
+                });
             }
         });
         return rootView;
     }
-}
 
-//        StringBuilder content = new StringBuilder();
-//
-//        try {
-//            HttpURLConnection connection = (HttpURLConnection) (new URL(url)).openConnection();
-//            //connection.setRequestProperty("Accept-Charset", charset);
-//            connection.setReadTimeout(10000);
-//            connection.connect();
-//
-//            InputStream in = connection.getInputStream();
-//
-//            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
-//
-//            for (String line; (line = bufferedReader.readLine()) != null; ) {
-//                content.append(line);
-//            }
-//            in.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        test.setText(content.toString());
+    private void parseHourText()
+    {
+        for(int i = 0; i < restaurants.length; i++)
+        {
+            String pattern = "\"" + restaurants[i] + "\",\"breakfast\":\"(.*?)\",\"lunch\":\"(.*?)\",\"dinner\":\"(.*?)\",\"late_night\":\"(.*?)\"";
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(hoursText);
+
+            if (m.find())
+            {
+                restaurants[i] = restaurants[i] + "\n" + "Breakfast: " + m.group(1) + "\nLunch: " + m.group(2) + "\nDinner: " + m.group(3) + "\nLate Night: " + m.group(4);
+            }
+            else
+                restaurants[i] = null;
+
+            Log.d("Testing", "The value of the restaurants is: " + restaurants[i]);
+        }
+    }
+
+}
