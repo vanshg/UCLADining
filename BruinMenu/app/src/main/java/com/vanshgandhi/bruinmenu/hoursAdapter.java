@@ -36,15 +36,11 @@ public class hoursAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         TextView textView;
         if (convertView == null) {
-            // if it's not recycled, initialize some attributes
-            //imageView = new ImageView(mContext);
             textView = new TextView(mContext);
             textView.setText(frag.getRestaurant(position));
         } else {
             textView = (TextView) convertView;
         }
-
-       // imageView.setImageResource(mThumbIds[position]);
         return textView;
     }
 
