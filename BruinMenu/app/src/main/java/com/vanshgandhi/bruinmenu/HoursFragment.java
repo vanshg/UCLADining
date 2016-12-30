@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -39,11 +40,11 @@ import okhttp3.Response;
 public class HoursFragment extends Fragment {
 
     private MainActivity mainActivity;
-
+    private GridView gridView;
     private TextView test;
     private String hoursText;
 
-    private String[] restaurants = {"Bruin Café", "Bruin Plate","Covel", "Café 1919", "De Neve", "De Neve Grab 'N Go", "FEAST at Rieber", "Rendezvous"};
+    private String[] restaurants = {"Bruin Café", "Bruin Plate", "Covel", "Café 1919", "De Neve", "De Neve Grab 'N Go", "FEAST at Rieber", "Rendezvous"};
 
     public HoursFragment() {
     }
@@ -63,7 +64,8 @@ public class HoursFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_hours, container, false);
-        test = (TextView) rootView.findViewById(R.id.textView);
+        gridView = (GridView)rootView.findViewById(R.id.gridview);
+       // test = (TextView) rootView.findViewById(R.id.textView);
         Calendar rightNow = mainActivity.getCurrentCal();
         String url = "https://bruinmenu.herokuapp.com/hours?date=";
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
@@ -91,30 +93,33 @@ public class HoursFragment extends Fragment {
                     @Override
                     public void run() {
                         // This code will always run on the UI thread, therefore is safe to modify UI elements.
-                        test.setText(hoursText);                    }
+                        gridView.setAdapter(new hoursAdapter(getActivity(), HoursFragment.this));
+                        // test.setText(hoursText);
+                    }
                 });
             }
         });
         return rootView;
     }
 
-    private void parseHourText()
-    {
-        for(int i = 0; i < restaurants.length; i++)
-        {
+    private void parseHourText() {
+        for (int i = 0; i < restaurants.length; i++) {
             String pattern = "\"" + restaurants[i] + "\",\"breakfast\":\"(.*?)\",\"lunch\":\"(.*?)\",\"dinner\":\"(.*?)\",\"late_night\":\"(.*?)\"";
             Pattern r = Pattern.compile(pattern);
             Matcher m = r.matcher(hoursText);
 
-            if (m.find())
-            {
+            if (m.find()) {
                 restaurants[i] = restaurants[i] + "\n" + "Breakfast: " + m.group(1) + "\nLunch: " + m.group(2) + "\nDinner: " + m.group(3) + "\nLate Night: " + m.group(4);
-            }
-            else
+            } else
                 restaurants[i] = null;
 
-            Log.d("Testing", "The value of the restaurants is: " + restaurants[i]);
+            //Log.d("Testing", "The value of the restaurants is: " + restaurants[i]);
         }
+    }
+
+    public String getRestaurant(int pos)
+    {
+        return restaurants[pos];
     }
 
 }
