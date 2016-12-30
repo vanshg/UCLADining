@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 // write things with the bottom tabs
                 if (tabId == R.id.action_swipe) {
+
                     tabLayout.setVisibility(View.GONE);
                     viewPager.setVisibility(View.GONE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, SwipesFragment.newInstance(), "SwipesFrag").addToBackStack(null).commit();
