@@ -65,16 +65,14 @@ public class HoursFragment extends Fragment {
         editor = sharedPreferences.edit();
 
         final View rootView = inflater.inflate(R.layout.fragment_hours, container, false);
-        gridView = (GridView)rootView.findViewById(R.id.gridview);
-       // test = (TextView) rootView.findViewById(R.id.textView);
+        gridView = (GridView) rootView.findViewById(R.id.gridview);
         rightNow = mainActivity.getCurrentCal();
         String url = "https://bruinmenu.herokuapp.com/hours?date=";
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         String param1 = df.format(rightNow.getTime());
         url += param1;
         restoreSavedPreferences();
-        if (!restoredSavedPreferences)
-        {
+        if (!restoredSavedPreferences) {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder().url(url).get().build();
             client.newCall(request).enqueue(new Callback() {
@@ -87,8 +85,6 @@ public class HoursFragment extends Fragment {
                 public void onResponse(Call call, Response response) throws IOException {
                     hoursText = response.body().string();
                     response.body().close();
-                    Log.d("Test", "Yay! Got response: " + hoursText);
-
                     parseHourText();
 
                     getActivity().runOnUiThread(new Runnable() {
@@ -96,15 +92,13 @@ public class HoursFragment extends Fragment {
                         public void run() {
                             // This code will always run on the UI thread, therefore is safe to modify UI elements.
                             gridView.setAdapter(new hoursAdapter(getActivity(), HoursFragment.this));
-                            // test.setText(hoursText);
                         }
                     });
                 }
             });
-        }
-        else
-        gridView.setAdapter(new hoursAdapter(getActivity(), HoursFragment.this));
-        Log.d("test", "The url is " + url);
+        } else
+            gridView.setAdapter(new hoursAdapter(getActivity(), HoursFragment.this));
+//        Log.d("test", "The url is " + url);
         return rootView;
     }
 
@@ -118,7 +112,6 @@ public class HoursFragment extends Fragment {
                 restaurants[i] = restaurants[i] + "\n" + "Breakfast: " + m.group(1) + "\nLunch: " + m.group(2) + "\nDinner: " + m.group(3) + "\nLate Night: " + m.group(4);
             } else
                 restaurants[i] = null;
-            //Log.d("Testing", "The value of the restaurants is: " + restaurants[i]);
         }
         editor.putString("BCafe" + rightNow.get(Calendar.DAY_OF_WEEK), restaurants[0]).apply();
         editor.putString("BPlate" + rightNow.get(Calendar.DAY_OF_WEEK), restaurants[1]).apply();
@@ -131,13 +124,11 @@ public class HoursFragment extends Fragment {
         editor.putBoolean("savedOn" + rightNow.get(Calendar.DAY_OF_WEEK), true).apply();
     }
 
-    public String getRestaurant(int pos)
-    {
+    public String getRestaurant(int pos) {
         return restaurants[pos];
     }
 
-    private void restoreSavedPreferences()
-    {
+    private void restoreSavedPreferences() {
         restaurants[0] = sharedPreferences.getString("BCafe" + rightNow.get(Calendar.DAY_OF_WEEK), restaurants[0]);
         restaurants[1] = sharedPreferences.getString("BPlate" + rightNow.get(Calendar.DAY_OF_WEEK), restaurants[1]);
         restaurants[2] = sharedPreferences.getString("Covel" + rightNow.get(Calendar.DAY_OF_WEEK), restaurants[2]);
