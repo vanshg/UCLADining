@@ -109,7 +109,7 @@ public class HoursFragment extends Fragment {
             Matcher m = r.matcher(hoursText);
 
             if (m.find()) {
-                restaurants[i] = restaurants[i] + "\n" + "Breakfast: " + m.group(1) + "\nLunch: " + m.group(2) + "\nDinner: " + m.group(3) + "\nLate Night: " + m.group(4);
+                restaurants[i] = "<strong>" + restaurants[i] + "<strong>" + "\n" + "Breakfast: " + m.group(1) + "\nLunch: " + m.group(2) + "\nDinner: " + m.group(3) + "\nLate Night: " + m.group(4);
             } else
                 restaurants[i] = null;
         }

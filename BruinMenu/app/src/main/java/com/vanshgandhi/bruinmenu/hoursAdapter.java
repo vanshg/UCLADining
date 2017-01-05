@@ -2,7 +2,10 @@ package com.vanshgandhi.bruinmenu;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.os.Build;
 import android.support.v7.widget.CardView;
+import android.text.Html;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +46,7 @@ public class hoursAdapter extends BaseAdapter {
         Point size = new Point();
         display.getSize(size);
         int height = size.y;
-        height = height/5;
+        height = height/6;
 
         CardView cardView = new CardView(mContext);
         LayoutParams params = new LayoutParams(
@@ -57,7 +60,12 @@ public class hoursAdapter extends BaseAdapter {
 
 
         TextView textView = new TextView(mContext);
-        textView.setText(frag.getRestaurant(position));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            textView.setText(Html.fromHtml(frag.getRestaurant(position),0));
+        } else {
+            textView.setText(Html.fromHtml(frag.getRestaurant(position)));
+        }
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         cardView.addView(textView);
 
         return cardView;
