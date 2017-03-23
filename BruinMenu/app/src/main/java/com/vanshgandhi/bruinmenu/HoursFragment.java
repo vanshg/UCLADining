@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -103,6 +107,22 @@ public class HoursFragment extends Fragment {
     }
 
     private void parseHourText() {
+
+        try {
+            JSONArray arr = new JSONArray(hoursText);
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                String breakfast = obj.getString("breakfast");
+                String lunch = obj.getString("lunch");
+                String dinner = obj.getString("dinner");
+                String lateNight = obj.getString("late_night");
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
         for (int i = 0; i < restaurants.length; i++) {
             String pattern = "\"" + restaurants[i] + "\",\"breakfast\":\"(.*?)\",\"lunch\":\"(.*?)\",\"dinner\":\"(.*?)\",\"late_night\":\"(.*?)\"";
             Pattern r = Pattern.compile(pattern);
