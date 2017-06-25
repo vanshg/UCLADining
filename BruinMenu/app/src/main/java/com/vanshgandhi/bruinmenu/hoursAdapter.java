@@ -28,7 +28,7 @@ public class hoursAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return 8;
+        return frag.getRestArrayLength();
     }
 
     public Object getItem(int position) {
@@ -58,17 +58,15 @@ public class hoursAdapter extends BaseAdapter {
         cardView.setPadding(25, 25, 25, 25);
         cardView.setMaxCardElevation(30);
 
-
         TextView textView = new TextView(mContext);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textView.setText(Html.fromHtml(frag.getRestaurant(position),0));
         } else {
             textView.setText(Html.fromHtml(frag.getRestaurant(position)));
         }
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         cardView.addView(textView);
 
         return cardView;
     }
-
 }

@@ -66,7 +66,7 @@ public class SwipesFragment extends Fragment {
 
         id = mainActivity.getPreviousSwipeToggle();
 
-        rightNow = mainActivity.getCurrentCal();          // TODO: somehow make a listener or something to change this date appropriately instead of relying on erasing the current fragment and replacing it with the new date
+        rightNow = mainActivity.getCurrentCal();                    // TODO: somehow make a listener or something to change this date appropriately instead of relying on erasing the current fragment and replacing it with the new date
 
         swipesText = (TextView) rootView.findViewById(R.id.swipes);
         dateText = (TextView) rootView.findViewById(R.id.date);
@@ -76,7 +76,7 @@ public class SwipesFragment extends Fragment {
         dateText.setText(formattedDate);
 
         startOfQuarter = Calendar.getInstance();
-        startOfQuarter.set(2017, Calendar.JANUARY, 9);      // TODO: Find way to not hardcode this -> look at jaunt API, then grep for Instruction begins ... probably best way to do it http://jaunt-api.com/
+        startOfQuarter.set(2017, Calendar.JUNE, 26);                // TODO: Find way to not hardcode this -> look at jaunt API, then grep for Instruction begins ... probably best way to do it http://jaunt-api.com/
         int currentWeek = rightNow.get(Calendar.WEEK_OF_YEAR);
         int quarterWeek = startOfQuarter.get(Calendar.WEEK_OF_YEAR);
         weeksSinceStart = currentWeek - quarterWeek;
